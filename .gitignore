@@ -1,0 +1,13 @@
+*/.settings
+.settings
+.prefs
+.project
+.factorypath
+.springBeans
+.classpath
+*.lst
+*/target/*
+*/target/*
+.factorypath
+/bin
+*/bin/*

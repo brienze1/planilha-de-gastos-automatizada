@@ -5,17 +5,17 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
-import br.com.planilha.gastos.entity.UserExample;
+import br.com.planilha.gastos.entity.User;
 
 @Component
 public interface UserRepositoryAdapter {
 	
-	public Optional<UserExample> findById(String id);
+	public Optional<User> findById(String id);
 	
-	public List<UserExample> findAllUsers();
+	public List<User> findAllUsers();
 
-	public void create(UserExample user);
+	public void register(User user);
 
-	public Optional<UserExample> findByEmail(String email);
+	public Optional<User> findByEmail(String email);
 	
 }

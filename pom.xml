@@ -24,7 +24,7 @@
 	</modules>
 
 	<properties>
-		<java.version>12</java.version>
+		<java.version>14</java.version>
 		<cucumber.version>1.2.0</cucumber.version>
 	</properties>
 

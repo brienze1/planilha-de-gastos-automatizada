@@ -1,15 +1,12 @@
 package br.com.planilha.gastos.dto;
 
-import javax.validation.constraints.Email;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiModelProperty;
 
-public class UserExampleDTO {
+public class UserDto {
 	
 	@JsonProperty("email")
-	@Email(regexp = ".@.\\..*", message = "Email should be valid")
 	private String email;
 
 	@JsonProperty("password")
@@ -20,7 +17,12 @@ public class UserExampleDTO {
 
 	@JsonProperty("first_name")
 	private String firstName;
-
+	
+	private String secret;
+	private String deviceId;
+	private boolean validEmail;
+	private boolean autoLogin;
+	
 	@ApiModelProperty(example = "example@email.com")
 	public String getEmail() {
 		return email;
@@ -51,6 +53,31 @@ public class UserExampleDTO {
 	}
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
+	}
+	
+	public String getSecret() {
+		return secret;
+	}
+	public void setSecret(String secret) {
+		this.secret = secret;
+	}
+	public String getDeviceId() {
+		return deviceId;
+	}
+	public void setDeviceId(String deviceId) {
+		this.deviceId = deviceId;
+	}
+	public boolean isValidEmail() {
+		return validEmail;
+	}
+	public void setValidEmail(boolean validEmail) {
+		this.validEmail = validEmail;
+	}
+	public boolean isAutoLogin() {
+		return autoLogin;
+	}
+	public void setAutoLogin(boolean autoLogin) {
+		this.autoLogin = autoLogin;
 	}
 	
 }

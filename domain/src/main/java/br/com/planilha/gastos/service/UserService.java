@@ -6,49 +6,54 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import br.com.planilha.gastos.entity.UserExample;
-import br.com.planilha.gastos.port.IdGeneratorAdapter;
-import br.com.planilha.gastos.port.PasswordEncoderAdapter;
+import br.com.planilha.gastos.builder.UserBuilder;
+import br.com.planilha.gastos.entity.User;
+import br.com.planilha.gastos.port.JwtTokenUtilsAdapter;
 import br.com.planilha.gastos.port.UserRepositoryAdapter;
-import br.com.planilha.gastos.port.UserServiceAdapter;
-import br.com.planilha.gastos.rules.UserValidatorExample;
+import br.com.planilha.gastos.rules.UserValidator;
 
 @Component
-public class UserService implements UserServiceAdapter {
+public class UserService {
 
 	@Autowired
-	private UserValidatorExample userValidatorExample;
+	private UserValidator userValidator;
 	
 	@Autowired
 	private UserRepositoryAdapter repository;
 	
 	@Autowired
-	private PasswordEncoderAdapter passwordEncoder;
+	private UserBuilder userBuilder;
 	
 	@Autowired
-	private IdGeneratorAdapter idGenerator;
+	private JwtTokenUtilsAdapter jwtTokenUtils;
 	
-	public String create(UserExample user) {
-		userValidatorExample.validateCreateUser(user);
+	public String register(User user) {
+		//Valida dados do novo usuario
+		userValidator.validateUserRegistrationData(user);
 		
-		user.setId(idGenerator.generate());
-		user.setPassword(passwordEncoder.encode(user.getEmail()+user.getPassword()));
+		//Gera Ids e configuracoes default do usuario
+		userBuilder.build(user);
+
+		//Registra o usuario na base de dados
+		repository.register(user);
 		
-		repository.create(user);
+		//Gera jwt de resposta utilizando o email como secret 
+		String jwtToken = jwtTokenUtils.generate(user.getId(), user.getEmail(), user);
 		
-		return user.getId();
+		//retorna o id gerado
+		return jwtToken;
 	}
 	
-	public Optional<UserExample> findById(final String id){
+	public Optional<User> findById(final String id){
 		return repository.findById(id);
 	}
 	
-	public List<UserExample> findAllUsers(){
+	public List<User> findAllUsers(){
 		return repository.findAllUsers();
 	}
 	
-	public Optional<UserExample> findByEmail(String email){
+	public Optional<User> findByEmail(String email){
 		return repository.findByEmail(email);
 	}
-	
+
 }

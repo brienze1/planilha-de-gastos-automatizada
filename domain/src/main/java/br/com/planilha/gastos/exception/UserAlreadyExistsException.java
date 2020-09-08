@@ -1,10 +1,10 @@
 package br.com.planilha.gastos.exception;
 
-public class UserAlreadyExistsExceptionExample extends RuntimeException {
+public class UserAlreadyExistsException extends RuntimeException {
 
 	private static final long serialVersionUID = -3788766278090345347L;
 	
-	 public UserAlreadyExistsExceptionExample(String errorMessage) {
+	 public UserAlreadyExistsException(String errorMessage) {
 	        super(errorMessage);
     }
 	

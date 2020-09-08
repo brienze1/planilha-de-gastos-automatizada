@@ -1,7 +1,5 @@
 package br.com.planilha.gastos.builder;
 
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +18,7 @@ public class UserBuilder {
 	
 	public void build(User user) {
 		//Gera o id do usuario
-		user.setId(idGenerator.generate());
+		user.setId(idGenerator.generateId());
 
 		//Seta a variavel de email valido como falso
 		user.setValidEmail(false);
@@ -29,10 +27,10 @@ public class UserBuilder {
 		user.setAutoLogin(false);
 		
 		//Id do dispositivo verificado
-		user.setDeviceId(UUID.randomUUID().toString());
+		user.setDeviceId(idGenerator.generateId());
 		
 		//Secret para criar e decodificar jwts
-		user.setSecret(UUID.randomUUID().toString());
+		user.setSecret(idGenerator.generateSecret());
 		
 		user.setPassword(passwordUtils.encode(user.getPassword(), user.getSecret()));
 	}

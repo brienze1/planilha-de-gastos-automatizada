@@ -16,6 +16,8 @@ public class UserEntityParse {
 	public UserEntity parse(User user) {
 		UserEntity userEntity = mapper.map(user, UserEntity.class);
 		
+		userEntity.setEmail(userEntity.getEmail().toLowerCase());
+		
 		return userEntity;
 	}
 	

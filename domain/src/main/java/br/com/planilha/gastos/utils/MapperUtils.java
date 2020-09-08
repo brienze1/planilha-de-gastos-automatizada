@@ -45,7 +45,7 @@ public class MapperUtils {
 			throw new NullPointerException();
 		} else {
 			try {
-				return modelMapper.map(object, typeReference.getType());
+				return objectMapper.readValue(writeValueAsString(object), typeReference);
 			} catch (Exception e){
 				throw new NullPointerException();
 			}

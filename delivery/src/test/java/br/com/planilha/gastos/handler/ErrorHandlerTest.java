@@ -8,7 +8,7 @@ import org.mockito.InjectMocks;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.server.ResponseStatusException;
 
-import br.com.planilha.gastos.exception.UserAlreadyExistsExceptionExample;
+import br.com.planilha.gastos.exception.UserAlreadyExistsException;
 
 @RunWith(SpringRunner.class)
 public class ErrorHandlerTest {
@@ -24,6 +24,6 @@ public class ErrorHandlerTest {
 		expectedException.expect(ResponseStatusException.class);
 		expectedException.expectMessage("User already exists.");
 		
-		errorHandler.errorHandler(new UserAlreadyExistsExceptionExample("User already exists."));
+		errorHandler.errorHandler(new UserAlreadyExistsException("User already exists."));
 	}
 }

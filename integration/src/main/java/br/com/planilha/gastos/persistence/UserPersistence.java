@@ -56,7 +56,7 @@ public class UserPersistence implements UserRepositoryAdapter {
 	@Override
 	public Optional<User> findByEmail(String email) {
 		List<UserEntity> userEntityList;
-		userEntityList = userRepository.findAllByEmail(email);
+		userEntityList = userRepository.findAllByEmail(email.toLowerCase());
 
 		if (userEntityList.isEmpty()) {
 			return Optional.ofNullable(null);

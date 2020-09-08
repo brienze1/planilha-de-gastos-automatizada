@@ -14,7 +14,7 @@ public class UuidGeneratorTest {
 	
 	@Test
 	public void test() {
-		String response = uuidGenerator.generate();
+		String response = uuidGenerator.generateId();
 		
 		Assert.assertNotNull(response);
 		Assert.assertTrue(!response.isBlank());

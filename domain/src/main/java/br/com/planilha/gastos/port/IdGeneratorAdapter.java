@@ -5,6 +5,8 @@ import org.springframework.stereotype.Component;
 @Component
 public interface IdGeneratorAdapter {
 
-	String generate();
+	String generateId();
+
+	String generateSecret();
 
 }

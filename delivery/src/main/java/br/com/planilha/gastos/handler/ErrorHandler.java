@@ -6,12 +6,12 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.server.ResponseStatusException;
 
-import br.com.planilha.gastos.exception.UserAlreadyExistsExceptionExample;
+import br.com.planilha.gastos.exception.UserAlreadyExistsException;
 
 @ControllerAdvice
 public class ErrorHandler {
 
-	@ExceptionHandler({UserAlreadyExistsExceptionExample.class})
+	@ExceptionHandler({UserAlreadyExistsException.class})
 	public ResponseEntity<Object> errorHandler(Exception ex) {
 		throw new ResponseStatusException(HttpStatus.FORBIDDEN, ex.getMessage());
 	}

@@ -7,16 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.com.planilha.gastos.builder.UserBuilder;
+import br.com.planilha.gastos.entity.Login;
 import br.com.planilha.gastos.entity.User;
-import br.com.planilha.gastos.port.JwtTokenUtilsAdapter;
 import br.com.planilha.gastos.port.UserRepositoryAdapter;
-import br.com.planilha.gastos.rules.UserValidator;
+import br.com.planilha.gastos.rules.LoginRules;
+import br.com.planilha.gastos.rules.UserRules;
 
 @Component
 public class UserService {
 
 	@Autowired
-	private UserValidator userValidator;
+	private UserRules userRules;
 	
 	@Autowired
 	private UserRepositoryAdapter repository;
@@ -25,11 +26,14 @@ public class UserService {
 	private UserBuilder userBuilder;
 	
 	@Autowired
-	private JwtTokenUtilsAdapter jwtTokenUtils;
+	private JwtService jwtService;
+	
+	@Autowired
+	private LoginRules loginRules;
 	
 	public String register(User user) {
 		//Valida dados do novo usuario
-		userValidator.validateUserRegistrationData(user);
+		userRules.validateUserRegistrationData(user);
 		
 		//Gera Ids e configuracoes default do usuario
 		userBuilder.build(user);
@@ -38,22 +42,45 @@ public class UserService {
 		repository.register(user);
 		
 		//Gera jwt de resposta utilizando o email como secret 
-		String jwtToken = jwtTokenUtils.generate(user.getId(), user.getEmail(), user);
+		String jwtToken = jwtService.generate(user.getId(), user.getSecret(), user);
 		
 		//retorna o id gerado
 		return jwtToken;
 	}
 	
-	public Optional<User> findById(final String id){
-		return repository.findById(id);
+	public User findById(String id){
+		Optional<User> user = repository.findById(id);
+		
+		userRules.validate(user);
+
+		return user.get();
 	}
 	
 	public List<User> findAllUsers(){
 		return repository.findAllUsers();
 	}
 	
-	public Optional<User> findByEmail(String email){
-		return repository.findByEmail(email);
+	public User findByEmail(String email){
+		Optional<User> user = repository.findByEmail(email);
+		
+		userRules.validate(user);
+		
+		return user.get();
 	}
+
+	public String login(String jwtDataToken) {
+		//Busca dados do payload do jwt
+		Login login = jwtService.decodeAndVerify(jwtDataToken, Login.class);
+		
+		//Encontra o usuario na base de dados
+		User user = findByEmail(login.getEmail());
+		
+		//Valida dados de login
+		loginRules.validate(login, user);
+		
+		//Gera token de acesso para o usuario
+		return jwtService.generateAcessToken(user);
+	}
+	
 
 }

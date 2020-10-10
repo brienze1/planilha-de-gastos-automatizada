@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import br.com.planilha.gastos.entity.User;
 import br.com.planilha.gastos.entity.UserEntity;
+import br.com.planilha.gastos.exception.UserNotFoundException;
 import br.com.planilha.gastos.parse.UserEntityParse;
 import br.com.planilha.gastos.parse.UserParse;
 import br.com.planilha.gastos.port.UserRepositoryAdapter;
@@ -63,6 +64,17 @@ public class UserPersistence implements UserRepositoryAdapter {
 		} else {
 			return Optional.of(userParse.parse(userEntityList.get(0)));
 		}
+	}
+	
+	@Override
+	public void update(User user) {
+		UserEntity userEntity = userEntityParse.parse(user);
+		
+		if(userRepository.existsById(userEntity.getId())) {
+			userRepository.save(userEntity);
+		}
+		
+		throw new UserNotFoundException("Usuario nao cadastrado na base de dados");
 	}
 
 }

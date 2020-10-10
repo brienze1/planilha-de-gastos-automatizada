@@ -15,6 +15,9 @@ public class UserRules {
 
 	@Autowired
 	private UserRepositoryAdapter repository;
+	
+	@Autowired
+	private DeviceRules deviceRules;
 
 	public void validateUserRegistrationData(User user) {
 		// Valida se o usuario nao esta nulo
@@ -41,6 +44,9 @@ public class UserRules {
 		if (user.getLastName() == null || user.getLastName().isBlank()) {
 			throw new UserValidationException("Last name can't be null or empty");
 		}
+		
+		//Valida se o dispositivo esta preenchido
+		deviceRules.validateDeviceRegistration(user.getDevices());
 
 		// Valida se ja existe um usuario cadastrado com o mesmo email
 		if (repository.findByEmail(user.getEmail()).isPresent()) {
@@ -82,9 +88,11 @@ public class UserRules {
 			throw new UserValidationException("Last name can't be null or empty");
 		}
 
-		if(user.getDeviceId() == null || user.getDeviceId().isBlank()) {
-			throw new UserValidationException("Device ID can't be null or empty");
+		if(user.getDevices() == null || user.getDevices().isEmpty()) {
+			throw new UserValidationException("Devices can't be null or empty");
 		}
+		
+		deviceRules.validate(user.getDevices());
 		
 		if(user.getId() == null || user.getId().isBlank()) {
 			throw new UserValidationException("ID can't be null or empty");

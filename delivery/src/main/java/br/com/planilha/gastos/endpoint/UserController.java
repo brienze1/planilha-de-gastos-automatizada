@@ -6,11 +6,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import br.com.planilha.gastos.adapter.UserControllerAdapter;
 import br.com.planilha.gastos.dto.DataDto;
+import br.com.planilha.gastos.dto.LoginDto;
 import br.com.planilha.gastos.dto.UserDto;
+import br.com.planilha.gastos.entity.Login;
 import br.com.planilha.gastos.entity.User;
 import br.com.planilha.gastos.service.UserService;
 import br.com.planilha.gastos.utils.MapperUtils;
@@ -23,7 +23,10 @@ public class UserController implements UserControllerAdapter {
 	
 	@Autowired
 	private UserService userService;
-	
+
+	/*
+	 * done
+	 */
 	@PostMapping("/user/new")
 	@Override
 	public DataDto register(@RequestBody UserDto userDto) {
@@ -36,19 +39,29 @@ public class UserController implements UserControllerAdapter {
 		return dataDto;
 	}
 	
+	/*
+	 * done
+	 */
+	@Override
 	@GetMapping("user/login")
-	public Object login(@RequestBody DataDto dataDto) {
-		return userService.login(dataDto.getJwtDataToken());	
+	public Object login(@RequestBody LoginDto loginDto) {
+		return userService.login(mapper.map(loginDto, Login.class));	
 	}
 	
+	/*
+	 * done
+	 */
+	@Override
 	@GetMapping("user/auto-login")
-	public Object autoLogin(@RequestBody DataDto dataDto) {
-		
-		return null;
+	public String autoLogin(@RequestBody DataDto dataDto) {
+		return userService.autoLogin(dataDto.getJwtDataToken());
 	}
-	
+
+	/*
+	 * not done
+	 */
 	@GetMapping("user/refresh-login")
-	public Object refreshLogin(@RequestBody @JsonProperty("jwt") String jwtToken) {
+	public Object refreshLogin(@RequestBody DataDto dataDto) {
 		return null;		
 	}
 	

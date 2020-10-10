@@ -17,5 +17,7 @@ public interface UserRepositoryAdapter {
 	public void register(User user);
 
 	public Optional<User> findByEmail(String email);
+
+	public void update(User user);
 	
 }

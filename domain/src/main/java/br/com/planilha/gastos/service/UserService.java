@@ -20,7 +20,7 @@ public class UserService {
 	private UserRules userRules;
 	
 	@Autowired
-	private UserRepositoryAdapter repository;
+	private UserRepositoryAdapter userRepository;
 	
 	@Autowired
 	private UserBuilder userBuilder;
@@ -39,7 +39,7 @@ public class UserService {
 		userBuilder.build(user);
 
 		//Registra o usuario na base de dados
-		repository.register(user);
+		userRepository.register(user);
 		
 		//Gera jwt de resposta utilizando o email como secret 
 		String jwtToken = jwtService.generate(user.getId(), user.getSecret(), user);
@@ -47,9 +47,17 @@ public class UserService {
 		//retorna o id gerado
 		return jwtToken;
 	}
+
+	public void update(User user) {
+		//Valida dados do usuario
+		userRules.validateUserRegistrationData(user);
+		
+		//Atualiza usuario na base de dados
+		userRepository.update(user);
+	}
 	
 	public User findById(String id){
-		Optional<User> user = repository.findById(id);
+		Optional<User> user = userRepository.findById(id);
 		
 		userRules.validate(user);
 
@@ -57,21 +65,32 @@ public class UserService {
 	}
 	
 	public List<User> findAllUsers(){
-		return repository.findAllUsers();
+		return userRepository.findAllUsers();
 	}
 	
 	public User findByEmail(String email){
-		Optional<User> user = repository.findByEmail(email);
+		Optional<User> user = userRepository.findByEmail(email);
 		
 		userRules.validate(user);
 		
 		return user.get();
 	}
 
-	public String login(String jwtDataToken) {
+	public String autoLogin(String jwtDataToken) {
 		//Busca dados do payload do jwt
 		Login login = jwtService.decodeAndVerify(jwtDataToken, Login.class);
 		
+		//Encontra o usuario na base de dados
+		User user = findByEmail(login.getEmail());
+		
+		//Valida dados de login
+		loginRules.validateAutoLogin(login, user);
+		
+		//Gera token de acesso para o usuario
+		return jwtService.generateAcessToken(user);
+	}
+
+	public Object login(Login login) {
 		//Encontra o usuario na base de dados
 		User user = findByEmail(login.getEmail());
 		
@@ -81,6 +100,5 @@ public class UserService {
 		//Gera token de acesso para o usuario
 		return jwtService.generateAcessToken(user);
 	}
-	
 
 }

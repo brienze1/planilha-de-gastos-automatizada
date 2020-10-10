@@ -1,8 +1,7 @@
 package br.com.planilha.gastos.adapter;
 
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import br.com.planilha.gastos.dto.DataDto;
+import br.com.planilha.gastos.dto.LoginDto;
 import br.com.planilha.gastos.dto.UserDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -18,7 +17,6 @@ public interface UserControllerAdapter {
 			@ApiResponse(code = 400, message = "Bad Request"),
 			@ApiResponse(code = 500, message = "Erro interno do servidor"), })
 	// SWAGGER CONFIG END
-	@ResponseBody
 	DataDto register(UserDto userDto);
 
 	// SWAGGER CONFIG START
@@ -27,7 +25,15 @@ public interface UserControllerAdapter {
 			@ApiResponse(code = 400, message = "Bad Request"),
 			@ApiResponse(code = 500, message = "Erro interno do servidor"), })
 	// SWAGGER CONFIG END
-	@ResponseBody
-	Object login(DataDto dataDto);
+	Object login(LoginDto loginDto);
+
+	// SWAGGER CONFIG START
+	@ApiOperation(value = "Faz login do usuario")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "no content"),
+			@ApiResponse(code = 400, message = "Bad Request"),
+			@ApiResponse(code = 500, message = "Erro interno do servidor"), })
+	// SWAGGER CONFIG END
+	String autoLogin(DataDto dataDto);
+
 
 }

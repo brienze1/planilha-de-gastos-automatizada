@@ -1,9 +1,16 @@
-package br.com.planilha.gastos.entity;
+package br.com.planilha.gastos.dto;
 
-public class Login {
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+public class LoginDto {
+	
+	@JsonProperty("email")
 	private String email;
+	
+	@JsonProperty("password")
 	private String password;
+	
+	@JsonProperty("device_id")
 	private String deviceId;
 	
 	public String getEmail() {

@@ -26,12 +26,10 @@ public class UserBuilder {
 		//Variavel de configuracao para autorizar login automatico
 		user.setAutoLogin(false);
 		
-		//Id do dispositivo verificado
-		user.setDeviceId(idGenerator.generateId());
-		
 		//Secret para criar e decodificar jwts
 		user.setSecret(idGenerator.generateSecret());
 		
+		//Encrypta password
 		user.setPassword(passwordUtils.encode(user.getPassword(), user.getSecret()));
 	}
 

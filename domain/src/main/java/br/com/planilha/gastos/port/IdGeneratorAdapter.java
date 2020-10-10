@@ -9,4 +9,6 @@ public interface IdGeneratorAdapter {
 
 	String generateSecret();
 
+	String generateVerificationCode();
+
 }

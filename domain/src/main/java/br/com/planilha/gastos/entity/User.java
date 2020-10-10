@@ -1,5 +1,7 @@
 package br.com.planilha.gastos.entity;
 
+import java.util.List;
+
 public class User {
 
 	private String id;
@@ -8,7 +10,7 @@ public class User {
 	private String lastName;
 	private String firstName;
 	private String secret;
-	private String deviceId;
+	private List<Device> devices;
 	private boolean validEmail;
 	private boolean autoLogin;
 
@@ -54,11 +56,11 @@ public class User {
 	public void setSecret(String secret) {
 		this.secret = secret;
 	}
-	public String getDeviceId() {
-		return deviceId;
+	public List<Device> getDevices() {
+		return devices;
 	}
-	public void setDeviceId(String deviceId) {
-		this.deviceId = deviceId;
+	public void setDevices(List<Device> devices) {
+		this.devices = devices;
 	}
 	public boolean isAutoLogin() {
 		return autoLogin;

@@ -38,11 +38,11 @@ public class DeviceIntegrationParse {
 		return deviceEntity;
 	}
 
-	public List<Device> toDevices(Set<DeviceEntity> set) {
+	public List<Device> toDevices(Set<DeviceEntity> devicesEntity) {
 		List<Device> devices = new ArrayList<>();
 		
-		if(set != null && set.isEmpty()) {
-			for (DeviceEntity deviceEntity : set) {
+		if(devicesEntity != null && !devicesEntity.isEmpty()) {
+			for (DeviceEntity deviceEntity : devicesEntity) {
 				devices.add(toDeviceEntity(deviceEntity));
 			}
 		}

@@ -18,6 +18,9 @@ public class UserParse {
 		if(userDto != null) {
 			user.setAutoLogin(userDto.isAutoLogin());
 			user.setDevices(deviceParce.toDevices(userDto.getDevice()));
+			if(userDto.getDevice() != null) {
+				user.setInUseDevice(userDto.getDevice().getId());
+			}
 			user.setEmail(userDto.getEmail());
 			user.setFirstName(userDto.getFirstName());
 			user.setLastName(userDto.getLastName());

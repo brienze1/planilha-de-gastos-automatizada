@@ -21,9 +21,11 @@ public class UserDto {
 	@JsonProperty("device")
 	private DeviceDto device;
 
+	@JsonProperty("auto_login")
+	private boolean autoLogin;
+
 	private String secret;
 	private boolean validEmail;
-	private boolean autoLogin;
 	
 	@ApiModelProperty(example = "example@email.com")
 	public String getEmail() {

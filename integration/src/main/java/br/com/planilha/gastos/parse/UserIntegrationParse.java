@@ -38,7 +38,7 @@ public class UserIntegrationParse {
 		return users;
 	}
 
-	private User toUser(UserEntity userEntity) {
+	public User toUser(UserEntity userEntity) {
 		User user = new User();
 		
 		if(userEntity != null) {

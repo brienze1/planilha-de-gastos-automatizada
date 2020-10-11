@@ -40,5 +40,19 @@ public class Device {
 	public void setVerificationCode(String verificationCode) {
 		this.verificationCode = verificationCode;
 	}
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Device [id=");
+		builder.append(id);
+		builder.append(", verified=");
+		builder.append(verified);
+		builder.append(", inUse=");
+		builder.append(inUse);
+		builder.append(", verificationCode=");
+		builder.append(verificationCode);
+		builder.append("]");
+		return builder.toString();
+	}
 	
 }

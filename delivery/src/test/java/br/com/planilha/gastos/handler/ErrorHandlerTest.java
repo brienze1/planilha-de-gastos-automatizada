@@ -24,6 +24,6 @@ public class ErrorHandlerTest {
 		expectedException.expect(ResponseStatusException.class);
 		expectedException.expectMessage("User already exists.");
 		
-		errorHandler.errorHandler(new UserAlreadyExistsException("User already exists."));
+		errorHandler.userAlreadyExistsError(new UserAlreadyExistsException("User already exists."));
 	}
 }

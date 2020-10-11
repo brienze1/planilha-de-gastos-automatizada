@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.com.planilha.gastos.builder.UserBuilder;
+import br.com.planilha.gastos.entity.Device;
 import br.com.planilha.gastos.entity.Login;
 import br.com.planilha.gastos.entity.User;
 import br.com.planilha.gastos.port.UserRepositoryAdapter;
@@ -31,27 +32,29 @@ public class UserService {
 	@Autowired
 	private LoginRules loginRules;
 	
+	@Autowired
+	private DeviceService deviceService;
+	
 	public String register(User user) {
 		userRules.validateUserRegistrationData(user);
 		
 		user = userBuilder.build(user);
 
-		//Registra o usuario na base de dados
 		userRepository.save(user);
 		
-		//Gera jwt de resposta utilizando o email como secret 
+		for (Device device : user.getDevices()) {
+			deviceService.sendDeviceVerificationEmail(user.getId(), device);
+		}
+		
 		String jwtToken = jwtService.generate(user.getId(), user.getSecret(), user);
 		
-		//retorna o id gerado
 		return jwtToken;
 	}
 
-	public void update(User user) {
-		//Valida dados do usuario
-		userRules.validateUserRegistrationData(user);
+	public User update(User user) {
+		userRules.validate(user);
 		
-		//Atualiza usuario na base de dados
-		userRepository.save(user);
+		return userRepository.save(user);
 	}
 	
 	public User findById(String id){
@@ -75,27 +78,35 @@ public class UserService {
 	}
 
 	public String autoLogin(Login login) {
-		//Encontra o usuario na base de dados
 		User user = findByEmail(login.getEmail());
 		
-		//Valida dados de login
 		loginRules.validateAutoLogin(login, user);
 		
 		user.setInUseDevice(login.getDeviceId());
 		
-		//Gera token de acesso para o usuario
 		return jwtService.generateAcessToken(user);
 	}
 
 	public String login(Login login) {
-		//Encontra o usuario na base de dados
 		User user = findByEmail(login.getEmail());
 		
-		//Valida dados de login
 		loginRules.validate(login, user);
 		
-		//Gera token de acesso para o usuario
 		return jwtService.generateAcessToken(user);
+	}
+
+	public void configureUser(String token, User user) {
+		User userBase = jwtService.verifyAcessToken(token);
+		
+		User novoUser = userBuilder.buildChanges(user, userBase);
+		
+		userRepository.save(novoUser);
+	}
+
+	public void validateDevice(String token, Device device) {
+		User userBase = jwtService.verifyAcessToken(token);
+		
+		deviceService.validateDevice(device, userBase);
 	}
 
 }

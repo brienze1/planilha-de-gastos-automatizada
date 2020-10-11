@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class UuidGeneratorTest {
 
 	@InjectMocks
-	private UuidGenerator uuidGenerator;
+	private IdGenerator uuidGenerator;
 	
 	@Test
 	public void test() {

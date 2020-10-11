@@ -41,12 +41,12 @@ public class UserPersistence implements UserRepositoryAdapter {
 	}
 
 	@Override
-	public void save(User user) {
+	public User save(User user) {
 		UserEntity userEntity = userIntegrationParse.toUserEntity(user);
 		
 		devicePersistence.save(userEntity.getDevices());
 		
-		userRepository.save(userEntity);
+		return userIntegrationParse.toUser(userRepository.save(userEntity));
 	}
 
 	@Override

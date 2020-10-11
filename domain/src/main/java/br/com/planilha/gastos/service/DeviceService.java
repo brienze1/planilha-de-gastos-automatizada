@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import br.com.planilha.gastos.builder.DeviceBuilder;
 import br.com.planilha.gastos.entity.Device;
 import br.com.planilha.gastos.entity.User;
+import br.com.planilha.gastos.exception.DeviceException;
 
 @Component
 public class DeviceService {
@@ -19,32 +20,54 @@ public class DeviceService {
 	@Autowired
 	private EmailService emailService;
 	
-	public void registerNewDevice(String userId, String deviceId) {
-		//Busca usuario
+	public Device registerNewDevice(String userId, String deviceId) {
 		User user = userService.findById(userId);
 		
-		//Gera novo device com o id informado
+		for (Device userDevice : user.getDevices()) {
+			if(userDevice.getId().equals(deviceId)) {
+				return userDevice;
+			}
+		}
+
 		Device device = deviceBuilder.build(deviceId);
-		
-		//Verifica se o usuario ja possui o dispositivo informado
-		boolean deviceFound = false;
+
 		user.getDevices().add(device);
-		for(int i=0; i<user.getDevices().size(); i++) {
-			if(user.getDevices().get(i).getId().equals(deviceId)) {
-				if(deviceFound) {
-					user.getDevices().remove(i);
+		
+		userService.update(user);
+		
+		return device;
+	}
+
+	public Device sendDeviceVerificationEmail(String userId, Device device) {
+		User user = userService.findById(userId);
+
+		for (Device userDevice : user.getDevices()) {
+			if(userDevice.getId().equals(device.getId())) {
+				if(userDevice.isVerified()) {
+					return userDevice;
 				}
 				
-				deviceFound = true;
-				user.getDevices().set(i, device);
+				emailService.sendDeviceVerificationEmail(user, device);
+				
+				return userDevice;
 			}
 		}
 		
-		//Salva o usuario na base de dados com o novo device
-		userService.update(user);
-		
-		//Envia email para verificar o novo device
-		emailService.sendDeviceVerificationEmail(user, device);
+		throw new DeviceException("Usuario nao possui esse dispoisivo cadastrado");
+	}
+
+	public Device validateDevice(Device device, User userBase) {
+		for (Device deviceBase : userBase.getDevices()) {
+			if(deviceBase.getId().equals(device.getId()) && deviceBase.getVerificationCode().equals(device.getVerificationCode())) {
+				deviceBase.setVerified(true);
+				
+				userService.update(userBase);
+				
+				return deviceBase;
+			}
+		}
+
+		throw new DeviceException("Dispositivo nao encontrado na base");
 	}
 
 }

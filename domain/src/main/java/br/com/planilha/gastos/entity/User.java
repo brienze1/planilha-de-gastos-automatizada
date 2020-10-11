@@ -76,6 +76,14 @@ public class User {
 		}
 		return null;
 	}
+	public Device getInUseDevice() {
+		for (Device device : devices) {
+			if(device.isInUse()) {
+				return device;
+			}
+		}
+		return null;
+	}
 	public Device setInUseDevice(String deviceId) {
 		for (Device device : devices) {
 			if(device.getId().equals(deviceId)) {
@@ -86,6 +94,30 @@ public class User {
 			}
 		}			
 		return null;
+	}
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("User [id=");
+		builder.append(id);
+		builder.append(", email=");
+		builder.append(email);
+		builder.append(", password=");
+		builder.append(password);
+		builder.append(", lastName=");
+		builder.append(lastName);
+		builder.append(", firstName=");
+		builder.append(firstName);
+		builder.append(", secret=");
+		builder.append(secret);
+		builder.append(", devices=");
+		builder.append(devices);
+		builder.append(", validEmail=");
+		builder.append(validEmail);
+		builder.append(", autoLogin=");
+		builder.append(autoLogin);
+		builder.append("]");
+		return builder.toString();
 	}
 	
 }

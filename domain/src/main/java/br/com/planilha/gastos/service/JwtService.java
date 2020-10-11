@@ -5,7 +5,9 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.planilha.gastos.entity.AccessToken;
 import br.com.planilha.gastos.entity.User;
+import br.com.planilha.gastos.exception.UserValidationException;
 import br.com.planilha.gastos.port.JwtAdapter;
 
 @Service
@@ -24,21 +26,29 @@ public class JwtService {
 	}
 
 	public <T> T decodeAndVerify(String jwt, Class<T> clazz) {
-		//Decodifica o body do jwt
 		Map<String, Object> jwtBody = jwtAdapter.decodeJwtNoVerification(jwt);
 		
-		//Busca o id do usuario que gerou o jwt
 		String userId = String.valueOf(jwtBody.get(SUBJECT));
 		
-		//Busca o usuario 
 		User user = userService.findById(userId);
 		
-		//Decodifica, valida e retorna o payload solicitado na forma do objeto clazz
 		return jwtAdapter.decode(jwt, user.getSecret(), clazz);
 	}
 
 	public String generateAcessToken(User user) {
 		return jwtAdapter.generateAccessToken(user, 300);
+	}
+
+	public User verifyAcessToken(String token) {
+		AccessToken accessToken = jwtAdapter.getAcessToken(token);
+		
+		User user = userService.findById(accessToken.getUserId());
+		
+		if(jwtAdapter.isValidToken(token, user.getSecret()) && user.getInUseDeviceId().equals(accessToken.getDeviceId())) {
+			return user;
+		}
+ 
+		throw new UserValidationException("Dispositivo que fez a requisicao nao esta logado");
 	}
 
 	

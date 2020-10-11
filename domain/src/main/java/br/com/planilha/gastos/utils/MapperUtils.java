@@ -63,7 +63,7 @@ public class MapperUtils {
 				
 				return objectMapper.readValue(writeValueAsString(object), clazz);
 			} catch (Exception e){
-				throw new NullPointerException();
+				throw new RuntimeException(e);
 			}
 		}
 	}

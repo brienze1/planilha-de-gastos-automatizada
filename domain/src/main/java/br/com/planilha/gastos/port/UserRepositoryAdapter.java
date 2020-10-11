@@ -14,7 +14,7 @@ public interface UserRepositoryAdapter {
 	
 	public List<User> findAllUsers();
 
-	public void save(User user);
+	public User save(User user);
 
 	public Optional<User> findByEmail(String email);
 

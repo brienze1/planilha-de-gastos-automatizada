@@ -10,7 +10,7 @@ public class EmailService {
 
 	public void sendDeviceVerificationEmail(User user, Device device) {
 		// TODO Auto-generated method stub
-		System.out.println("email enviado");
+		System.out.println("email enviado: \n" + user.toString() + "\n" + device.toString());
 	}
 
 }

@@ -23,7 +23,7 @@ public class DeviceParse {
 		return devices;
 	}
 
-	private Device toDevice(DeviceDto deviceDto) {
+	public Device toDevice(DeviceDto deviceDto) {
 		Device device = new Device();
 		
 		if(deviceDto != null) {
@@ -38,8 +38,10 @@ public class DeviceParse {
 
 	public List<Device> toDevices(DeviceDto deviceDto) {
 		List<Device> devices = new ArrayList<>();
-		
-		devices.add(toDevice(deviceDto));
+
+		if(deviceDto != null) {
+			devices.add(toDevice(deviceDto));
+		}
 		
 		return devices;
 	}

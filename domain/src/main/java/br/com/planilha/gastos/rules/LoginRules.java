@@ -41,7 +41,7 @@ public class LoginRules {
 		for (Device device : user.getDevices()) {
 			if(login.getDeviceId().equals(device.getId())) {
 				//Verifica se a senha bate
-				if(!user.getPassword().equals(passwordUtils.encode(login.getPassword(), user.getSecret()))) {
+				if(!passwordUtils.verifyPassword(login.getPassword(), user.getPassword(), user.getSecret())) {
 					throw new LoginException("Password does not match");
 				}
 				
@@ -71,26 +71,23 @@ public class LoginRules {
 			throw new AutoLoginException("DeviceId can't be null");
 		} 
 		
-		if(user.isAutoLogin()) {
+		if(!user.isAutoLogin()) {
 			throw new AutoLoginException("User configuration doesn't allow auto-login");
 		}
 		
 		for (Device device : user.getDevices()) {
 			if(login.getDeviceId().equals(device.getId())) {
-				//Verifica se o dispositivo esta cadastrado e validado
 				if(!device.isVerified()) {
-				//Envia email para verificacao do dispositivo
-				deviceService.registerNewDevice(user.getId(), device.getId());
-				
-				throw new DeviceNotVerifiedException("Device not verified");
-			}
-				
+					deviceService.sendDeviceVerificationEmail(user.getId(), device);
+					throw new DeviceNotVerifiedException("Device not verified");
+				}
 				return;
 			}
 		}
 		
-		//Cadastra novo dispositivo
-		deviceService.registerNewDevice(user.getId(), login.getDeviceId());
+		Device device = deviceService.registerNewDevice(user.getId(), login.getDeviceId());
+		
+		deviceService.sendDeviceVerificationEmail(user.getId(), device);
 		
 		throw new DeviceNotVerifiedException("Device not verified");
 	}

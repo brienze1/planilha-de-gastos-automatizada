@@ -15,6 +15,7 @@ public class DeviceBuilder {
 	public Device build(String deviceId) {
 		Device device = new Device(deviceId);
 		device.setVerified(false);
+		device.setInUse(false);
 		device.setVerificationCode(idGenerator.generateVerificationCode()); 
 		
 		return device;

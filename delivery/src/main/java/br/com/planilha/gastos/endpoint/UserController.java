@@ -12,26 +12,29 @@ import br.com.planilha.gastos.dto.LoginDto;
 import br.com.planilha.gastos.dto.UserDto;
 import br.com.planilha.gastos.entity.Login;
 import br.com.planilha.gastos.entity.User;
+import br.com.planilha.gastos.parse.LoginParse;
+import br.com.planilha.gastos.parse.UserParse;
 import br.com.planilha.gastos.service.UserService;
-import br.com.planilha.gastos.utils.MapperUtils;
 
 @RestController
 public class UserController implements UserControllerAdapter {
 	
 	@Autowired
-	private MapperUtils mapper;
+	private LoginParse loginParse;
 	
 	@Autowired
 	private UserService userService;
 
+	@Autowired
+	private UserParse userParse;
+	
 	/*
 	 * done
 	 */
 	@PostMapping("/user/new")
 	@Override
 	public DataDto register(@RequestBody UserDto userDto) {
-		
-		User user = mapper.map(userDto, User.class);
+		User user = userParse.toUser(userDto);
 		
 		DataDto dataDto = new DataDto();
 		dataDto.setJwtDataToken(userService.register(user));
@@ -44,8 +47,13 @@ public class UserController implements UserControllerAdapter {
 	 */
 	@Override
 	@GetMapping("user/login")
-	public Object login(@RequestBody LoginDto loginDto) {
-		return userService.login(mapper.map(loginDto, Login.class));	
+	public DataDto login(@RequestBody LoginDto loginDto) {
+		Login login = loginParse.toLogin(loginDto);
+		
+		DataDto dataDto = new DataDto();
+		dataDto.setJwtAcessToken(userService.login(login));
+		
+		return dataDto;	
 	}
 	
 	/*
@@ -53,12 +61,18 @@ public class UserController implements UserControllerAdapter {
 	 */
 	@Override
 	@GetMapping("user/auto-login")
-	public String autoLogin(@RequestBody DataDto dataDto) {
-		return userService.autoLogin(dataDto.getJwtDataToken());
+	public DataDto autoLogin(@RequestBody LoginDto loginDto) {
+		Login login = loginParse.toLogin(loginDto);
+		
+		DataDto dataDto = new DataDto();
+		dataDto.setJwtAcessToken(userService.autoLogin(login));
+		
+		return dataDto;	
 	}
 
 	/*
 	 * not done
+	 * maybe not needed
 	 */
 	@GetMapping("user/refresh-login")
 	public Object refreshLogin(@RequestBody DataDto dataDto) {

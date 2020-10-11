@@ -16,21 +16,21 @@ public class UserBuilder {
 	@Autowired
 	private IdGeneratorAdapter idGenerator;
 	
-	public void build(User user) {
-		//Gera o id do usuario
-		user.setId(idGenerator.generateId());
-
-		//Seta a variavel de email valido como falso
-		user.setValidEmail(false);
+	@Autowired
+	private DeviceBuilder deviceBuilder;
 	
-		//Variavel de configuracao para autorizar login automatico
+	public User build(User user) {
+		user.setId(idGenerator.generateId());
+		user.setValidEmail(false);
 		user.setAutoLogin(false);
-		
-		//Secret para criar e decodificar jwts
 		user.setSecret(idGenerator.generateSecret());
-		
-		//Encrypta password
 		user.setPassword(passwordUtils.encode(user.getPassword(), user.getSecret()));
+		
+		for(int i=0; i<user.getDevices().size(); i++) {
+			user.getDevices().add(i, deviceBuilder.build(user.getDevices().get(i).getId()));
+		}
+		
+		return user;
 	}
 
 }

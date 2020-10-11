@@ -1,7 +1,5 @@
 package br.com.planilha.gastos.dto;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -20,8 +18,8 @@ public class UserDto {
 	@JsonProperty("first_name")
 	private String firstName;
 	
-	@JsonProperty("devices")
-	private List<DeviceDto> devices;
+	@JsonProperty("device")
+	private DeviceDto device;
 
 	private String secret;
 	private boolean validEmail;
@@ -58,11 +56,11 @@ public class UserDto {
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
-	public List<DeviceDto> getDevices() {
-		return devices;
+	public DeviceDto getDevice() {
+		return device;
 	}
-	public void setDevices(List<DeviceDto> devices) {
-		this.devices = devices;
+	public void setDevice(DeviceDto device) {
+		this.device = device;
 	}
 	public String getSecret() {
 		return secret;

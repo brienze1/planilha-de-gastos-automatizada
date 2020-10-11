@@ -1,8 +1,13 @@
 package br.com.planilha.gastos.entity;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -28,8 +33,8 @@ public class UserEntity {
 	@Column(name="SECRET")	
 	private String secret;
 	
-	@Column(name="DEVICE_ID")
-	private String deviceId;
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<DeviceEntity> devices;
 	
 	@Column(name="VALID_EMAIL")
 	private boolean validEmail;
@@ -73,11 +78,11 @@ public class UserEntity {
 	public void setSecret(String secret) {
 		this.secret = secret;
 	}
-	public String getDeviceId() {
-		return deviceId;
+	public Set<DeviceEntity> getDevices() {
+		return devices;
 	}
-	public void setDeviceId(String deviceId) {
-		this.deviceId = deviceId;
+	public void setDevices(Set<DeviceEntity> devices) {
+		this.devices = devices;
 	}
 	public boolean isValidEmail() {
 		return validEmail;

@@ -68,5 +68,24 @@ public class User {
 	public void setAutoLogin(boolean autoLogin) {
 		this.autoLogin = autoLogin;
 	}
+	public String getInUseDeviceId() {
+		for (Device device : devices) {
+			if(device.isInUse()) {
+				return device.getId();
+			}
+		}
+		return null;
+	}
+	public Device setInUseDevice(String deviceId) {
+		for (Device device : devices) {
+			if(device.getId().equals(deviceId)) {
+				device.setInUse(true);
+				return device;
+			} else if(device.isInUse()) {
+				device.setInUse(false);
+			}
+		}			
+		return null;
+	}
 	
 }

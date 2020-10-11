@@ -32,14 +32,12 @@ public class UserService {
 	private LoginRules loginRules;
 	
 	public String register(User user) {
-		//Valida dados do novo usuario
 		userRules.validateUserRegistrationData(user);
 		
-		//Gera Ids e configuracoes default do usuario
-		userBuilder.build(user);
+		user = userBuilder.build(user);
 
 		//Registra o usuario na base de dados
-		userRepository.register(user);
+		userRepository.save(user);
 		
 		//Gera jwt de resposta utilizando o email como secret 
 		String jwtToken = jwtService.generate(user.getId(), user.getSecret(), user);
@@ -53,7 +51,7 @@ public class UserService {
 		userRules.validateUserRegistrationData(user);
 		
 		//Atualiza usuario na base de dados
-		userRepository.update(user);
+		userRepository.save(user);
 	}
 	
 	public User findById(String id){
@@ -76,21 +74,20 @@ public class UserService {
 		return user.get();
 	}
 
-	public String autoLogin(String jwtDataToken) {
-		//Busca dados do payload do jwt
-		Login login = jwtService.decodeAndVerify(jwtDataToken, Login.class);
-		
+	public String autoLogin(Login login) {
 		//Encontra o usuario na base de dados
 		User user = findByEmail(login.getEmail());
 		
 		//Valida dados de login
 		loginRules.validateAutoLogin(login, user);
 		
+		user.setInUseDevice(login.getDeviceId());
+		
 		//Gera token de acesso para o usuario
 		return jwtService.generateAcessToken(user);
 	}
 
-	public Object login(Login login) {
+	public String login(Login login) {
 		//Encontra o usuario na base de dados
 		User user = findByEmail(login.getEmail());
 		

@@ -4,12 +4,14 @@ public class Device {
 
 	private String id;
 	private boolean verified;
+	private boolean inUse;
 	private String verificationCode;
 	
 	public Device(String id){
 		this.id = id;
 		this.verified = false;
-		
+	}
+	public Device(){
 	}
 	
 	public String getId() {
@@ -21,6 +23,14 @@ public class Device {
 	public boolean isVerified() {
 		return verified;
 	}
+	public boolean isInUse() {
+		return inUse;
+	}
+
+	public void setInUse(boolean inUse) {
+		this.inUse = inUse;
+	}
+
 	public void setVerified(boolean verified) {
 		this.verified = verified;
 	}

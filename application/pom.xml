@@ -93,8 +93,8 @@
 				<version>3.3</version><!--$NO-MVN-MAN-VER$ -->
 				<configuration>
 					<!-- Versão do java -->
-					<source>12</source>
-					<target>12</target>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
 				</configuration>
 			</plugin>
 		</plugins>

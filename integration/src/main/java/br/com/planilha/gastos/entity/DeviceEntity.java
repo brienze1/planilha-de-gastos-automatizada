@@ -1,21 +1,27 @@
-package br.com.planilha.gastos.dto;
+package br.com.planilha.gastos.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-public class DeviceDto {
+@Entity
+@Table(name="TB_TEMPLATE_DEVICE")
+public class DeviceEntity {
 
-	@JsonProperty("device_id")
+	@Id
+	@Column(name="DEVICE_ID")
 	private String id;
 	
-	@JsonProperty("verified")
+	@Column(name="VERIFIED")
 	private boolean verified;
-	
-	@JsonProperty("in_use")
+
+	@Column(name="IN_USE")
 	private boolean inUse;
 	
-	@JsonProperty("verification_code")
+	@Column(name="VERIFICATION_CODE")
 	private String verificationCode;
-	
+
 	public String getId() {
 		return id;
 	}

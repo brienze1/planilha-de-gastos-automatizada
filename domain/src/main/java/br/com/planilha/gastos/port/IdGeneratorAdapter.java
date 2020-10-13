@@ -11,4 +11,6 @@ public interface IdGeneratorAdapter {
 
 	String generateVerificationCode();
 
+	String generateTransactionId();
+
 }

@@ -31,6 +31,13 @@ public class UserPersistence implements UserRepositoryAdapter {
 
 		return userIntegrationParse.toUser(userEntity);
 	}
+	
+	public UserEntity findUserEntity(String id) {
+		Optional<UserEntity> userEntity;
+		userEntity = userRepository.findById(id);
+		
+		return userEntity.get();
+	}
 
 	@Override
 	public List<User> findAllUsers() {

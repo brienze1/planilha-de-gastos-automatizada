@@ -9,7 +9,7 @@ import br.com.planilha.gastos.dto.DeviceDto;
 import br.com.planilha.gastos.entity.Device;
 
 @Component
-public class DeviceParse {
+public class DeviceDeliveryParse {
 
 	public List<Device> toDevices(List<DeviceDto> devicesDto) {
 		List<Device> devices = new ArrayList<>();

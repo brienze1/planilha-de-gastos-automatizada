@@ -6,7 +6,7 @@ import br.com.planilha.gastos.dto.LoginDto;
 import br.com.planilha.gastos.entity.Login;
 
 @Component
-public class LoginParse {
+public class LoginDeliveryParse {
 
 	public Login toLogin(LoginDto loginDto) {
 		Login login = new Login();

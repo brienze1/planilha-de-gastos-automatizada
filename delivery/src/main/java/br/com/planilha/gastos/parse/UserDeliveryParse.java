@@ -7,10 +7,10 @@ import br.com.planilha.gastos.dto.UserDto;
 import br.com.planilha.gastos.entity.User;
 
 @Component
-public class UserParse {
+public class UserDeliveryParse {
 	
 	@Autowired
-	private DeviceParse deviceParce;
+	private DeviceDeliveryParse deviceParce;
 
 	public User toUser(UserDto userDto) {
 		User user = new User();

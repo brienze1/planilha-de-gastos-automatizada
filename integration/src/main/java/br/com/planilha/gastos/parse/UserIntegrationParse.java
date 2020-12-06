@@ -45,7 +45,7 @@ public class UserIntegrationParse {
 			user.setAutoLogin(userEntity.isAutoLogin());
 			user.setDevices(deviceIntegrationParse.toDevices(userEntity.getDevices()));
 			user.setFirstName(userEntity.getFirstName());
-			user.setId(userEntity.getId());
+			user.setId(String.valueOf(userEntity.getId()));
 			user.setLastName(userEntity.getLastName());
 			user.setPassword(userEntity.getPassword());
 			user.setSecret(userEntity.getSecret());
@@ -63,7 +63,10 @@ public class UserIntegrationParse {
 			userEntity.setAutoLogin(user.isAutoLogin());
 			userEntity.setDevices(deviceIntegrationParse.toDevicesEntity(user.getDevices()));
 			userEntity.setFirstName(user.getFirstName());
-			userEntity.setId(user.getId());
+			try {
+				userEntity.setId(Integer.valueOf(user.getId()));
+			} catch (Exception e) {
+			}
 			userEntity.setLastName(user.getLastName());
 			userEntity.setPassword(user.getPassword());
 			userEntity.setSecret(user.getSecret());

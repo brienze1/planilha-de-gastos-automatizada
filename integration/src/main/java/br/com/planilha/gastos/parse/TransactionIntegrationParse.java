@@ -15,7 +15,10 @@ public class TransactionIntegrationParse {
 		TransactionEntity transactionEntity = new TransactionEntity();
 
 		if (transaction != null) {
-			transactionEntity.setId(transaction.getId());
+			try {
+				transactionEntity.setId(Integer.valueOf(transaction.getId()));
+			}catch (Exception e) {
+			}
 			transactionEntity.setData(transaction.getData());
 			transactionEntity.setLocalizacao(transaction.getLocalizacao());
 			transactionEntity.setMeioDePagamento(transaction.getMeioDePagamento());
@@ -30,7 +33,7 @@ public class TransactionIntegrationParse {
 		Transaction transaction = new Transaction();
 
 		if (transactionEntity != null) {
-			transaction.setId(transactionEntity.getId());
+			transaction.setId(String.valueOf(transactionEntity.getId()));
 			transaction.setData(transactionEntity.getData());
 			transaction.setLocalizacao(transactionEntity.getLocalizacao());
 			transaction.setMeioDePagamento(transactionEntity.getMeioDePagamento());

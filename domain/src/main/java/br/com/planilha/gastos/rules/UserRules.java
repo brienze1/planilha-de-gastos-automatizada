@@ -15,7 +15,7 @@ public class UserRules {
 
 	@Autowired
 	private UserRepositoryAdapter repository;
-	
+
 	@Autowired
 	private DeviceRules deviceRules;
 
@@ -44,8 +44,8 @@ public class UserRules {
 		if (user.getLastName() == null || user.getLastName().isBlank()) {
 			throw new UserValidationException("Last name can't be null or empty");
 		}
-		
-		//Valida se o dispositivo esta preenchido
+
+		// Valida se o dispositivo esta preenchido
 		deviceRules.validateDeviceRegistration(user.getDevices());
 
 		// Valida se ja existe um usuario cadastrado com o mesmo email
@@ -58,7 +58,7 @@ public class UserRules {
 		if (!user.isPresent()) {
 			throw new UserNotFoundException("User not found");
 		}
-		
+
 		validate(user.get());
 	}
 
@@ -88,19 +88,39 @@ public class UserRules {
 			throw new UserValidationException("Last name can't be null or empty");
 		}
 
-		if(user.getDevices() == null || user.getDevices().isEmpty()) {
+		if (user.getDevices() == null || user.getDevices().isEmpty()) {
 			throw new UserValidationException("Devices can't be null or empty");
+		}
+
+		deviceRules.validate(user.getDevices());
+
+		if (user.getId() == null || user.getId().isBlank()) {
+			throw new UserValidationException("ID can't be null or empty");
+		}
+
+		if (user.getSecret() == null || user.getSecret().isBlank()) {
+			throw new UserValidationException("Secret can't be null or empty");
+		}
+	}
+
+	public void validateDeviceRegistration(User user) {
+		// Valida se o usuario nao esta nulo
+		if (user == null) {
+			throw new UserValidationException("User can't be null");
+		}
+
+		// Valida se a senha nao esta nula
+		if (user.getPassword() == null || user.getPassword().isBlank()) {
+			throw new UserValidationException("Password can't be null or empty");
+		}
+		
+		// Valida se o email nao esta nulo
+		if (user.getEmail() == null || user.getEmail().isBlank()) {
+			throw new UserValidationException("Email can't be null or empty");
 		}
 		
 		deviceRules.validate(user.getDevices());
-		
-		if(user.getId() == null || user.getId().isBlank()) {
-			throw new UserValidationException("ID can't be null or empty");
-		}
-		
-		if(user.getSecret() == null || user.getSecret().isBlank()) {
-			throw new UserValidationException("Secret can't be null or empty");
-		}
+
 	}
 
 }

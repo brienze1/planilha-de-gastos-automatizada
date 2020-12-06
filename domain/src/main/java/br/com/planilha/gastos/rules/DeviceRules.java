@@ -20,7 +20,7 @@ public class DeviceRules {
 				throw new DeviceException("Device can't be null");
 			}
 			
-			if(device.getId() == null || device.getId().isBlank()) {
+			if(device.getDeviceId() == null || device.getDeviceId().isBlank()) {
 				throw new DeviceException("Device Id can't be null");
 			}
 		}

@@ -1,5 +1,6 @@
 package br.com.planilha.gastos.persistence;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,12 @@ public class DevicePersistence {
 	@Autowired
 	private DeviceRepository deviceRepository;
 
-	public void save(Set<DeviceEntity> devicesEntity) {
-		deviceRepository.saveAll(devicesEntity);
+	public Set<DeviceEntity> save(Set<DeviceEntity> devicesEntity) {
+		Set<DeviceEntity> devices = new HashSet<>();
+		for (DeviceEntity deviceEntity : deviceRepository.saveAll(devicesEntity)) {
+			devices.add(deviceEntity);
+		}
+		return devices;
 	}
 
 }

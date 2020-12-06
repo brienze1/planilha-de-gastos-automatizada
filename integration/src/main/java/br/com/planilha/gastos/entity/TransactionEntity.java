@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -14,8 +16,9 @@ import javax.persistence.Table;
 public class TransactionEntity {
 
 	@Id
-	@Column(name="TRANSACTION_ID")
-	private String id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="TB_TEMPLATE_TRANSACTION_ID")
+	private int id;
 	
 	@Column(name="TYPE")
 	private String tipo;
@@ -35,10 +38,10 @@ public class TransactionEntity {
 	@ManyToOne
 	private UserEntity user;
 	
-	public String getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public String getTipo() {

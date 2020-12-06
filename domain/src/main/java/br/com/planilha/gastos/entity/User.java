@@ -71,7 +71,7 @@ public class User {
 	public String getInUseDeviceId() {
 		for (Device device : devices) {
 			if(device.isInUse()) {
-				return device.getId();
+				return device.getDeviceId();
 			}
 		}
 		return null;
@@ -86,7 +86,7 @@ public class User {
 	}
 	public Device setInUseDevice(String deviceId) {
 		for (Device device : devices) {
-			if(device.getId().equals(deviceId)) {
+			if(device.getDeviceId().equals(deviceId)) {
 				device.setInUse(true);
 				return device;
 			} else if(device.isInUse()) {

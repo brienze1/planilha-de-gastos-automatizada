@@ -6,7 +6,6 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import javax.crypto.SecretKey;
-import javax.xml.bind.DatatypeConverter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -37,18 +36,24 @@ public class JwtTokenUtils implements JwtAdapter {
 
 	@Override
 	public String generate(String userId, String secret, Object payload, long expirationSeconds) {
+		long nowMillis = System.currentTimeMillis();
+		Date now = new Date(nowMillis);
+		
 		TypeReference<Map<String, Object>> typeReference = new TypeReference<Map<String, Object>>() {};
 		Map<String, Object> claims = mapper.map(payload, typeReference);
 
-		long nowMillis = System.currentTimeMillis();
-		Date now = new Date(nowMillis);
-
 		// We will sign our JWT with our ApiKey secret
-		SecretKey key = Keys.hmacShaKeyFor(DatatypeConverter.parseBase64Binary(secret));
+		SecretKey key = Keys.hmacShaKeyFor(secret.getBytes());
 
 		// Let's set the JWT Claims
-		JwtBuilder builder = Jwts.builder().setId(UUID.randomUUID().toString()).setIssuedAt(now).setSubject(userId)
-				.setIssuer(ISSUER).claim(PAYLOAD, claims).signWith(key, SignatureAlgorithm.HS256);
+		JwtBuilder builder;
+			builder = Jwts.builder()
+					.setId(UUID.randomUUID().toString())
+					.setIssuedAt(now)
+					.setSubject(userId)
+					.setIssuer(ISSUER)
+					.claim(PAYLOAD, claims)
+					.signWith(key, SignatureAlgorithm.HS256);
 
 		// if it has been specified, let's add the expiration
 		if (expirationSeconds != 0) {
@@ -73,7 +78,7 @@ public class JwtTokenUtils implements JwtAdapter {
 
 	@Override
 	public <T> T decode(String jwt, String secret, Class<T> clazz) {
-		SecretKey key = Keys.hmacShaKeyFor(DatatypeConverter.parseBase64Binary(secret));
+		SecretKey key = Keys.hmacShaKeyFor(secret.getBytes());
 
 		Object body = Jwts.parserBuilder().setSigningKey(key).build().parse(jwt).getBody();
 
@@ -82,7 +87,7 @@ public class JwtTokenUtils implements JwtAdapter {
 		TypeReference<Map<String, Object>> typeReference = new TypeReference<Map<String, Object>>() {};
 		Map<String, Object> mapaJwt = mapper.map(body, typeReference);
 
-		return mapper.readValue(mapaJwt.get("payload"), clazz);
+		return mapper.readValue(mapaJwt.get(PAYLOAD), clazz);
 	}
 
 	@Override
@@ -111,13 +116,13 @@ public class JwtTokenUtils implements JwtAdapter {
 		TypeReference<Map<String, Object>> typeReference = new TypeReference<Map<String, Object>>() {};
 		Map<String, Object> mapaJwt = mapper.map(jwtBody, typeReference);
 
-		AccessTokenDtoi acessTokenDtoi = mapper.readValue(mapaJwt.get("payload"), AccessTokenDtoi.class);
+		AccessTokenDtoi acessTokenDtoi = mapper.readValue(mapaJwt.get(PAYLOAD), AccessTokenDtoi.class);
 		return accessTokenIntegrationParse.toAccessToken(acessTokenDtoi);
 	}
 
 	@Override
 	public boolean isValidToken(String token, String secret) {
-		SecretKey key = Keys.hmacShaKeyFor(DatatypeConverter.parseBase64Binary(secret));
+		SecretKey key = Keys.hmacShaKeyFor(secret.getBytes());
 
 		Jwts.parserBuilder().setSigningKey(key).build().parse(token).getBody();
 

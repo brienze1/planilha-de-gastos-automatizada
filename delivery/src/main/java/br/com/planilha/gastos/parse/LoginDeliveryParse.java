@@ -13,7 +13,7 @@ public class LoginDeliveryParse {
 		
 		if(loginDto != null) {
 			login.setDeviceId(loginDto.getDeviceId());
-			login.setEmail(loginDto.getEmail());
+			login.setEmail(loginDto.getEmail().toLowerCase());
 			login.setPassword(loginDto.getPassword());
 		}
 		

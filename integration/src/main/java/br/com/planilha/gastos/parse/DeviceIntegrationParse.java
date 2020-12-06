@@ -29,7 +29,11 @@ public class DeviceIntegrationParse {
 		DeviceEntity deviceEntity = new DeviceEntity();
 		
 		if(device != null) {
-			deviceEntity.setId(device.getId());
+			try {
+				deviceEntity.setId(Integer.valueOf(device.getId()));
+			}catch (Exception e) {
+			}
+			deviceEntity.setDeviceId(device.getDeviceId());
 			deviceEntity.setInUse(device.isInUse());
 			deviceEntity.setVerificationCode(device.getVerificationCode());
 			deviceEntity.setVerified(device.isVerified());
@@ -38,10 +42,10 @@ public class DeviceIntegrationParse {
 		return deviceEntity;
 	}
 
-	public List<Device> toDevices(Set<DeviceEntity> devicesEntity) {
+	public List<Device> toDevices(Iterable<DeviceEntity> devicesEntity) {
 		List<Device> devices = new ArrayList<>();
 		
-		if(devicesEntity != null && !devicesEntity.isEmpty()) {
+		if(devicesEntity != null) {
 			for (DeviceEntity deviceEntity : devicesEntity) {
 				devices.add(toDeviceEntity(deviceEntity));
 			}
@@ -54,7 +58,8 @@ public class DeviceIntegrationParse {
 		Device device = new Device();
 		
 		if(deviceEntity != null) {
-			device.setId(deviceEntity.getId());
+			device.setId(String.valueOf(deviceEntity.getId()));
+			device.setDeviceId(deviceEntity.getDeviceId());
 			device.setInUse(deviceEntity.isInUse());
 			device.setVerificationCode(deviceEntity.getVerificationCode());
 			device.setVerified(deviceEntity.isVerified());

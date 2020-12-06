@@ -2,6 +2,8 @@ package br.com.planilha.gastos.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -10,8 +12,12 @@ import javax.persistence.Table;
 public class DeviceEntity {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="TB_TEMPLATE_DEVICE_ID")
+	private int id;
+	
 	@Column(name="DEVICE_ID")
-	private String id;
+	private String deviceId;
 	
 	@Column(name="VERIFIED")
 	private boolean verified;
@@ -22,11 +28,17 @@ public class DeviceEntity {
 	@Column(name="VERIFICATION_CODE")
 	private String verificationCode;
 
-	public String getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
+	}
+	public String getDeviceId() {
+		return deviceId;
+	}
+	public void setDeviceId(String deviceId) {
+		this.deviceId = deviceId;
 	}
 	public boolean isVerified() {
 		return verified;

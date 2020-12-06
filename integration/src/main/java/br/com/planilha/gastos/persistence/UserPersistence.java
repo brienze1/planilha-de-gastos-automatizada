@@ -19,22 +19,19 @@ public class UserPersistence implements UserRepositoryAdapter {
 	private UserRepository userRepository;
 	
 	@Autowired
-	private DevicePersistence devicePersistence;
-
-	@Autowired
 	private UserIntegrationParse userIntegrationParse;
 	
 	@Override
 	public Optional<User> findById(String id) {
 		Optional<UserEntity> userEntity;
-		userEntity = userRepository.findById(id);
+		userEntity = userRepository.findById(Integer.valueOf(id));
 
 		return userIntegrationParse.toUser(userEntity);
 	}
 	
 	public UserEntity findUserEntity(String id) {
 		Optional<UserEntity> userEntity;
-		userEntity = userRepository.findById(id);
+		userEntity = userRepository.findById(Integer.valueOf(id));
 		
 		return userEntity.get();
 	}
@@ -50,8 +47,6 @@ public class UserPersistence implements UserRepositoryAdapter {
 	@Override
 	public User save(User user) {
 		UserEntity userEntity = userIntegrationParse.toUserEntity(user);
-		
-		devicePersistence.save(userEntity.getDevices());
 		
 		return userIntegrationParse.toUser(userRepository.save(userEntity));
 	}

@@ -1,9 +1,11 @@
 package br.com.planilha.gastos.persistence;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import br.com.planilha.gastos.entity.Transaction;
@@ -33,9 +35,9 @@ public class TransactionPersistence implements TransactionPersistenceAdapter {
 		
 		transactionEntity.setUser(userPersistence.findUserEntity(user.getId()));
 		
-		transactionRepository.save(transactionEntity);
+		TransactionEntity savedTransaction = transactionRepository.save(transactionEntity);
 		
-		return transactionParse.toTransaction(transactionRepository.save(transactionEntity));
+		return transactionParse.toTransaction(savedTransaction);
 	}
 
 	@Override
@@ -61,7 +63,39 @@ public class TransactionPersistence implements TransactionPersistenceAdapter {
 	}
 
 	public boolean isValidId(String transactionId) {
-		return !transactionRepository.findById(transactionId).isPresent();
+		try {
+			Integer id = Integer.valueOf(transactionId);
+			return !transactionRepository.findById(id).isPresent();
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	@Override
+	public List<Transaction> findSinceDateByQuantity(User user, LocalDateTime date, Integer quantity, Integer page) {
+		UserEntity userEntity = userPersistence.findUserEntity(user.getId());
+		
+		List<TransactionEntity> transactionsEntity = transactionRepository.findByUserAndDataGreaterThanEqualOrderByDataDesc(userEntity, date, PageRequest.of(page, quantity));
+		
+		return transactionParse.toTransactions(transactionsEntity);
+	}
+
+	@Override
+	public List<Transaction> findSinceDate(User user, LocalDateTime date) {
+		UserEntity userEntity = userPersistence.findUserEntity(user.getId());
+		
+		List<TransactionEntity> transactionsEntity = transactionRepository.findByUserAndDataGreaterThanEqualOrderByDataDesc(userEntity, date);
+		
+		return transactionParse.toTransactions(transactionsEntity);
+	}
+
+	@Override
+	public List<Transaction> findByQuantity(User user, Integer quantity, Integer page) {
+		UserEntity userEntity = userPersistence.findUserEntity(user.getId());
+		
+		List<TransactionEntity> transactionsEntity = transactionRepository.findByUserOrderByDataDesc(userEntity, PageRequest.of(page, quantity));
+		
+		return transactionParse.toTransactions(transactionsEntity);
 	}
 
 

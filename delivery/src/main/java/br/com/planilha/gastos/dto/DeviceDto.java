@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class DeviceDto {
 
 	@JsonProperty("device_id")
-	private String id;
+	private String deviceId;
 	
 	@JsonProperty("verified")
 	private boolean verified;
@@ -16,11 +16,11 @@ public class DeviceDto {
 	@JsonProperty("verification_code")
 	private String verificationCode;
 	
-	public String getId() {
-		return id;
+	public String getDeviceId() {
+		return deviceId;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public void setDeviceId(String id) {
+		this.deviceId = id;
 	}
 	public boolean isVerified() {
 		return verified;

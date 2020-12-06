@@ -27,7 +27,7 @@ public class DeviceDeliveryParse {
 		Device device = new Device();
 		
 		if(deviceDto != null) {
-			device.setId(deviceDto.getId());
+			device.setDeviceId(deviceDto.getDeviceId());
 			device.setVerificationCode(deviceDto.getVerificationCode());
 			device.setVerified(deviceDto.isVerified());
 			device.setInUse(deviceDto.isInUse());	

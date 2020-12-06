@@ -21,8 +21,8 @@ public class JwtService {
 	@Autowired
 	private UserService userService;
 
-	public String generate(String subject, String secret, User user) {
-		return jwtAdapter.generate(subject, secret, user, 0);
+	public String generate(String subject, String secret, Object payload) {
+		return jwtAdapter.generate(subject, secret, payload, 0);
 	}
 
 	public <T> T decodeAndVerify(String jwt, Class<T> clazz) {
@@ -43,6 +43,8 @@ public class JwtService {
 		AccessToken accessToken = jwtAdapter.getAcessToken(token);
 		
 		User user = userService.findById(accessToken.getUserId());
+		
+		user.setInUseDevice(accessToken.getDeviceId());
 		
 		if(jwtAdapter.isValidToken(token, user.getSecret()) && user.getInUseDeviceId().equals(accessToken.getDeviceId())) {
 			return user;

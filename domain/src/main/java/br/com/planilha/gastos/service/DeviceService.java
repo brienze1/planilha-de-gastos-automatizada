@@ -23,14 +23,15 @@ public class DeviceService {
 	public Device registerNewDevice(String userId, String deviceId) {
 		User user = userService.findById(userId);
 		
-		for (Device userDevice : user.getDevices()) {
-			if(userDevice.getId().equals(deviceId)) {
-				return userDevice;
-			}
-		}
-
 		Device device = deviceBuilder.build(deviceId);
 
+		for(int i=0; i<user.getDevices().size(); i++) {
+			if(user.getDevices().get(i).getDeviceId().equals(device.getDeviceId())) {
+				device.setId(user.getDevices().get(i).getId());
+				user.getDevices().remove(i);
+			}
+		}
+		
 		user.getDevices().add(device);
 		
 		userService.update(user);
@@ -42,12 +43,12 @@ public class DeviceService {
 		User user = userService.findById(userId);
 
 		for (Device userDevice : user.getDevices()) {
-			if(userDevice.getId().equals(device.getId())) {
+			if(userDevice.getDeviceId().equals(device.getDeviceId())) {
 				if(userDevice.isVerified()) {
 					return userDevice;
 				}
 				
-				emailService.sendDeviceVerificationEmail(user, device);
+				emailService.sendDeviceVerificationEmail(user, userDevice);
 				
 				return userDevice;
 			}
@@ -58,7 +59,7 @@ public class DeviceService {
 
 	public Device validateDevice(Device device, User userBase) {
 		for (Device deviceBase : userBase.getDevices()) {
-			if(deviceBase.getId().equals(device.getId()) && deviceBase.getVerificationCode().equals(device.getVerificationCode())) {
+			if(deviceBase.getDeviceId().equals(device.getDeviceId()) && deviceBase.getVerificationCode().equals(device.getVerificationCode())) {
 				deviceBase.setVerified(true);
 				
 				userService.update(userBase);

@@ -10,7 +10,7 @@ public class DataDto {
 	@JsonProperty("data")
 	private String jwtDataToken;
 	
-	@JsonProperty("acess_token")
+	@JsonProperty("access_token")
 	private String jwtAcessToken;
 
 	public String getJwtDataToken() {

@@ -3,12 +3,13 @@ package br.com.planilha.gastos.entity;
 public class Device {
 
 	private String id;
+	private String deviceId;
 	private boolean verified;
 	private boolean inUse;
 	private String verificationCode;
 	
 	public Device(String id){
-		this.id = id;
+		this.deviceId = id;
 		this.verified = false;
 	}
 	public Device(){
@@ -20,17 +21,21 @@ public class Device {
 	public void setId(String id) {
 		this.id = id;
 	}
+	public String getDeviceId() {
+		return deviceId;
+	}
+	public void setDeviceId(String deviceId) {
+		this.deviceId = deviceId;
+	}
 	public boolean isVerified() {
 		return verified;
 	}
 	public boolean isInUse() {
 		return inUse;
 	}
-
 	public void setInUse(boolean inUse) {
 		this.inUse = inUse;
 	}
-
 	public void setVerified(boolean verified) {
 		this.verified = verified;
 	}
@@ -45,6 +50,8 @@ public class Device {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Device [id=");
 		builder.append(id);
+		builder.append(", deviceId=");
+		builder.append(deviceId);
 		builder.append(", verified=");
 		builder.append(verified);
 		builder.append(", inUse=");

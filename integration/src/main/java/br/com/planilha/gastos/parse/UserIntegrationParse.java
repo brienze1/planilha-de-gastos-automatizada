@@ -26,10 +26,10 @@ public class UserIntegrationParse {
 		return Optional.ofNullable(user);
 	}
 
-	public List<User> toUsers(List<UserEntity> userEntityList) {
+	public List<User> toUsers(Iterable<UserEntity> userEntityList) {
 		List<User> users = new ArrayList<>();
 		
-		if(userEntityList != null && !userEntityList.isEmpty()) {
+		if(userEntityList != null) {
 			for (UserEntity userEntity : userEntityList) {
 				users.add(toUser(userEntity));
 			}

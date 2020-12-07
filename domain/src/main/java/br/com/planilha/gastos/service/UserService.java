@@ -99,6 +99,9 @@ public class UserService {
 		User user = findByEmail(login.getEmail());
 		
 		loginRules.validate(login, user);
+
+		user.setInUseDevice(login.getDeviceId());
+		update(user);
 		
 		return jwtService.generateAcessToken(user);
 	}

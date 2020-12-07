@@ -19,6 +19,9 @@ public class TransactionDto {
 	@JsonProperty("data")
 	private LocalDateTime data;
 	
+	@JsonProperty("descricao")
+	private String descricao;
+	
 	@JsonProperty("meio_de_pagamento")
 	private String meioDePagamento;
 	
@@ -48,6 +51,12 @@ public class TransactionDto {
 	}
 	public void setData(LocalDateTime data) {
 		this.data = data;
+	}
+	public String getDescricao() {
+		return descricao;
+	}
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 	public String getMeioDePagamento() {
 		return meioDePagamento;

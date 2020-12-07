@@ -29,6 +29,9 @@ public class TransactionEntity {
 	@Column(name="DATE")
 	private LocalDateTime data;
 	
+	@Column(name="DESCRICAO")
+	private String descricao;
+	
 	@Column(name="WAY_OF_PAYMENT")
 	private String meioDePagamento;
 	
@@ -61,6 +64,12 @@ public class TransactionEntity {
 	}
 	public void setData(LocalDateTime data) {
 		this.data = data;
+	}
+	public String getDescricao() {
+		return descricao;
+	}
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 	public String getMeioDePagamento() {
 		return meioDePagamento;

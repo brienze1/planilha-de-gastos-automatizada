@@ -17,6 +17,7 @@ public class TransactionDeliveryParse {
 		if (transactionDto != null) {
 			transaction.setId(transactionDto.getId());
 			transaction.setData(transactionDto.getData());
+			transaction.setDescricao(transactionDto.getDescricao());
 			transaction.setLocalizacao(transactionDto.getLocalizacao());
 			transaction.setMeioDePagamento(transactionDto.getMeioDePagamento());
 			transaction.setTipo(transactionDto.getTipo());
@@ -32,6 +33,7 @@ public class TransactionDeliveryParse {
 		if (transaction != null) {
 			transactionDto.setId(transaction.getId());
 			transactionDto.setData(transaction.getData());
+			transactionDto.setDescricao(transaction.getDescricao());
 			transactionDto.setLocalizacao(transaction.getLocalizacao());
 			transactionDto.setMeioDePagamento(transaction.getMeioDePagamento());
 			transactionDto.setTipo(transaction.getTipo());

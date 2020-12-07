@@ -9,6 +9,7 @@ public class Transaction {
 	private String tipo;
 	private BigDecimal valor;
 	private LocalDateTime data;
+	private String descricao;
 	private String meioDePagamento;
 	private String localizacao;
 	
@@ -35,6 +36,12 @@ public class Transaction {
 	}
 	public void setData(LocalDateTime data) {
 		this.data = data;
+	}
+	public String getDescricao() {
+		return descricao;
+	}
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 	public String getMeioDePagamento() {
 		return meioDePagamento;

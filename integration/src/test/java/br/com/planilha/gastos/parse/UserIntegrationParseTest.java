@@ -159,6 +159,15 @@ public class UserIntegrationParseTest {
 	}
 	
 	@Test
+	public void toUserEntityIdStringTest() {
+		user.setId(UUID.randomUUID().toString());
+		
+		UserEntity userEntity = userIntegrationParse.toUserEntity(user);
+		
+		Assert.assertNotNull(userEntity);
+	}
+	
+	@Test
 	public void toUserEntityNullTest() {
 		user = null;
 		UserEntity userEntity = userIntegrationParse.toUserEntity(user);

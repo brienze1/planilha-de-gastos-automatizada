@@ -34,26 +34,26 @@ public class JwtTokenUtils implements JwtAdapter {
 	@Autowired
 	private AccessTokenIntegrationParse accessTokenIntegrationParse;
 
+	private TypeReference<Map<String, Object>> typeReference = new TypeReference<Map<String, Object>>() {};
+	
 	@Override
 	public String generate(String userId, String secret, Object payload, long expirationSeconds) {
 		long nowMillis = System.currentTimeMillis();
 		Date now = new Date(nowMillis);
 		
-		TypeReference<Map<String, Object>> typeReference = new TypeReference<Map<String, Object>>() {};
 		Map<String, Object> claims = mapper.map(payload, typeReference);
 
 		// We will sign our JWT with our ApiKey secret
 		SecretKey key = Keys.hmacShaKeyFor(secret.getBytes());
 
 		// Let's set the JWT Claims
-		JwtBuilder builder;
-			builder = Jwts.builder()
-					.setId(UUID.randomUUID().toString())
-					.setIssuedAt(now)
-					.setSubject(userId)
-					.setIssuer(ISSUER)
-					.claim(PAYLOAD, claims)
-					.signWith(key, SignatureAlgorithm.HS256);
+		JwtBuilder builder = Jwts.builder()
+				.setId(UUID.randomUUID().toString())
+				.setIssuedAt(now)
+				.setSubject(userId)
+				.setIssuer(ISSUER)
+				.claim(PAYLOAD, claims)
+				.signWith(key, SignatureAlgorithm.HS256);
 
 		// if it has been specified, let's add the expiration
 		if (expirationSeconds != 0) {
@@ -84,7 +84,6 @@ public class JwtTokenUtils implements JwtAdapter {
 
 		// Transforma o objeto em um mapa chave valor, que depois sera transofmrado em
 		// um Json
-		TypeReference<Map<String, Object>> typeReference = new TypeReference<Map<String, Object>>() {};
 		Map<String, Object> mapaJwt = mapper.map(body, typeReference);
 
 		return mapper.readValue(mapaJwt.get(PAYLOAD), clazz);
@@ -102,7 +101,6 @@ public class JwtTokenUtils implements JwtAdapter {
 		Object body = Jwts.parserBuilder().build().parse(jwtWithoutSignature).getBody();
 
 		// Transforma o body em um mapa com os dados do objeto
-		TypeReference<Map<String, Object>> typeReference = new TypeReference<Map<String, Object>>() {};
 		Map<String, Object> jwtBody = mapper.map(body, typeReference);
 
 		// Retorna
@@ -113,7 +111,6 @@ public class JwtTokenUtils implements JwtAdapter {
 	public AccessToken getAcessToken(String token) {
 		Map<String, Object> jwtBody = decodeJwtNoVerification(token);
 
-		TypeReference<Map<String, Object>> typeReference = new TypeReference<Map<String, Object>>() {};
 		Map<String, Object> mapaJwt = mapper.map(jwtBody, typeReference);
 
 		AccessTokenDtoi acessTokenDtoi = mapper.readValue(mapaJwt.get(PAYLOAD), AccessTokenDtoi.class);

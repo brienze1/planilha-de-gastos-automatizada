@@ -11,17 +11,17 @@ import org.springframework.test.context.junit4.SpringRunner;
 import br.com.planilha.gastos.persistence.TransactionPersistence;
 
 @RunWith(SpringRunner.class)
-public class UuidGeneratorTest {
+public class IdGeneratorTest {
 
 	@InjectMocks
-	private IdGenerator uuidGenerator;
+	private IdGenerator idGenerator;
 	
 	@Mock
 	private TransactionPersistence transactionPersistence;
 	
 	@Test
 	public void generateIdTest() {
-		String response = uuidGenerator.generateId();
+		String response = idGenerator.generateId();
 		
 		Assert.assertNotNull(response);
 		Assert.assertTrue(!response.isBlank());
@@ -29,7 +29,7 @@ public class UuidGeneratorTest {
 	
 	@Test
 	public void generateSecretTest() {
-		String response = uuidGenerator.generateSecret();
+		String response = idGenerator.generateSecret();
 		
 		Assert.assertNotNull(response);
 		Assert.assertTrue(!response.isBlank());
@@ -37,7 +37,7 @@ public class UuidGeneratorTest {
 	
 	@Test
 	public void generateVerificationCodeTest() {
-		String response = uuidGenerator.generateVerificationCode();
+		String response = idGenerator.generateVerificationCode();
 		
 		Assert.assertNotNull(response);
 		Assert.assertTrue(!response.isBlank());
@@ -47,7 +47,7 @@ public class UuidGeneratorTest {
 	public void generateTransactionIdSucessTest() {
 		Mockito.when(transactionPersistence.isValidId(Mockito.anyString())).thenReturn(true);
 		
-		String response = uuidGenerator.generateTransactionId();
+		String response = idGenerator.generateTransactionId();
 		
 		Assert.assertNotNull(response);
 		Assert.assertTrue(!response.isBlank());

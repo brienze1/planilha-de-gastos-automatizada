@@ -8,13 +8,13 @@ import br.com.planilha.gastos.entity.AccessToken;
 @Component
 public class AccessTokenIntegrationParse {
 
-	public AccessToken toAccessToken(AccessTokenDtoi acessTokenDtoi) {
+	public AccessToken toAccessToken(AccessTokenDtoi accessTokenDtoi) {
 		AccessToken accessToken = new AccessToken();
 		
-		if(acessTokenDtoi != null) {
-			accessToken.setDeviceId(acessTokenDtoi.getDeviceId());
-			accessToken.setName(acessTokenDtoi.getName());
-			accessToken.setUserId(acessTokenDtoi.getUserId());
+		if(accessTokenDtoi != null) {
+			accessToken.setDeviceId(accessTokenDtoi.getDeviceId());
+			accessToken.setName(accessTokenDtoi.getName());
+			accessToken.setUserId(accessTokenDtoi.getUserId());
 		}
 		
 		return accessToken;

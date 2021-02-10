@@ -18,6 +18,7 @@ import br.com.planilha.gastos.entity.User;
 import br.com.planilha.gastos.parse.AccessTokenIntegrationParse;
 import br.com.planilha.gastos.port.JwtAdapter;
 import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -111,19 +112,20 @@ public class JwtTokenUtils implements JwtAdapter {
 	public AccessToken getAcessToken(String token) {
 		Map<String, Object> jwtBody = decodeJwtNoVerification(token);
 
-		Map<String, Object> mapaJwt = mapper.map(jwtBody, typeReference);
-
-		AccessTokenDtoi acessTokenDtoi = mapper.readValue(mapaJwt.get(PAYLOAD), AccessTokenDtoi.class);
+		AccessTokenDtoi acessTokenDtoi = mapper.readValue(jwtBody.get(PAYLOAD), AccessTokenDtoi.class);
 		return accessTokenIntegrationParse.toAccessToken(acessTokenDtoi);
 	}
 
 	@Override
 	public boolean isValidToken(String token, String secret) {
-		SecretKey key = Keys.hmacShaKeyFor(secret.getBytes());
+		try {
+			SecretKey key = Keys.hmacShaKeyFor(secret.getBytes());
+			Jwts.parserBuilder().setSigningKey(key).build().parse(token).getBody();
 
-		Jwts.parserBuilder().setSigningKey(key).build().parse(token).getBody();
-
-		return true;
+			return true;
+		} catch (JwtException e) {
+			return false;
+		}
 	}
 
 }

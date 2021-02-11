@@ -8,8 +8,8 @@ public class Device {
 	private boolean inUse;
 	private String verificationCode;
 	
-	public Device(String id){
-		this.deviceId = id;
+	public Device(String deviceId){
+		this.deviceId = deviceId;
 		this.verified = false;
 	}
 	public Device(){

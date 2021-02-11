@@ -17,6 +17,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import br.com.planilha.gastos.entity.Device;
@@ -51,6 +52,9 @@ public class TransactionPersistenceTest {
 	private List<TransactionEntity> transactionsEntity;
 	private List<Transaction> transactions;
 	private Optional<TransactionEntity> transactionEntityOptional;
+	private LocalDateTime date;
+	private Integer quantity;
+	private Integer page;
 	
 	@Before
 	public void init() {
@@ -112,6 +116,10 @@ public class TransactionPersistenceTest {
 		transactions.add(transaction);
 		
 		transactionEntityOptional = Optional.of(transactionEntity);
+		
+		date = LocalDateTime.now();
+		quantity = new Random().nextInt(1000);
+		page = 2;
 	}
 	
 	@Test
@@ -193,23 +201,108 @@ public class TransactionPersistenceTest {
 	}
 	
 	@Test
-	public void isValidIdTest() {
+	public void isInvalidIdTest() {
+		Mockito.when(transactionRepository.findById(Integer.valueOf(transaction.getId()))).thenReturn(transactionEntityOptional);
 		
+		boolean isValidId = transactionPersistence.isValidId(transaction.getId());
+		
+		Assert.assertFalse(isValidId);
+	}
+	
+	@Test
+	public void isValidIdTest() {
+		Mockito.when(transactionRepository.findById(Integer.valueOf(transaction.getId()))).thenReturn(Optional.ofNullable(null));
+		
+		boolean isValidId = transactionPersistence.isValidId(transaction.getId());
+		
+		Assert.assertTrue(isValidId);
+	}
+	
+	@Test
+	public void isInvalidIdErrorTest() {
+		Mockito.when(transactionRepository.findById(Integer.valueOf(transaction.getId()))).thenThrow(new TransactionException("error"));
+		
+		boolean isValidId = transactionPersistence.isValidId(transaction.getId());
+		
+		Assert.assertFalse(isValidId);
 	}
 	
 	@Test
 	public void findSinceDateByQuantityTest() {
+		Mockito.when(userPersistence.findUserEntity(user.getId())).thenReturn(userEntity);
+		Mockito.when(transactionRepository.findByUserAndDataGreaterThanEqualOrderByDataDesc(userEntity, date, PageRequest.of(page, quantity))).thenReturn(transactionsEntity);
+		Mockito.when(transactionParse.toTransactions(transactionsEntity)).thenReturn(transactions);
+	
+		List<Transaction> savedTransactions = transactionPersistence.findSinceDateByQuantity(user, date, quantity, page);
 		
+		Assert.assertNotNull(savedTransactions);
+		Assert.assertFalse(savedTransactions.isEmpty());
+		Assert.assertEquals(transaction.getDescricao(), savedTransactions.get(0).getDescricao());
+		Assert.assertEquals(transaction.getId(), savedTransactions.get(0).getId());
+		Assert.assertEquals(transaction.getLocalizacao(), savedTransactions.get(0).getLocalizacao());
+		Assert.assertEquals(transaction.getMeioDePagamento(), savedTransactions.get(0).getMeioDePagamento());
+		Assert.assertEquals(transaction.getTipo(), savedTransactions.get(0).getTipo());
+		Assert.assertEquals(transaction.getData(), savedTransactions.get(0).getData());
+		Assert.assertEquals(transaction.getValor(), savedTransactions.get(0).getValor());
+		Assert.assertEquals(transaction.getDescricao(), savedTransactions.get(1).getDescricao());
+		Assert.assertEquals(transaction.getId(), savedTransactions.get(1).getId());
+		Assert.assertEquals(transaction.getLocalizacao(), savedTransactions.get(1).getLocalizacao());
+		Assert.assertEquals(transaction.getMeioDePagamento(), savedTransactions.get(1).getMeioDePagamento());
+		Assert.assertEquals(transaction.getTipo(), savedTransactions.get(1).getTipo());
+		Assert.assertEquals(transaction.getData(), savedTransactions.get(1).getData());
+		Assert.assertEquals(transaction.getValor(), savedTransactions.get(1).getValor());
 	}
 	
 	@Test
 	public void findSinceDateTest() {
+		Mockito.when(userPersistence.findUserEntity(user.getId())).thenReturn(userEntity);
+		Mockito.when(transactionRepository.findByUserAndDataGreaterThanEqualOrderByDataDesc(userEntity, date)).thenReturn(transactionsEntity);
+		Mockito.when(transactionParse.toTransactions(transactionsEntity)).thenReturn(transactions);
+	
+		List<Transaction> savedTransactions = transactionPersistence.findSinceDate(user, date);
 		
+		Assert.assertNotNull(savedTransactions);
+		Assert.assertFalse(savedTransactions.isEmpty());
+		Assert.assertEquals(transaction.getDescricao(), savedTransactions.get(0).getDescricao());
+		Assert.assertEquals(transaction.getId(), savedTransactions.get(0).getId());
+		Assert.assertEquals(transaction.getLocalizacao(), savedTransactions.get(0).getLocalizacao());
+		Assert.assertEquals(transaction.getMeioDePagamento(), savedTransactions.get(0).getMeioDePagamento());
+		Assert.assertEquals(transaction.getTipo(), savedTransactions.get(0).getTipo());
+		Assert.assertEquals(transaction.getData(), savedTransactions.get(0).getData());
+		Assert.assertEquals(transaction.getValor(), savedTransactions.get(0).getValor());
+		Assert.assertEquals(transaction.getDescricao(), savedTransactions.get(1).getDescricao());
+		Assert.assertEquals(transaction.getId(), savedTransactions.get(1).getId());
+		Assert.assertEquals(transaction.getLocalizacao(), savedTransactions.get(1).getLocalizacao());
+		Assert.assertEquals(transaction.getMeioDePagamento(), savedTransactions.get(1).getMeioDePagamento());
+		Assert.assertEquals(transaction.getTipo(), savedTransactions.get(1).getTipo());
+		Assert.assertEquals(transaction.getData(), savedTransactions.get(1).getData());
+		Assert.assertEquals(transaction.getValor(), savedTransactions.get(1).getValor());
 	}
 	
 	@Test
 	public void findByQuantityTest() {
+		Mockito.when(userPersistence.findUserEntity(user.getId())).thenReturn(userEntity);
+		Mockito.when(transactionRepository.findByUserOrderByDataDesc(userEntity, PageRequest.of(page, quantity))).thenReturn(transactionsEntity);
+		Mockito.when(transactionParse.toTransactions(transactionsEntity)).thenReturn(transactions);
+	
+		List<Transaction> savedTransactions = transactionPersistence.findByQuantity(user, quantity, page);
 		
+		Assert.assertNotNull(savedTransactions);
+		Assert.assertFalse(savedTransactions.isEmpty());
+		Assert.assertEquals(transaction.getDescricao(), savedTransactions.get(0).getDescricao());
+		Assert.assertEquals(transaction.getId(), savedTransactions.get(0).getId());
+		Assert.assertEquals(transaction.getLocalizacao(), savedTransactions.get(0).getLocalizacao());
+		Assert.assertEquals(transaction.getMeioDePagamento(), savedTransactions.get(0).getMeioDePagamento());
+		Assert.assertEquals(transaction.getTipo(), savedTransactions.get(0).getTipo());
+		Assert.assertEquals(transaction.getData(), savedTransactions.get(0).getData());
+		Assert.assertEquals(transaction.getValor(), savedTransactions.get(0).getValor());
+		Assert.assertEquals(transaction.getDescricao(), savedTransactions.get(1).getDescricao());
+		Assert.assertEquals(transaction.getId(), savedTransactions.get(1).getId());
+		Assert.assertEquals(transaction.getLocalizacao(), savedTransactions.get(1).getLocalizacao());
+		Assert.assertEquals(transaction.getMeioDePagamento(), savedTransactions.get(1).getMeioDePagamento());
+		Assert.assertEquals(transaction.getTipo(), savedTransactions.get(1).getTipo());
+		Assert.assertEquals(transaction.getData(), savedTransactions.get(1).getData());
+		Assert.assertEquals(transaction.getValor(), savedTransactions.get(1).getValor());
 	}
 	
 }

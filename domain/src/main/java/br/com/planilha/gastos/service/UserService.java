@@ -1,6 +1,5 @@
 package br.com.planilha.gastos.service;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -71,10 +70,6 @@ public class UserService {
 		userRules.validate(user);
 
 		return user.get();
-	}
-	
-	public List<User> findAllUsers(){
-		return userRepository.findAllUsers();
 	}
 	
 	public User findByEmail(String email){

@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import br.com.planilha.gastos.builder.JwtBuilder;
 import br.com.planilha.gastos.builder.UserBuilder;
 import br.com.planilha.gastos.entity.Device;
 import br.com.planilha.gastos.entity.Login;
@@ -27,6 +28,9 @@ public class UserService {
 	
 	@Autowired
 	private UserBuilder userBuilder;
+
+	@Autowired
+	private JwtBuilder jwtBuilder;
 	
 	@Autowired
 	private JwtService jwtService;
@@ -51,7 +55,7 @@ public class UserService {
 			deviceService.sendDeviceVerificationEmail(savedUser.getId(), device);
 		}
 		
-		Map<String, Object> payload = userBuilder.buildJwtPayload(user);
+		Map<String, Object> payload = jwtBuilder.build(user);
 		
 		String jwtToken = jwtService.generate(savedUser.getId(), user.getSecret(), payload);
 		
@@ -133,7 +137,8 @@ public class UserService {
 		
 		registeredUser.getDevices().clear();
 		registeredUser.getDevices().add(registeredDevice);
-		Map<String, Object> payload = userBuilder.buildJwtPayload(registeredUser);
+		registeredUser.setInUseDevice(registeredDevice.getDeviceId());
+		Map<String, Object> payload = jwtBuilder.build(registeredUser);
 		
 		String jwtToken = jwtService.generate(registeredUser.getId(), registeredUser.getSecret(), payload);
 		

@@ -86,7 +86,7 @@ public class UserBuilderTest {
 		User newUser = userBuilder.build(user);
 		
 		Assert.assertNotNull(newUser);
-		Assert.assertEquals(devices.get(0).getDeviceId(), newUser.getInUseDeviceId());
+		Assert.assertEquals(devices.get(0).getDeviceId(), newUser.inUseDeviceId());
 		Assert.assertEquals(user.getPassword(), newUser.getPassword());
 	}
 	

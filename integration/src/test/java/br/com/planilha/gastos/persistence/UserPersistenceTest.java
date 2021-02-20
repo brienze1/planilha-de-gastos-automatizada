@@ -112,11 +112,11 @@ public class UserPersistenceTest {
 		Assert.assertEquals(user.getEmail(), userResponse.get().getEmail());
 		Assert.assertEquals(user.getFirstName(), userResponse.get().getFirstName());
 		Assert.assertEquals(user.getId(), userResponse.get().getId());
-		Assert.assertEquals(user.getInUseDeviceId(), userResponse.get().getInUseDeviceId());
+		Assert.assertEquals(user.inUseDeviceId(), userResponse.get().inUseDeviceId());
 		Assert.assertEquals(user.getLastName(), userResponse.get().getLastName());
 		Assert.assertEquals(user.getPassword(), userResponse.get().getPassword());
 		Assert.assertEquals(user.getSecret(), userResponse.get().getSecret());
-		Assert.assertEquals(user.getInUseDevice(), userResponse.get().getInUseDevice());
+		Assert.assertEquals(user.inUseDevice(), userResponse.get().inUseDevice());
 	}
 	
 	@Test
@@ -149,11 +149,11 @@ public class UserPersistenceTest {
 		Assert.assertEquals(user.getEmail(), userResponse.getEmail());
 		Assert.assertEquals(user.getFirstName(), userResponse.getFirstName());
 		Assert.assertEquals(user.getId(), userResponse.getId());
-		Assert.assertEquals(user.getInUseDeviceId(), userResponse.getInUseDeviceId());
+		Assert.assertEquals(user.inUseDeviceId(), userResponse.inUseDeviceId());
 		Assert.assertEquals(user.getLastName(), userResponse.getLastName());
 		Assert.assertEquals(user.getPassword(), userResponse.getPassword());
 		Assert.assertEquals(user.getSecret(), userResponse.getSecret());
-		Assert.assertEquals(user.getInUseDevice(), userResponse.getInUseDevice());
+		Assert.assertEquals(user.inUseDevice(), userResponse.inUseDevice());
 	}
 	
 	@Test
@@ -169,11 +169,11 @@ public class UserPersistenceTest {
 		Assert.assertEquals(user.getEmail(), userResponse.get().getEmail());
 		Assert.assertEquals(user.getFirstName(), userResponse.get().getFirstName());
 		Assert.assertEquals(user.getId(), userResponse.get().getId());
-		Assert.assertEquals(user.getInUseDeviceId(), userResponse.get().getInUseDeviceId());
+		Assert.assertEquals(user.inUseDeviceId(), userResponse.get().inUseDeviceId());
 		Assert.assertEquals(user.getLastName(), userResponse.get().getLastName());
 		Assert.assertEquals(user.getPassword(), userResponse.get().getPassword());
 		Assert.assertEquals(user.getSecret(), userResponse.get().getSecret());
-		Assert.assertEquals(user.getInUseDevice(), userResponse.get().getInUseDevice());
+		Assert.assertEquals(user.inUseDevice(), userResponse.get().inUseDevice());
 	}
 	
 }

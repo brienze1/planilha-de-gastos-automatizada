@@ -12,10 +12,10 @@ public class JwtBuilder {
 
 	public Map<String, Object> build(User user) {
 		Map<String, Object> devicePayload = new HashMap<>();
-		devicePayload.put("device_id", user.getInUseDevice().getDeviceId());
-		devicePayload.put("verification_code", user.getInUseDevice().getVerificationCode());
-		devicePayload.put("in_use", user.getInUseDevice().isInUse());
-		devicePayload.put("verified", user.getInUseDevice().isVerified());
+		devicePayload.put("device_id", user.inUseDevice().getDeviceId());
+		devicePayload.put("verification_code", user.inUseDevice().getVerificationCode());
+		devicePayload.put("in_use", user.inUseDevice().isInUse());
+		devicePayload.put("verified", user.inUseDevice().isVerified());
 		
 		Map<String, Object> payload = new HashMap<>();
 		payload.put("id", user.getId());

@@ -11,20 +11,20 @@ import br.com.planilha.gastos.exception.TransactionException;
 @Component
 public class TransactionRules {
 
-	public void validate(Transaction transaction) {
+	public boolean validate(Transaction transaction) {
 		if(transaction == null) {
 			throw new TransactionException("Transaction can't be null");
 		}
 		if(transaction.getValor() == null || transaction.getValor().compareTo(BigDecimal.ZERO) <= 0) {
 			throw new TransactionException("Value can't be null, zero or less than zero");
 		}
-		if(transaction.getMeioDePagamento() == null) {
+		if(transaction.getMeioDePagamento() == null || transaction.getMeioDePagamento().isBlank()) {
 			transaction.setMeioDePagamento("Unknown");
 		}
-		if(transaction.getLocalizacao() == null) {
+		if(transaction.getLocalizacao() == null || transaction.getLocalizacao().isBlank()) {
 			transaction.setLocalizacao("Unknown");
 		}
-		if(transaction.getTipo() == null) {
+		if(transaction.getTipo() == null || transaction.getTipo().isBlank()) {
 			transaction.setTipo("Sent");
 		}
 		if(transaction.getData() == null) {
@@ -34,6 +34,7 @@ public class TransactionRules {
 			transaction.setDescricao("Undefined");
 		}
 		
+		return true;
 	}
 
 }

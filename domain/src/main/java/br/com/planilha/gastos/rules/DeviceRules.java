@@ -10,9 +10,9 @@ import br.com.planilha.gastos.exception.DeviceException;
 @Component
 public class DeviceRules {
 
-	public void validate(List<Device> devices) {
+	public boolean validate(List<Device> devices) {
 		if(devices == null || devices.isEmpty()) {
-			throw new DeviceException("Devices can't be null");
+			throw new DeviceException("List of devices can't be null or empty");
 		}
 		
 		for (Device device : devices) {
@@ -21,17 +21,21 @@ public class DeviceRules {
 			}
 			
 			if(device.getDeviceId() == null || device.getDeviceId().isBlank()) {
-				throw new DeviceException("Device Id can't be null");
+				throw new DeviceException("Device Id can't be null or empty");
 			}
 		}
+		
+		return true;
 	}
 
-	public void validateDeviceRegistration(List<Device> devices) {
+	public boolean validateDeviceRegistration(List<Device> devices) {
 		validate(devices);
 		
 		if(devices.size() > 1) {
 			throw new DeviceException("Can't register more than one device at a time");
 		}
+		
+		return true;
 	}
 
 }

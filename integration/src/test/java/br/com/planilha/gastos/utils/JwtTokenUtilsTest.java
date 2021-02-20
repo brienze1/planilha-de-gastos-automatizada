@@ -90,12 +90,12 @@ public class JwtTokenUtilsTest {
 		
 		accessTokenDtoiMap = new HashMap<>();
 		accessTokenDtoiMap.put("name", user.getFirstName() + " " + user.getLastName());
-		accessTokenDtoiMap.put("device_id", user.getInUseDeviceId());
+		accessTokenDtoiMap.put("device_id", user.inUseDeviceId());
 		accessTokenDtoiMap.put("user_id", user.getId());
 		
 		accessTokenDtoi = new AccessTokenDtoi();
 		accessTokenDtoi.setName(user.getFirstName() + " " + user.getLastName());
-		accessTokenDtoi.setDeviceId(user.getInUseDeviceId());
+		accessTokenDtoi.setDeviceId(user.inUseDeviceId());
 		accessTokenDtoi.setUserId(user.getId());
 		
 		accessToken = new AccessToken();
@@ -208,7 +208,7 @@ public class JwtTokenUtilsTest {
 		AccessToken acessTokenResponse = jwtTokenUtils.getAcessToken(token);
 		
 		Assert.assertEquals(user.getId(), acessTokenResponse.getUserId());
-		Assert.assertEquals(user.getInUseDeviceId(), acessTokenResponse.getDeviceId());
+		Assert.assertEquals(user.inUseDeviceId(), acessTokenResponse.getDeviceId());
 		Assert.assertEquals(user.getFirstName() + " " + user.getLastName(), acessTokenResponse.getName());
 	}
 	

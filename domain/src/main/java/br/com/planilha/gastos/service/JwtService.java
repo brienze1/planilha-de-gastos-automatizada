@@ -46,7 +46,7 @@ public class JwtService {
 		
 		user.setInUseDevice(accessToken.getDeviceId());
 		
-		if(jwtAdapter.isValidToken(token, user.getSecret()) && user.getInUseDeviceId().equals(accessToken.getDeviceId())) {
+		if(jwtAdapter.isValidToken(token, user.getSecret()) && user.inUseDeviceId().equals(accessToken.getDeviceId())) {
 			return user;
 		}
  

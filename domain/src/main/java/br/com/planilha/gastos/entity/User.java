@@ -68,7 +68,7 @@ public class User {
 	public void setAutoLogin(boolean autoLogin) {
 		this.autoLogin = autoLogin;
 	}
-	public String getInUseDeviceId() {
+	public String inUseDeviceId() {
 		for (Device device : devices) {
 			if(device.isInUse()) {
 				return device.getDeviceId();
@@ -76,7 +76,7 @@ public class User {
 		}
 		return null;
 	}
-	public Device getInUseDevice() {
+	public Device inUseDevice() {
 		for (Device device : devices) {
 			if(device.isInUse()) {
 				return device;

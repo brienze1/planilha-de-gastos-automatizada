@@ -71,7 +71,7 @@ public class JwtTokenUtils implements JwtAdapter {
 	public String generateAccessToken(User user, long expirationSeconds) {
 		AccessTokenDtoi accessTokenDtoi = new AccessTokenDtoi();
 		accessTokenDtoi.setName(user.getFirstName() + " " + user.getLastName());
-		accessTokenDtoi.setDeviceId(user.getInUseDeviceId());
+		accessTokenDtoi.setDeviceId(user.inUseDeviceId());
 		accessTokenDtoi.setUserId(user.getId());
 
 		return generate(user.getId(), user.getSecret(), accessTokenDtoi, expirationSeconds);

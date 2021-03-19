@@ -90,8 +90,7 @@ public class LoginRules {
 			}
 		}
 		
-		Device device = deviceService.registerNewDevice(user.getId(), login.getDeviceId());
-		deviceService.sendDeviceVerificationEmail(user.getId(), device);
+		deviceService.registerNewDevice(user.getId(), login.getDeviceId());
 		throw new DeviceNotVerifiedException("Device not verified");
 	}
 	

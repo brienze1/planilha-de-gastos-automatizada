@@ -19,71 +19,61 @@ public class UserRules {
 	@Autowired
 	private DeviceRules deviceRules;
 
-	public void validateUserRegistrationData(User user) {
-		// Valida se o usuario nao esta nulo
+	public boolean validateUserRegistrationData(User user) {
 		if (user == null) {
 			throw new UserValidationException("User can't be null");
 		}
 
-		// Valida se a senha nao esta nula
 		if (user.getPassword() == null || user.getPassword().isBlank()) {
 			throw new UserValidationException("Password can't be null or empty");
 		}
 
-		// Valida se o email nao esta nulo
 		if (user.getEmail() == null || user.getEmail().isBlank()) {
 			throw new UserValidationException("Email can't be null or empty");
 		}
 
-		// Valida se o nome nao esta nulo
 		if (user.getFirstName() == null || user.getFirstName().isBlank()) {
 			throw new UserValidationException("First name can't be null or empty");
 		}
 
-		// Valida se o sobrenome nao esta nulo
 		if (user.getLastName() == null || user.getLastName().isBlank()) {
 			throw new UserValidationException("Last name can't be null or empty");
 		}
 
-		// Valida se o dispositivo esta preenchido
 		deviceRules.validateDeviceRegistration(user.getDevices());
 
-		// Valida se ja existe um usuario cadastrado com o mesmo email
 		if (repository.findByEmail(user.getEmail()).isPresent()) {
 			throw new UserValidationException("User " + user.getEmail() + " already exists");
 		}
+		
+		return true;
 	}
 
-	public void validate(Optional<User> user) {
+	public boolean validate(Optional<User> user) {
 		if (!user.isPresent()) {
 			throw new UserNotFoundException("User not found");
 		}
 
-		validate(user.get());
+		return validate(user.get());
 	}
 
-	public void validate(User user) {
-		// Valida se o usuario nao esta nulo
+	public boolean validate(User user) {
 		if (user == null) {
 			throw new UserValidationException("User can't be null");
 		}
 
-		// Valida se a senha nao esta nula
 		if (user.getPassword() == null || user.getPassword().isBlank()) {
 			throw new UserValidationException("Password can't be null or empty");
 		}
 
-		// Valida se o email nao esta nulo
 		if (user.getEmail() == null || user.getEmail().isBlank()) {
 			throw new UserValidationException("Email can't be null or empty");
 		}
 
-		// Valida se o nome nao esta nulo
 		if (user.getFirstName() == null || user.getFirstName().isBlank()) {
 			throw new UserValidationException("First name can't be null or empty");
 		}
 
-		// Valida se o sobrenome nao esta nulo
 		if (user.getLastName() == null || user.getLastName().isBlank()) {
 			throw new UserValidationException("Last name can't be null or empty");
 		}
@@ -101,26 +91,24 @@ public class UserRules {
 		if (user.getSecret() == null || user.getSecret().isBlank()) {
 			throw new UserValidationException("Secret can't be null or empty");
 		}
+		
+		return true;
 	}
 
-	public void validateDeviceRegistration(User user) {
-		// Valida se o usuario nao esta nulo
+	public boolean validateDeviceRegistration(User user) {
 		if (user == null) {
 			throw new UserValidationException("User can't be null");
 		}
 
-		// Valida se a senha nao esta nula
 		if (user.getPassword() == null || user.getPassword().isBlank()) {
 			throw new UserValidationException("Password can't be null or empty");
 		}
 		
-		// Valida se o email nao esta nulo
 		if (user.getEmail() == null || user.getEmail().isBlank()) {
 			throw new UserValidationException("Email can't be null or empty");
 		}
 		
-		deviceRules.validate(user.getDevices());
-
+		return deviceRules.validate(user.getDevices());
 	}
 
 }

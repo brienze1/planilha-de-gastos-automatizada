@@ -5,6 +5,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.planilha.gastos.builder.JwtBuilder;
 import br.com.planilha.gastos.entity.AccessToken;
 import br.com.planilha.gastos.entity.User;
 import br.com.planilha.gastos.exception.UserValidationException;
@@ -13,29 +14,26 @@ import br.com.planilha.gastos.port.JwtAdapter;
 @Service
 public class JwtService {
 	
-	private static final String SUBJECT = "sub";
-	
 	@Autowired
 	private JwtAdapter jwtAdapter;
 	
 	@Autowired
+	private JwtBuilder jwtBuilder;
+	
+	@Autowired
 	private UserService userService;
 
-	public String generate(String subject, String secret, Object payload) {
-		return jwtAdapter.generate(subject, secret, payload, 0);
+	public String generate(User user) {
+		Map<String, Object> payload = jwtBuilder.build(user);
+		
+		return jwtAdapter.generate(user.getId(), user.getSecret(), payload, 0);
 	}
 
-	public <T> T decodeAndVerify(String jwt, Class<T> clazz) {
-		Map<String, Object> jwtBody = jwtAdapter.decodeJwtNoVerification(jwt);
+	public String generateAcessToken(User user, String deviceId) {
+		user.setInUseDevice(deviceId);
 		
-		String userId = String.valueOf(jwtBody.get(SUBJECT));
+		userService.update(user);
 		
-		User user = userService.findById(userId);
-		
-		return jwtAdapter.decode(jwt, user.getSecret(), clazz);
-	}
-
-	public String generateAcessToken(User user) {
 		return jwtAdapter.generateAccessToken(user, 300);
 	}
 
@@ -44,13 +42,13 @@ public class JwtService {
 		
 		User user = userService.findById(accessToken.getUserId());
 		
-		user.setInUseDevice(accessToken.getDeviceId());
-		
-		if(jwtAdapter.isValidToken(token, user.getSecret()) && user.inUseDeviceId().equals(accessToken.getDeviceId())) {
-			return user;
+		if(!jwtAdapter.isValidToken(token, user.getSecret())) {
+			throw new UserValidationException("Token Invalido.");
+		} else if(!user.inUseDeviceId().equals(accessToken.getDeviceId())) {
+			throw new UserValidationException("Dispositivo que fez a requisicao nao esta logado.");
 		}
  
-		throw new UserValidationException("Dispositivo que fez a requisicao nao esta logado");
+		return user;
 	}
 
 	

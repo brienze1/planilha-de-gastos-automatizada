@@ -76,7 +76,7 @@ public class TransactionPersistenceTest {
 		user.setEmail(UUID.randomUUID().toString());
 		user.setFirstName(UUID.randomUUID().toString());
 		user.setId(String.valueOf(new Random().nextInt(1000)));
-		user.setInUseDevice(UUID.randomUUID().toString());
+		user.setInUseDevice(devices.get(0).getDeviceId());
 		user.setLastName(UUID.randomUUID().toString());
 		user.setPassword(UUID.randomUUID().toString());
 		user.setSecret(UUID.randomUUID().toString());

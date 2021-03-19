@@ -13,6 +13,9 @@ public class DeviceService {
 
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private JwtService jwtService;
 	
 	@Autowired
 	private DeviceBuilder deviceBuilder;
@@ -36,6 +39,8 @@ public class DeviceService {
 		
 		userService.update(user);
 		
+		sendDeviceVerificationEmail(user.getId(), device);
+		
 		return device;
 	}
 
@@ -57,12 +62,13 @@ public class DeviceService {
 		throw new DeviceException("Usuario nao possui esse dispoisivo cadastrado");
 	}
 
-	public Device validateDevice(Device device, User userBase) {
-		for (Device deviceBase : userBase.getDevices()) {
+	public Device validateDevice(String token, Device device) {
+		User user = jwtService.verifyAcessToken(token);
+		
+		for (Device deviceBase : user.getDevices()) {
 			if(deviceBase.getDeviceId().equals(device.getDeviceId()) && deviceBase.getVerificationCode().equals(device.getVerificationCode())) {
 				deviceBase.setVerified(true);
-				
-				userService.update(userBase);
+				userService.update(user);
 				
 				return deviceBase;
 			}

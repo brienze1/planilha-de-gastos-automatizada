@@ -1,12 +1,10 @@
 package br.com.planilha.gastos.service;
 
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import br.com.planilha.gastos.builder.JwtBuilder;
 import br.com.planilha.gastos.builder.UserBuilder;
 import br.com.planilha.gastos.entity.Device;
 import br.com.planilha.gastos.entity.Login;
@@ -30,9 +28,6 @@ public class UserService {
 	private UserBuilder userBuilder;
 
 	@Autowired
-	private JwtBuilder jwtBuilder;
-	
-	@Autowired
 	private JwtService jwtService;
 	
 	@Autowired
@@ -47,17 +42,15 @@ public class UserService {
 	public String register(User user) {
 		userRules.validateUserRegistrationData(user);
 		
-		user = userBuilder.build(user);
+		User generatedUser = userBuilder.build(user);
 
-		User savedUser = userRepository.save(user);
+		User savedUser = userRepository.save(generatedUser);
 		
 		for (Device device : savedUser.getDevices()) {
 			deviceService.sendDeviceVerificationEmail(savedUser.getId(), device);
 		}
 		
-		Map<String, Object> payload = jwtBuilder.build(user);
-		
-		String jwtToken = jwtService.generate(savedUser.getId(), user.getSecret(), payload);
+		String jwtToken = jwtService.generate(savedUser);
 		
 		return jwtToken;
 	}
@@ -89,9 +82,7 @@ public class UserService {
 		
 		loginRules.validateAutoLogin(login, user);
 		
-		user.setInUseDevice(login.getDeviceId());
-		
-		return jwtService.generateAcessToken(user);
+		return jwtService.generateAcessToken(user, login.getDeviceId());
 	}
 
 	public String login(Login login) {
@@ -99,24 +90,15 @@ public class UserService {
 		
 		loginRules.validate(login, user);
 
-		user.setInUseDevice(login.getDeviceId());
-		update(user);
-		
-		return jwtService.generateAcessToken(user);
+		return jwtService.generateAcessToken(user, login.getDeviceId());
 	}
 
-	public void configureUser(String token, User user) {
+	public User configureUser(String token, User user) {
 		User userBase = jwtService.verifyAcessToken(token);
 		
 		User novoUser = userBuilder.buildChanges(user, userBase);
 		
-		userRepository.save(novoUser);
-	}
-
-	public void validateDevice(String token, Device device) {
-		User userBase = jwtService.verifyAcessToken(token);
-		
-		deviceService.validateDevice(device, userBase);
+		return userRepository.save(novoUser);
 	}
 
 	public String registerDevice(User user) {
@@ -129,18 +111,13 @@ public class UserService {
 			throw new LoginException("Password does not match");
 		}
 		
-		Device device = user.getDevices().get(0);
-		
-		Device registeredDevice = deviceService.registerNewDevice(registeredUser.getId(), device.getDeviceId());
-		
-		deviceService.sendDeviceVerificationEmail(registeredUser.getId(), registeredDevice);
+		Device registeredDevice = deviceService.registerNewDevice(registeredUser.getId(), user.getDevices().get(0).getDeviceId());
 		
 		registeredUser.getDevices().clear();
 		registeredUser.getDevices().add(registeredDevice);
 		registeredUser.setInUseDevice(registeredDevice.getDeviceId());
-		Map<String, Object> payload = jwtBuilder.build(registeredUser);
 		
-		String jwtToken = jwtService.generate(registeredUser.getId(), registeredUser.getSecret(), payload);
+		String jwtToken = jwtService.generate(registeredUser);
 		
 		return jwtToken;
 	}

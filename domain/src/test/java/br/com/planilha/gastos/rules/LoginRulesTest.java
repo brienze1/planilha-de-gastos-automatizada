@@ -57,7 +57,7 @@ public class LoginRulesTest {
 		user.setEmail(UUID.randomUUID().toString());
 		user.setFirstName(UUID.randomUUID().toString());
 		user.setId(UUID.randomUUID().toString());
-		user.setInUseDevice(UUID.randomUUID().toString());
+		user.setInUseDevice(deviceId);
 		user.setLastName(UUID.randomUUID().toString());
 		user.setPassword(password);
 		user.setSecret(UUID.randomUUID().toString());
@@ -321,8 +321,6 @@ public class LoginRulesTest {
 		try {
 			loginRules.validateAutoLogin(login, user);
 		} catch (DeviceNotVerifiedException e) {
-			Mockito.verify(deviceService).sendDeviceVerificationEmail(user.getId(), newDevice);
-			
 			Assert.assertEquals("Device not verified", e.getMessage());
 			
 			throw e;

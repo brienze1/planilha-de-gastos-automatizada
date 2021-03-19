@@ -22,6 +22,7 @@ import br.com.planilha.gastos.entity.User;
 import br.com.planilha.gastos.parse.DeviceDeliveryParse;
 import br.com.planilha.gastos.parse.LoginDeliveryParse;
 import br.com.planilha.gastos.parse.UserDeliveryParse;
+import br.com.planilha.gastos.service.DeviceService;
 import br.com.planilha.gastos.service.UserService;
 
 @RestController
@@ -33,6 +34,9 @@ public class UserController implements UserControllerAdapter {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private DeviceService deviceService;
 
 	@Autowired
 	private UserDeliveryParse userParse;
@@ -103,7 +107,7 @@ public class UserController implements UserControllerAdapter {
 	public ResponseEntity<Void> validateDevice(@RequestHeader(name = "Authorization", required = true) String accessToken, @RequestBody DeviceDto deviceDto) {
 		Device device = deviceParse.toDevice(deviceDto);
 		
-		userService.validateDevice(accessToken, device);
+		deviceService.validateDevice(accessToken, device);
 		
 		return ResponseEntity.ok().build();
 	}

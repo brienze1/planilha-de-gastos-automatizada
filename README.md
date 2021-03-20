@@ -31,9 +31,9 @@
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
-<div align="center">
-  <h3 >Best-README-Template</h3>
-</div>
+  <div align="center">
+    <h3 >Best-README-Template</h3>
+  </div>
 
   <div align="center">
     An awesome README template to jumpstart your projects!
@@ -47,7 +47,7 @@
     ·
     <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
   </div>
-</p>
+</div>
 
 
 

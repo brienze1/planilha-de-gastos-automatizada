@@ -1,12 +1,3 @@
-<!--
-*** Thanks for checking out the Best-README-Template. If you have a suggestion
-*** that would make this better, please fork the repo and create a pull request
-*** or simply open an issue with the tag "enhancement".
-*** Thanks again! Now go create something AMAZING! :D
--->
-
-
-
 <!-- PROJECT SHIELDS -->
 <!--
 *** I'm using markdown "reference style" links for readability.
@@ -17,30 +8,28 @@
 -->
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
-
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
+  <a href="https://gitlab.com/brienze1/planinha-de-gastos-automatizada">
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
   <div align="center">
-    <h3 >Best-README-Template</h3>
+    <h3 >Planilha de Gastos Automatizada</h3>
   </div>
 
   <div align="center">
     An awesome README template to jumpstart your projects!
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
+    <a href="https://gitlab.com/brienze1/planinha-de-gastos-automatizada"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
+    <a href="https://gitlab.com/brienze1/planinha-de-gastos-automatizada/issues">Report Bug</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
+    <a href="https://gitlab.com/brienze1/planinha-de-gastos-automatizada/issues">Request Feature</a>
   </div>
 </div>
 
@@ -76,8 +65,13 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+<div align="center">
+  <a href="https://gitlab.com/brienze1/planinha-de-gastos-automatizada">
+    <img src="images/login.png" alt="Logo" width="370" height="700">
+    <img src="images/menu.png" alt="Logo" width="370" height="700">
+  </a>
+</div>
+  <br />
 
 There are many great README templates available on GitHub, however, I didn't find one that really suit my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
 
@@ -93,11 +87,9 @@ A list of commonly used resources that I find helpful are listed in the acknowle
 ### Built With
 
 This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-* [Bootstrap](https://getbootstrap.com)
-* [JQuery](https://jquery.com)
-* [Laravel](https://laravel.com)
-
-
+* [Java 14](https://getbootstrap.com)
+* [Spring Boot](https://jquery.com)
+* [Clean Architechture](https://laravel.com)
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -129,8 +121,6 @@ This is an example of how to list things you need to use the software and how to
    const API_KEY = 'ENTER YOUR API';
    ```
 
-
-
 <!-- USAGE EXAMPLES -->
 ## Usage
 
@@ -138,14 +128,10 @@ Use this space to show useful examples of how a project can be used. Additional 
 
 _For more examples, please refer to the [Documentation](https://example.com)_
 
-
-
 <!-- ROADMAP -->
 ## Roadmap
 
 See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a list of proposed features (and known issues).
-
-
 
 <!-- CONTRIBUTING -->
 ## Contributing
@@ -158,22 +144,21 @@ Contributions are what make the open source community such an amazing place to b
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-
-
 <!-- LICENSE -->
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
-
-
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
+Luis Brienze - [lfbrienze@gmail.com](lfbrienze@gmail.com)
 
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
+Linkedin: [https://www.linkedin.com/in/luisbrienze](https://www.linkedin.com/in/luisbrienze)
 
+Gitlab Profile: [https://gitlab.com/brienze1](https://gitlab.com/brienze1)
+
+Project Link: [https://gitlab.com/brienze1/planinha-de-gastos-automatizada/](https://gitlab.com/brienze1/planinha-de-gastos-automatizada/)
 
 
 <!-- ACKNOWLEDGEMENTS -->
@@ -198,4 +183,5 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/luisbrienze
-[product-screenshot]: images/screenshot.png
+[product-screenshot]: images/login.png
+[product-screenshot2]: images/menu.png

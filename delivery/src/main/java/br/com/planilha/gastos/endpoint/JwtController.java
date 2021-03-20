@@ -17,7 +17,6 @@ public class JwtController {
 	@Autowired
 	private JwtAdapter jwtTokenUtils;
 	
-	//classe para gerar jwt com payload desejado (utilizado para testes)
 	@PostMapping("jwt/encode")
 	public DataDto encode(@RequestBody Map<String, Object> mapaDados, 
 			@RequestHeader(name = "user-id", required = true) String userId, 
@@ -29,13 +28,11 @@ public class JwtController {
 		return dataDto;
 	}
 	
-	//classe para decodificar jwt com payload desejado (utilizado para testes)
 	@PostMapping("jwt/decode/no-verification")
-	public Object decodeNoVerification(@RequestBody DataDto dataDto) {
+	public Map<String, Object> decodeNoVerification(@RequestBody DataDto dataDto) {
 		return jwtTokenUtils.decodeJwtNoVerification(dataDto.getJwtDataToken());
 	}
 	
-	//classe para decodificar jwt com payload desejado (utilizado para testes)
 	@PostMapping("jwt/decode/with-verification")
 	public Object decodeWithVerification(@RequestBody DataDto dataDto, @RequestHeader(name = "secret", required = true) String secret) {
 		return jwtTokenUtils.decode(dataDto.getJwtDataToken(), secret, Object.class);

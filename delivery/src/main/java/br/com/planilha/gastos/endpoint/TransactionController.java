@@ -33,7 +33,9 @@ public class TransactionController implements TransactionControllerAdapter {
 	public TransactionDto cadastrarTransacao(@RequestHeader("Authorization") String token, @RequestBody TransactionDto transactionDto) {
 		Transaction transaction = transactionParse.toTransaction(transactionDto);
 		
-		return transactionParse.toTransactionDto(transactionService.register(token, transaction));
+		Transaction registeredTransaction = transactionService.register(token, transaction);
+				
+		return transactionParse.toTransactionDto(registeredTransaction);
 	}
 	
 	@GetMapping("/find")
@@ -47,7 +49,7 @@ public class TransactionController implements TransactionControllerAdapter {
 		}
 		if(date != null && !date.isBlank() && quantity != null && quantity > 0) {
 			transactions = transactionService.findSinceDateByQuantity(token, date, quantity, page);
-		} else if(date != null) {
+		} else if(date != null && !date.isBlank()) {
 			transactions = transactionService.findSinceDate(token, date);
 		} else if(quantity != null && quantity > 0) {
 			transactions = transactionService.findByQuantity(token, quantity, page);
@@ -60,7 +62,9 @@ public class TransactionController implements TransactionControllerAdapter {
 	
 	@GetMapping("/find/{id}")
 	public TransactionDto buscarTransacao(@RequestHeader("Authorization") String token, @PathVariable(value = "id", required = true) String idTransacao) {
-		return transactionParse.toTransactionDto(transactionService.find(token, idTransacao));
+		Transaction transaction = transactionService.find(token, idTransacao);
+		
+		return transactionParse.toTransactionDto(transaction);
 	}
 	
 }

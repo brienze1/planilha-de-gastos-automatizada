@@ -2,6 +2,8 @@ package br.com.planilha.gastos.entity;
 
 import java.util.List;
 
+import br.com.planilha.gastos.exception.DeviceException;
+
 public class User {
 
 	private String id;
@@ -68,7 +70,7 @@ public class User {
 	public void setAutoLogin(boolean autoLogin) {
 		this.autoLogin = autoLogin;
 	}
-	public String getInUseDeviceId() {
+	public String inUseDeviceId() {
 		for (Device device : devices) {
 			if(device.isInUse()) {
 				return device.getDeviceId();
@@ -76,7 +78,7 @@ public class User {
 		}
 		return null;
 	}
-	public Device getInUseDevice() {
+	public Device inUseDevice() {
 		for (Device device : devices) {
 			if(device.isInUse()) {
 				return device;
@@ -85,39 +87,23 @@ public class User {
 		return null;
 	}
 	public Device setInUseDevice(String deviceId) {
+		Device returnDevice = null;
+		boolean deviceExists = false;
 		for (Device device : devices) {
 			if(device.getDeviceId().equals(deviceId)) {
 				device.setInUse(true);
-				return device;
+				returnDevice = device;
+				deviceExists = true;
 			} else if(device.isInUse()) {
 				device.setInUse(false);
 			}
-		}			
-		return null;
-	}
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("User [id=");
-		builder.append(id);
-		builder.append(", email=");
-		builder.append(email);
-		builder.append(", password=");
-		builder.append(password);
-		builder.append(", lastName=");
-		builder.append(lastName);
-		builder.append(", firstName=");
-		builder.append(firstName);
-		builder.append(", secret=");
-		builder.append(secret);
-		builder.append(", devices=");
-		builder.append(devices);
-		builder.append(", validEmail=");
-		builder.append(validEmail);
-		builder.append(", autoLogin=");
-		builder.append(autoLogin);
-		builder.append("]");
-		return builder.toString();
+		}		
+		
+		if(!deviceExists) {
+			throw new DeviceException("Dispositivo nao cadastrado para este usuario");
+		}
+		
+		return returnDevice;
 	}
 	
 }

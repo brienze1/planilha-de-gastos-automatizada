@@ -1,6 +1,5 @@
 package br.com.planilha.gastos.persistence;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,25 +22,15 @@ public class UserPersistence implements UserRepositoryAdapter {
 	
 	@Override
 	public Optional<User> findById(String id) {
-		Optional<UserEntity> userEntity;
-		userEntity = userRepository.findById(Integer.valueOf(id));
+		Optional<UserEntity> userEntity = userRepository.findById(Integer.valueOf(id));
 
 		return userIntegrationParse.toUser(userEntity);
 	}
 	
 	public UserEntity findUserEntity(String id) {
-		Optional<UserEntity> userEntity;
-		userEntity = userRepository.findById(Integer.valueOf(id));
+		Optional<UserEntity> userEntity = userRepository.findById(Integer.valueOf(id));
 		
 		return userEntity.get();
-	}
-
-	@Override
-	public List<User> findAllUsers() {
-		Iterable<UserEntity> userEntityList;
-		userEntityList = userRepository.findAll();
-
-		return userIntegrationParse.toUsers(userEntityList);
 	}
 
 	@Override

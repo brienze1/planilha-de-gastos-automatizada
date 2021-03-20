@@ -21,54 +21,59 @@ public class LoginRules {
 	@Autowired
 	private DeviceService deviceService;
 
-	public void validate(Login login, User user) {
+	public boolean validate(Login login, User user) {
 		if(login == null) {
 			throw new LoginException("Login can't be null");
 		}
+
+		if(user == null) {
+			throw new LoginException("User can't be null");
+		}
 		
 		if(login.getEmail() == null || login.getEmail().isBlank()) {
-			throw new LoginException("Email can't be null");
+			throw new LoginException("Email can't be null or blank");
 		}
 		
 		if(login.getPassword() == null || login.getPassword().isBlank()) {
-			throw new LoginException("Password can't be null");
+			throw new LoginException("Password can't be null or blank");
 		} 
 		
 		if(login.getDeviceId() == null || login.getDeviceId().isBlank()) {
-			throw new LoginException("DeviceId can't be null");
+			throw new LoginException("DeviceId can't be null or blank");
 		} 
 
+		//Verifica se a senha bate
+		if(!passwordUtils.verifyPassword(login.getPassword(), user.getPassword(), user.getSecret())) {
+			throw new LoginException("Password does not match");
+		}
+		
 		for (Device device : user.getDevices()) {
-			if(login.getDeviceId().equals(device.getId())) {
-				//Verifica se a senha bate
-				if(!passwordUtils.verifyPassword(login.getPassword(), user.getPassword(), user.getSecret())) {
-					throw new LoginException("Password does not match");
-				}
-				
-				return;
+			if(login.getDeviceId().equals(device.getDeviceId())) {
+				return true;
 			}
 		}
 		
 		//Cadastra novo dispositivo
 		deviceService.registerNewDevice(user.getId(), login.getDeviceId());
 		
-		//Verifica se a senha bate
-		if(!user.getPassword().equals(passwordUtils.encode(login.getPassword(), user.getSecret()))) {
-			throw new LoginException("Password does not match");
-		}
+		return true;
 	}
 
-	public void validateAutoLogin(Login login, User user) {
+	public boolean validateAutoLogin(Login login, User user) {
 		if(login == null) {
 			throw new AutoLoginException("Login can't be null");
 		}
+
+		if(user == null) {
+			throw new AutoLoginException("User can't be null");
+		}
 		
 		if(login.getEmail() == null || login.getEmail().isBlank()) {
-			throw new AutoLoginException("Email can't be null");
+			throw new AutoLoginException("Email can't be null or blank");
 		}
 		
 		if(login.getDeviceId() == null || login.getDeviceId().isBlank()) {
-			throw new AutoLoginException("DeviceId can't be null");
+			throw new AutoLoginException("DeviceId can't be null or blank");
 		} 
 		
 		if(!user.isAutoLogin()) {
@@ -76,22 +81,17 @@ public class LoginRules {
 		}
 		
 		for (Device device : user.getDevices()) {
-			if(login.getDeviceId().equals(device.getId())) {
+			if(login.getDeviceId().equals(device.getDeviceId())) {
 				if(!device.isVerified()) {
 					deviceService.sendDeviceVerificationEmail(user.getId(), device);
 					throw new DeviceNotVerifiedException("Device not verified");
 				}
-				return;
+				return true;
 			}
 		}
 		
-		Device device = deviceService.registerNewDevice(user.getId(), login.getDeviceId());
-		
-		deviceService.sendDeviceVerificationEmail(user.getId(), device);
-		
+		deviceService.registerNewDevice(user.getId(), login.getDeviceId());
 		throw new DeviceNotVerifiedException("Device not verified");
 	}
-
-	
 	
 }

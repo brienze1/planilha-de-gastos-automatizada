@@ -8,8 +8,8 @@ public class Device {
 	private boolean inUse;
 	private String verificationCode;
 	
-	public Device(String id){
-		this.deviceId = id;
+	public Device(String deviceId){
+		this.deviceId = deviceId;
 		this.verified = false;
 	}
 	public Device(){
@@ -44,22 +44,6 @@ public class Device {
 	}
 	public void setVerificationCode(String verificationCode) {
 		this.verificationCode = verificationCode;
-	}
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Device [id=");
-		builder.append(id);
-		builder.append(", deviceId=");
-		builder.append(deviceId);
-		builder.append(", verified=");
-		builder.append(verified);
-		builder.append(", inUse=");
-		builder.append(inUse);
-		builder.append(", verificationCode=");
-		builder.append(verificationCode);
-		builder.append("]");
-		return builder.toString();
 	}
 	
 }

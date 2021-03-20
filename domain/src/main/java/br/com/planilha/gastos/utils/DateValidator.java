@@ -7,8 +7,6 @@ import java.time.format.DateTimeParseException;
 
 import org.springframework.stereotype.Component;
 
-import br.com.planilha.gastos.exception.TransactionException;
-
 @Component
 public class DateValidator {
 
@@ -19,7 +17,7 @@ public class DateValidator {
     	try {
             data = LocalDate.parse(dateStr, this.dateFormatter);
         } catch (DateTimeParseException e) {
-        	throw new TransactionException("Not a valid date (try using dd/MM/yyyy)");
+        	throw new DateTimeParseException("Not a valid date (try using dd/MM/yyyy)", dateStr, e.getErrorIndex());
         }
         return LocalDateTime.of(data.getYear(), data.getMonthValue(), data.getDayOfMonth(), 0, 0);
     }

@@ -1,7 +1,5 @@
 package br.com.planilha.gastos.endpoint;
 
-import java.time.LocalDateTime;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -22,6 +20,7 @@ import br.com.planilha.gastos.entity.User;
 import br.com.planilha.gastos.parse.DeviceDeliveryParse;
 import br.com.planilha.gastos.parse.LoginDeliveryParse;
 import br.com.planilha.gastos.parse.UserDeliveryParse;
+import br.com.planilha.gastos.service.DeviceService;
 import br.com.planilha.gastos.service.UserService;
 
 @RestController
@@ -33,6 +32,9 @@ public class UserController implements UserControllerAdapter {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private DeviceService deviceService;
 
 	@Autowired
 	private UserDeliveryParse userParse;
@@ -40,9 +42,6 @@ public class UserController implements UserControllerAdapter {
 	@Autowired
 	private DeviceDeliveryParse deviceParse;
 	
-	/*
-	 * done
-	 */
 	@PostMapping("/new")
 	@Override
 	public DataDto register(@RequestBody UserDto userDto) {
@@ -54,15 +53,10 @@ public class UserController implements UserControllerAdapter {
 		return dataDto;
 	}
 	
-	/*
-	 * done
-	 */
 	@Override
 	@PostMapping("/login")
 	public DataDto login(@RequestBody LoginDto loginDto) {
 		Login login = loginParse.toLogin(loginDto);
-		
-		System.out.println(LocalDateTime.now());
 		
 		DataDto dataDto = new DataDto();
 		dataDto.setJwtAcessToken(userService.login(login));
@@ -70,9 +64,6 @@ public class UserController implements UserControllerAdapter {
 		return dataDto;	
 	}
 	
-	/*
-	 * done
-	 */
 	@Override
 	@PostMapping("/auto-login")
 	public DataDto autoLogin(@RequestBody LoginDto loginDto) {
@@ -84,9 +75,6 @@ public class UserController implements UserControllerAdapter {
 		return dataDto;	
 	}
 
-	/*
-	 * done
-	 */
 	@PatchMapping("/config")
 	public ResponseEntity<Void> configureUser(@RequestHeader(name = "Authorization", required = true) String accessToken, @RequestBody UserDto userDto) {
 		User user = userParse.toUser(userDto);
@@ -96,21 +84,15 @@ public class UserController implements UserControllerAdapter {
 		return ResponseEntity.ok().build();
 	}
 	
-	/*
-	 * done
-	 */
 	@PatchMapping("/validate-device")
 	public ResponseEntity<Void> validateDevice(@RequestHeader(name = "Authorization", required = true) String accessToken, @RequestBody DeviceDto deviceDto) {
 		Device device = deviceParse.toDevice(deviceDto);
 		
-		userService.validateDevice(accessToken, device);
+		deviceService.validateDevice(accessToken, device);
 		
 		return ResponseEntity.ok().build();
 	}
 	
-	/*
-	 * done
-	 */
 	@PostMapping("/register-device")
 	public DataDto registerDevice(@RequestBody UserDto userDto) {
 		User user = userParse.toUser(userDto);

@@ -16,10 +16,13 @@ public class DevicePersistence {
 	private DeviceRepository deviceRepository;
 
 	public Set<DeviceEntity> save(Set<DeviceEntity> devicesEntity) {
+		Iterable<DeviceEntity> devicesEntitySaved = deviceRepository.saveAll(devicesEntity);
+		
 		Set<DeviceEntity> devices = new HashSet<>();
-		for (DeviceEntity deviceEntity : deviceRepository.saveAll(devicesEntity)) {
+		for (DeviceEntity deviceEntity : devicesEntitySaved) {
 			devices.add(deviceEntity);
 		}
+		
 		return devices;
 	}
 

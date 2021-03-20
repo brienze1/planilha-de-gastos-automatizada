@@ -16,7 +16,7 @@ public class DeviceIntegrationParse {
 	public Set<DeviceEntity> toDevicesEntity(List<Device> devices) {
 		Set<DeviceEntity> devicesEntity = new HashSet<>();
 		
-		if(devices != null && !devices.isEmpty()) {
+		if(devices != null) {
 			for (Device device : devices) {
 				devicesEntity.add(toDeviceEntity(device));
 			}
@@ -47,14 +47,14 @@ public class DeviceIntegrationParse {
 		
 		if(devicesEntity != null) {
 			for (DeviceEntity deviceEntity : devicesEntity) {
-				devices.add(toDeviceEntity(deviceEntity));
+				devices.add(toDevice(deviceEntity));
 			}
 		}
 		
 		return devices;
 	}
 
-	private Device toDeviceEntity(DeviceEntity deviceEntity) {
+	private Device toDevice(DeviceEntity deviceEntity) {
 		Device device = new Device();
 		
 		if(deviceEntity != null) {

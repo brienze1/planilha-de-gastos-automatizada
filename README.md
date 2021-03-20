@@ -8,7 +8,6 @@ Separado em 4 camadas:
   
 Proximos passos:
 
-*  Adicionar testes unitarios para as camadas
 *  Adicionar teste integrado com cucumber
 
 Feito por Luis Brienze. 

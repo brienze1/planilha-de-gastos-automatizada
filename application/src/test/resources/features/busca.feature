@@ -5,7 +5,7 @@ Funcionalidade: Teste de busca de usuarioExemplo
 	Seguindo as seguintes restricoes:
 	1-) quando for chamado o metodo findAll trazer todos os usuarios criados
 	2-) quanto for chamado o metodo findById trazer somente o usuario com Id selecionado
-	3-) caso nao aja usuarios cadastrados trazer uma lista vazia
+	3-) caso nao haja usuarios cadastrados trazer uma lista vazia
 	4-) caso nao exista usuario com id selecionada devolver uma mensagem de erro
 
 	Cenario: Busca de todos usuarios sucesso

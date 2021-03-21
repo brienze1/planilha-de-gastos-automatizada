@@ -8,7 +8,7 @@ import cucumber.api.junit.Cucumber;
 @RunWith(Cucumber.class)
 @CucumberOptions(
 		features = "src/test/resources/features", 
-		glue = {"br.com.planilha.gastos.cucumber.steps.busca", "br.com.planilha.gastos.cucumber.steps.cadastro"},
+		tags = {"@RegistrarNovoUsuarioTeste"},
 		plugin = "pretty")
 public class CucumberRunnerTest {
 

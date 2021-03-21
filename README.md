@@ -1,12 +1,3 @@
-<!--
-*** Thanks for checking out the Best-README-Template. If you have a suggestion
-*** that would make this better, please fork the repo and create a pull request
-*** or simply open an issue with the tag "enhancement".
-*** Thanks again! Now go create something AMAZING! :D
--->
-
-
-
 <!-- PROJECT SHIELDS -->
 <!--
 *** I'm using markdown "reference style" links for readability.
@@ -17,30 +8,28 @@
 -->
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
-
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
+  <a href="https://gitlab.com/brienze1/planinha-de-gastos-automatizada">
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
   <div align="center">
-    <h3 >Best-README-Template</h3>
+    <h3 >Planilha de Gastos Automatizada</h3>
   </div>
 
   <div align="center">
     An awesome README template to jumpstart your projects!
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
+    <a href="https://gitlab.com/brienze1/planinha-de-gastos-automatizada"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
+    <a href="https://gitlab.com/brienze1/planinha-de-gastos-automatizada/issues">Report Bug</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
+    <a href="https://gitlab.com/brienze1/planinha-de-gastos-automatizada/issues">Request Feature</a>
   </div>
 </div>
 
@@ -76,76 +65,72 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
+<div align="center">
+  <a href="https://gitlab.com/brienze1/planinha-de-gastos-automatizada">
+    <img src="images/login.png" alt="Logo" width="370" height="700">
+    <img src="images/menu.png" alt="Logo" width="370" height="700">
+  </a>
+</div>
+  <br />
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+MeMoney is an app designed to store your monetary transactions and help you realize where your money goes to. 
 
-There are many great README templates available on GitHub, however, I didn't find one that really suit my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
+Some implemnted features:
+* Account registration
+* Account login
+* Auto login (when configured in app)
+* Store transactions
+* Visualize transaction graphs
 
-Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should element DRY principles to the rest of your life :smile:
-
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have have contributed to expanding this template!
+At the begining the features implemented will be focussed in basic functions and will increase it's functionalities as time goes by. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. 
 
 A list of commonly used resources that I find helpful are listed in the acknowledgements.
 
 ### Built With
 
 This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-* [Bootstrap](https://getbootstrap.com)
-* [JQuery](https://jquery.com)
-* [Laravel](https://laravel.com)
-
-
+* [Java 14](https://www.oracle.com/java/technologies/javase/14-relnote-issues.html)
+* [Spring Boot](https://spring.io/projects/spring-boot)
+* [Clean Architechture](https://www.baeldung.com/spring-boot-clean-architecture)
 
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
 To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
+* Download Java 14+ from oracle website [Java JDK download](https://www.oracle.com/br/java/technologies/javase-downloads.html)
+* Download an IDE
+  * [Spring Tool Suite](https://spring.io/tools) (Recomended)
+  * [Intelij](https://www.jetbrains.com/pt-br/idea/download/#section=windows)
+  * [Eclipse](https://www.eclipse.org/downloads/)
+* Download [Postman](https://www.postman.com/downloads/) for testing and debugging
 
 ### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1. Clone the repo
    ```sh
-   git clone https://github.com/your_username_/Project-Name.git
+   git clone https://gitlab.com/brienze1/planinha-de-gastos-automatizada.git
    ```
-3. Install NPM packages
+2. Update dependecies
    ```sh
-   npm install
+   mvn clean install -U
    ```
-4. Enter your API in `config.js`
-   ```JS
-   const API_KEY = 'ENTER YOUR API';
-   ```
-
+3. Run the application
 
 
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+Here are some code examples and demos you can try via postman.
 
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-
+* [Postman Collection](https://google.com)
 
 <!-- ROADMAP -->
 ## Roadmap
 
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a list of proposed features (and known issues).
-
-
+See the [open issues](https://gitlab.com/brienze1/planinha-de-gastos-automatizada/issues) for a list of proposed features (and known issues).
 
 <!-- CONTRIBUTING -->
 ## Contributing
@@ -158,22 +143,21 @@ Contributions are what make the open source community such an amazing place to b
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-
-
 <!-- LICENSE -->
-## License
+<!-- ## License
 
-Distributed under the MIT License. See `LICENSE` for more information.
-
-
+<!-- Distributed under the MIT License. See `LICENSE` for more information.
 
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
+Luis Brienze - [lfbrienze@gmail.com](lfbrienze@gmail.com)
 
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
+Linkedin: [https://www.linkedin.com/in/luisbrienze](https://www.linkedin.com/in/luisbrienze)
 
+Gitlab Profile: [https://gitlab.com/brienze1](https://gitlab.com/brienze1)
+
+Project Link: [https://gitlab.com/brienze1/planinha-de-gastos-automatizada/](https://gitlab.com/brienze1/planinha-de-gastos-automatizada/)
 
 
 <!-- ACKNOWLEDGEMENTS -->
@@ -190,12 +174,9 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 * [JVectorMap](http://jvectormap.com)
 * [Font Awesome](https://fontawesome.com)
 
-
-
-
-
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/luisbrienze
-[product-screenshot]: images/screenshot.png
+[product-screenshot]: images/login.png
+[product-screenshot2]: images/menu.png

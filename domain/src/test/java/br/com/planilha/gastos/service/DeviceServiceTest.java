@@ -128,7 +128,7 @@ public class DeviceServiceTest {
 		} catch (Exception e) {
 			Mockito.verify(userService).findById(userId);
 
-			Assert.assertEquals("Usuario nao possui esse dispoisivo cadastrado" , e.getMessage());
+			Assert.assertEquals("Unkown device" , e.getMessage());
 
 			throw e;
 		}
@@ -164,7 +164,7 @@ public class DeviceServiceTest {
 		} catch (DeviceException e) {
 			Mockito.verify(jwtService).verifyAcessToken(token);
 			
-			Assert.assertEquals("Dispositivo nao encontrado na base", e.getMessage());
+			Assert.assertEquals("Unkown device", e.getMessage());
 			
 			throw e;
 		}

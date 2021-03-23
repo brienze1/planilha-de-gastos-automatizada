@@ -8,7 +8,7 @@ import cucumber.api.junit.Cucumber;
 @RunWith(Cucumber.class)
 @CucumberOptions(
 		features = "src/test/resources/features", 
-		tags = {"@RegistrarNovoUsuarioTeste or @LoginTeste or @AutoLoginTeste"},
+		tags = {"@RegistrarNovoUsuarioTeste or @LoginTeste or @AutoLoginTeste or @RegistrarTransacaoFeature"},
 		plugin = "pretty")
 public class CucumberRunnerTest {
 

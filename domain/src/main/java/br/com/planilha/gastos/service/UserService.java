@@ -9,8 +9,6 @@ import br.com.planilha.gastos.builder.UserBuilder;
 import br.com.planilha.gastos.entity.Device;
 import br.com.planilha.gastos.entity.Login;
 import br.com.planilha.gastos.entity.User;
-import br.com.planilha.gastos.exception.LoginException;
-import br.com.planilha.gastos.port.PasswordUtilsAdapter;
 import br.com.planilha.gastos.port.UserRepositoryAdapter;
 import br.com.planilha.gastos.rules.LoginRules;
 import br.com.planilha.gastos.rules.UserRules;
@@ -35,9 +33,6 @@ public class UserService {
 	
 	@Autowired
 	private DeviceService deviceService;
-	
-	@Autowired
-	private PasswordUtilsAdapter passwordUtils;
 	
 	public String register(User user) {
 		userRules.validateUserRegistrationData(user);
@@ -107,25 +102,25 @@ public class UserService {
 		return userRepository.save(novoUser);
 	}
 
-	public String registerDevice(User user) {
-		userRules.validateDeviceRegistration(user);
-		
-		User registeredUser = findByEmail(user.getEmail());
-
-		//Verifica se a senha bate
-		if(!passwordUtils.verifyPassword(user.getPassword(), registeredUser.getPassword(), registeredUser.getSecret())) {
-			throw new LoginException("Password does not match");
-		}
-		
-		Device registeredDevice = deviceService.registerNewDevice(registeredUser.getId(), user.getDevices().get(0).getDeviceId());
-		
-		registeredUser.getDevices().clear();
-		registeredUser.getDevices().add(registeredDevice);
-		registeredUser.setInUseDevice(registeredDevice.getDeviceId());
-		
-		String jwtToken = jwtService.generate(registeredUser);
-		
-		return jwtToken;
-	}
+//	public String registerDevice(User user) {
+//		userRules.validateDeviceRegistration(user);
+//		
+//		User registeredUser = findByEmail(user.getEmail());
+//
+//		//Verifica se a senha bate
+//		if(!passwordUtils.verifyPassword(user.getPassword(), registeredUser.getPassword(), registeredUser.getSecret())) {
+//			throw new LoginException("Password does not match");
+//		}
+//		
+//		Device registeredDevice = deviceService.registerNewDevice(registeredUser.getId(), user.getDevices().get(0).getDeviceId());
+//		
+//		registeredUser.getDevices().clear();
+//		registeredUser.getDevices().add(registeredDevice);
+//		registeredUser.setInUseDevice(registeredDevice.getDeviceId());
+//		
+//		String jwtToken = jwtService.generate(registeredUser);
+//		
+//		return jwtToken;
+//	}
 
 }

@@ -321,7 +321,7 @@ public class LoginRulesTest {
 		try {
 			loginRules.validateAutoLogin(login, user);
 		} catch (DeviceNotVerifiedException e) {
-			Assert.assertEquals("Device not verified", e.getMessage());
+			Assert.assertEquals("Unknown device", e.getMessage());
 			
 			throw e;
 		}

@@ -176,19 +176,19 @@ public class UserControllerTest {
 		Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
 	}
 	
-	@Test
-	public void registerDeviceTest() {
-		Mockito.when(userParse.toUser(userDto)).thenReturn(user);
-		Mockito.when(userService.registerDevice(user)).thenReturn(token);
-		
-		DataDto response = userController.registerDevice(userDto);
-		
-		Mockito.verify(userParse).toUser(userDto);
-		Mockito.verify(userService).registerDevice(user);
-		
-		Assert.assertNotNull(response);
-		Assert.assertNotNull(response.getJwtDataToken());
-		Assert.assertFalse(response.getJwtDataToken().isBlank());
-	}
+//	@Test
+//	public void registerDeviceTest() {
+//		Mockito.when(userParse.toUser(userDto)).thenReturn(user);
+//		Mockito.when(userService.registerDevice(user)).thenReturn(token);
+//		
+//		DataDto response = userController.registerDevice(userDto);
+//		
+//		Mockito.verify(userParse).toUser(userDto);
+//		Mockito.verify(userService).registerDevice(user);
+//		
+//		Assert.assertNotNull(response);
+//		Assert.assertNotNull(response.getJwtDataToken());
+//		Assert.assertFalse(response.getJwtDataToken().isBlank());
+//	}
 	
 }

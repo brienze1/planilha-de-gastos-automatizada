@@ -59,7 +59,7 @@ public class DeviceService {
 			}
 		}
 		
-		throw new DeviceException("Usuario nao possui esse dispoisivo cadastrado");
+		throw new DeviceException("Unkown device");
 	}
 
 	public Device validateDevice(String token, Device device) {
@@ -74,7 +74,7 @@ public class DeviceService {
 			}
 		}
 
-		throw new DeviceException("Dispositivo nao encontrado na base");
+		throw new DeviceException("Unkown device");
 	}
 
 }

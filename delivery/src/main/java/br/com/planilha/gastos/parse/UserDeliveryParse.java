@@ -27,10 +27,10 @@ public class UserDeliveryParse {
 			if(userDto.getEmail() != null) {
 				user.setEmail(userDto.getEmail().toLowerCase());
 			}
-			if(userDto.getFirstName() != null) {
+			if(userDto.getFirstName() != null && !userDto.getFirstName().isBlank()) {
 				user.setFirstName(userDto.getFirstName().substring(0,1).toUpperCase() + userDto.getFirstName().substring(1).toLowerCase());
 			}
-			if(userDto.getLastName() != null) {
+			if(userDto.getLastName() != null && !userDto.getLastName().isBlank()) {
 				user.setLastName(userDto.getLastName().substring(0,1).toUpperCase() + userDto.getLastName().substring(1).toLowerCase());
 			}
 		}

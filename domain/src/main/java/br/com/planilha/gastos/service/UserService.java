@@ -78,6 +78,8 @@ public class UserService {
 	}
 
 	public String autoLogin(Login login) {
+		loginRules.validate(login);
+		
 		User user = findByEmail(login.getEmail());
 		
 		loginRules.validateAutoLogin(login, user);
@@ -86,11 +88,15 @@ public class UserService {
 	}
 
 	public String login(Login login) {
+		loginRules.validate(login);
+		
 		User user = findByEmail(login.getEmail());
 		
 		loginRules.validate(login, user);
 
-		return jwtService.generateAcessToken(user, login.getDeviceId());
+		User updatedUser = findByEmail(login.getEmail());
+		
+		return jwtService.generateAcessToken(updatedUser, login.getDeviceId());
 	}
 
 	public User configureUser(String token, User user) {

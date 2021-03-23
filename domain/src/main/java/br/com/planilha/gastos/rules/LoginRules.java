@@ -22,28 +22,15 @@ public class LoginRules {
 	private DeviceService deviceService;
 
 	public boolean validate(Login login, User user) {
-		if(login == null) {
-			throw new LoginException("Login can't be null");
-		}
-
+		validate(login);
+		
 		if(user == null) {
 			throw new LoginException("User can't be null");
 		}
 		
-		if(login.getEmail() == null || login.getEmail().isBlank()) {
-			throw new LoginException("Email can't be null or blank");
-		}
-		
 		if(login.getPassword() == null || login.getPassword().isBlank()) {
 			throw new LoginException("Password can't be null or blank");
-		} 
-		
-		if(login.getDeviceId() == null || login.getDeviceId().isBlank()) {
-			throw new LoginException("DeviceId can't be null or blank");
-		} 
-
-		//Verifica se a senha bate
-		if(!passwordUtils.verifyPassword(login.getPassword(), user.getPassword(), user.getSecret())) {
+		} else if(!passwordUtils.verifyPassword(login.getPassword(), user.getPassword(), user.getSecret())) {
 			throw new LoginException("Password does not match");
 		}
 		
@@ -60,10 +47,8 @@ public class LoginRules {
 	}
 
 	public boolean validateAutoLogin(Login login, User user) {
-		if(login == null) {
-			throw new AutoLoginException("Login can't be null");
-		}
-
+		validate(login);
+		
 		if(user == null) {
 			throw new AutoLoginException("User can't be null");
 		}
@@ -90,8 +75,23 @@ public class LoginRules {
 			}
 		}
 		
-		deviceService.registerNewDevice(user.getId(), login.getDeviceId());
-		throw new DeviceNotVerifiedException("Device not verified");
+		throw new DeviceNotVerifiedException("Unknown device");
+	}
+
+	public boolean validate(Login login) {
+		if(login == null) {
+			throw new LoginException("Login can't be null");
+		}
+
+		if(login.getEmail() == null || login.getEmail().isBlank()) {
+			throw new LoginException("Email can't be null or blank");
+		}
+		
+		if(login.getDeviceId() == null || login.getDeviceId().isBlank()) {
+			throw new LoginException("DeviceId can't be null or blank");
+		} 
+
+		return true;		
 	}
 	
 }

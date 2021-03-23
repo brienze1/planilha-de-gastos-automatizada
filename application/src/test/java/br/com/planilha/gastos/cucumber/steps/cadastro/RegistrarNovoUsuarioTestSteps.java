@@ -86,10 +86,26 @@ public class RegistrarNovoUsuarioTestSteps {
 		userDto.setLastName(mapa.get("last_name"));
 		userDto.setPassword(mapa.get("password"));
 		
-		Assert.assertNotNull(userDto.getEmail());
-		Assert.assertNotNull(userDto.getFirstName());
-		Assert.assertNotNull(userDto.getLastName());
-		Assert.assertNotNull(userDto.getPassword());
+		if(mapa.containsKey("password")) {
+			Assert.assertNotNull(userDto.getPassword());
+		} else {
+			Assert.assertNull(userDto.getPassword());
+		}
+		if(mapa.containsKey("email")) {
+			Assert.assertNotNull(userDto.getEmail());
+		} else {
+			Assert.assertNull(userDto.getEmail());
+		}
+		if(mapa.containsKey("first_name")) {
+			Assert.assertNotNull(userDto.getFirstName());
+		} else {
+			Assert.assertNull(userDto.getFirstName());
+		}
+		if(mapa.containsKey("last_name")) {
+			Assert.assertNotNull(userDto.getLastName());
+		} else {
+			Assert.assertNull(userDto.getLastName());
+		}
 	}
 
 	@Dado("que o dispositivo utilizado pelo usuario tenha gerado um id de dispositivo aleatorio")
@@ -110,11 +126,11 @@ public class RegistrarNovoUsuarioTestSteps {
 					HttpMethod.POST, 
 					httpEntity, 
 					DataDto.class);
+
+			Assert.assertNotNull(response);
 		} catch(HttpStatusCodeException ex) {
 			e = ex;
 		}
-		
-		Assert.assertNotNull(response);
 	}
 
 	@Então("deve ser retornado um token de dados")

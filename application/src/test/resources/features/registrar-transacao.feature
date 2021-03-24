@@ -31,12 +31,12 @@ Funcionalidade: Teste de auto login de usuario
 		Então deve ser retornado a transacao criada
 		E retornado o status 200
 		E a transacao recebida deve conter os campos abaixo preenchidos
-		  |	tipo				|	teste@gmail.com	|
-		  |	valor				|	id1				|
-		  |	data				|	id1				|
-		  |	meio_de_pagamento	|	id1				|
-		  |	localizacao			|	id1				|
-		  |	descricao			|	id1				|
+		  |	tipo				|	mercado							|	
+		  |	valor				|	12.99							|	
+		  |	data				|	2020-10-12T22:01:45.887971900	|
+		  |	meio_de_pagamento	|	debito							|	
+		  |	localizacao			|	SP								|	
+		  |	descricao			|	Compras do mes					|
 		  
 		 
 		 

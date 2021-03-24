@@ -20,13 +20,13 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import br.com.planilha.gastos.dto.DataDto;
+import br.com.planilha.gastos.dto.DeviceDto;
 import br.com.planilha.gastos.dto.LoginDto;
 import br.com.planilha.gastos.dto.TransactionDto;
 import br.com.planilha.gastos.dto.UserDto;
 import br.com.planilha.gastos.repository.DeviceRepository;
 import br.com.planilha.gastos.repository.TransactionRepository;
 import br.com.planilha.gastos.repository.UserRepository;
-import br.com.planilha.gastos.utils.JwtTokenUtils;
 import br.com.planilha.gastos.utils.MapperUtils;
 import cucumber.api.java.pt.Dado;
 import cucumber.api.java.pt.Então;
@@ -40,9 +40,6 @@ public class RegistrarTransacaoTestSteps {
 	
 	@Autowired
 	private RestTemplate restTemplate;
-	
-	@Autowired
-	private JwtTokenUtils jwtTokenUtils;
 	
 	@Autowired
 	private DeviceRepository deviceRepository;
@@ -62,7 +59,6 @@ public class RegistrarTransacaoTestSteps {
 	private ResponseEntity<TransactionDto> response;
 	private HttpStatusCodeException e;
 	private TypeReference<Map<String, Object>> typeReference;
-	private String jwtDataToken;
 	private String jwtAccessToken;
 	
 	@PostConstruct
@@ -71,7 +67,7 @@ public class RegistrarTransacaoTestSteps {
 		deviceRepository.deleteAll();
 		transactionRepository.deleteAll();
 		
-		formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"); 
+		formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.nnnnnnnnn"); 
 		
 		e = null;
 		
@@ -90,7 +86,7 @@ public class RegistrarTransacaoTestSteps {
 		transactionDto.setLocalizacao(mapa.get("localizacao"));
 		transactionDto.setMeioDePagamento(mapa.get("meio_de_pagamento"));
 		transactionDto.setTipo(mapa.get("tipo"));
-		transactionDto.setValor(BigDecimal.valueOf(Long.valueOf(mapa.get("valor"))));
+		transactionDto.setValor(BigDecimal.valueOf(Double.valueOf(mapa.get("valor"))));
 	}
 
 	@Dado("que um usuario ja foi cadastrado com os dados abaixo anteriormente") 
@@ -102,6 +98,8 @@ public class RegistrarTransacaoTestSteps {
 		userDto.setFirstName(mapa.get("first_name"));
 		userDto.setLastName(mapa.get("last_name"));
 		userDto.setPassword(mapa.get("password"));
+		userDto.setDevice(new DeviceDto());
+		userDto.getDevice().setDeviceId(mapa.get("device_id"));
 		
 		Assert.assertNotNull(userDto.getPassword());
 		Assert.assertNotNull(userDto.getEmail());
@@ -160,18 +158,12 @@ public class RegistrarTransacaoTestSteps {
 	public void a_transacao_recebida_deve_conter_os_campos_abaixo_preenchidos(DataTable dataTable) {
 		Map<String, String> mapa = dataTable.asMap(String.class, String.class);
 		
-		Assert.assertEquals(mapa.get("xxxxxxx"), transactionDtoResponse.get);
-		Assert.assertEquals(mapa.get("xxxxxxx"), transactionDtoResponse.get);
-		Assert.assertEquals(mapa.get("xxxxxxx"), transactionDtoResponse.get);
-		Assert.assertEquals(mapa.get("xxxxxxx"), transactionDtoResponse.get);
-		Assert.assertEquals(mapa.get("xxxxxxx"), transactionDtoResponse.get);
-		Assert.assertEquals(mapa.get("xxxxxxx"), transactionDtoResponse.get);
-		Assert.assertEquals(mapa.get("xxxxxxx"), transactionDtoResponse.get);
-		Assert.assertEquals(mapa.get("xxxxxxx"), transactionDtoResponse.get);
-		Assert.assertEquals(mapa.get("xxxxxxx"), transactionDtoResponse.get);
-		Assert.assertEquals(mapa.get("xxxxxxx"), transactionDtoResponse.get);
-		Assert.assertEquals(mapa.get("xxxxxxx"), transactionDtoResponse.get);
-		Assert.assertEquals(mapa.get("xxxxxxx"), transactionDtoResponse.get);
+		Assert.assertEquals(mapa.get("tipo"), transactionDtoResponse.getTipo());
+		Assert.assertEquals(mapa.get("valor"), String.valueOf(transactionDtoResponse.getValor()));
+		Assert.assertEquals(mapa.get("data"), transactionDtoResponse.getData().toString());
+		Assert.assertEquals(mapa.get("descricao"), transactionDtoResponse.getDescricao());
+		Assert.assertEquals(mapa.get("localizacao"), transactionDtoResponse.getLocalizacao());
+		Assert.assertEquals(mapa.get("meio_de_pagamento"), transactionDtoResponse.getMeioDePagamento());
 	}
 	
 	private <T> ResponseEntity<T> exchange(String path, String accessToken, Object request,  Class<T> clazz){

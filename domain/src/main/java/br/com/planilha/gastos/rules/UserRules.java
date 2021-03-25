@@ -95,20 +95,4 @@ public class UserRules {
 		return true;
 	}
 
-	public boolean validateDeviceRegistration(User user) {
-		if (user == null) {
-			throw new UserValidationException("User can't be null");
-		}
-
-		if (user.getPassword() == null || user.getPassword().isBlank()) {
-			throw new UserValidationException("Password can't be null or empty");
-		}
-		
-		if (user.getEmail() == null || user.getEmail().isBlank()) {
-			throw new UserValidationException("Email can't be null or empty");
-		}
-		
-		return deviceRules.validate(user.getDevices());
-	}
-
 }

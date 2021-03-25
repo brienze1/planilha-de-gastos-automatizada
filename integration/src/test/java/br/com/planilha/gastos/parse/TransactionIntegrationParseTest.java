@@ -43,7 +43,7 @@ public class TransactionIntegrationParseTest {
 			TransactionEntity newTransactionEntity = new TransactionEntity();
 			newTransactionEntity.setData(LocalDateTime.now());
 			newTransactionEntity.setDescricao(UUID.randomUUID().toString());
-			newTransactionEntity.setId(new Random().nextInt(100));
+			newTransactionEntity.setId(UUID.randomUUID().toString());
 			newTransactionEntity.setLocalizacao(UUID.randomUUID().toString());
 			newTransactionEntity.setMeioDePagamento(UUID.randomUUID().toString());
 			newTransactionEntity.setTipo(UUID.randomUUID().toString());

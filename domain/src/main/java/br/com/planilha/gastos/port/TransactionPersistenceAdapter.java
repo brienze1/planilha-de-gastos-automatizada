@@ -20,4 +20,6 @@ public interface TransactionPersistenceAdapter {
 
 	List<Transaction> findByQuantity(User user, Integer quantity, Integer page);
 
+	boolean isValidId(String transactionId);
+
 }

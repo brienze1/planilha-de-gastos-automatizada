@@ -53,14 +53,6 @@ public class LoginRules {
 			throw new AutoLoginException("User can't be null");
 		}
 		
-		if(login.getEmail() == null || login.getEmail().isBlank()) {
-			throw new AutoLoginException("Email can't be null or blank");
-		}
-		
-		if(login.getDeviceId() == null || login.getDeviceId().isBlank()) {
-			throw new AutoLoginException("DeviceId can't be null or blank");
-		} 
-		
 		if(!user.isAutoLogin()) {
 			throw new AutoLoginException("User configuration doesn't allow auto-login");
 		}

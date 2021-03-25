@@ -61,7 +61,7 @@ public class TransactionPersistenceTest {
 		transaction = new Transaction();
 		transaction.setData(LocalDateTime.now());
 		transaction.setDescricao(UUID.randomUUID().toString());
-		transaction.setId(String.valueOf(new Random().nextInt(1000)));
+		transaction.setId(UUID.randomUUID().toString());
 		transaction.setLocalizacao(UUID.randomUUID().toString());
 		transaction.setMeioDePagamento(UUID.randomUUID().toString());
 		transaction.setTipo(UUID.randomUUID().toString());
@@ -99,7 +99,7 @@ public class TransactionPersistenceTest {
 		userEntity.setEmail(user.getEmail().toLowerCase());
 		
 		transactionEntity = new TransactionEntity();
-		transactionEntity.setId(Integer.valueOf(transaction.getId()));
+		transactionEntity.setId(transaction.getId());
 		transactionEntity.setData(transaction.getData());
 		transactionEntity.setDescricao(transaction.getDescricao());
 		transactionEntity.setLocalizacao(transaction.getLocalizacao());
@@ -202,7 +202,7 @@ public class TransactionPersistenceTest {
 	
 	@Test
 	public void isInvalidIdTest() {
-		Mockito.when(transactionRepository.findById(Integer.valueOf(transaction.getId()))).thenReturn(transactionEntityOptional);
+		Mockito.when(transactionRepository.findById(transaction.getId())).thenReturn(transactionEntityOptional);
 		
 		boolean isValidId = transactionPersistence.isValidId(transaction.getId());
 		
@@ -211,7 +211,7 @@ public class TransactionPersistenceTest {
 	
 	@Test
 	public void isValidIdTest() {
-		Mockito.when(transactionRepository.findById(Integer.valueOf(transaction.getId()))).thenReturn(Optional.ofNullable(null));
+		Mockito.when(transactionRepository.findById(transaction.getId())).thenReturn(Optional.ofNullable(null));
 		
 		boolean isValidId = transactionPersistence.isValidId(transaction.getId());
 		
@@ -220,7 +220,7 @@ public class TransactionPersistenceTest {
 	
 	@Test
 	public void isInvalidIdErrorTest() {
-		Mockito.when(transactionRepository.findById(Integer.valueOf(transaction.getId()))).thenThrow(new TransactionException("error"));
+		Mockito.when(transactionRepository.findById(transaction.getId())).thenThrow(new TransactionException("error"));
 		
 		boolean isValidId = transactionPersistence.isValidId(transaction.getId());
 		

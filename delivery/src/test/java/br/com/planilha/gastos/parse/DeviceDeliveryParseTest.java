@@ -49,45 +49,6 @@ public class DeviceDeliveryParseTest {
 	}
 	
 	@Test
-	public void toDevicesTest() {
-		List<Device> devices = deviceDeliveryParse.toDevices(devicesDto);
-		
-		Assert.assertNotNull(devices);
-		Assert.assertFalse(devices.isEmpty());
-		for (Device device : devices) {
-			for (DeviceDto deviceDto : devicesDto) {
-				if(device.getDeviceId().equals(deviceDto.getDeviceId())) {
-					Assert.assertNull(device.getId());
-					Assert.assertEquals(deviceDto.getVerificationCode(), device.getVerificationCode());
-					Assert.assertEquals(deviceDto.getDeviceId(), device.getDeviceId());
-					Assert.assertEquals(deviceDto.isInUse(), device.isInUse());
-					Assert.assertEquals(deviceDto.isVerified(), device.isVerified());
-				}
-			}
-		}
-	}
-	
-	@Test
-	public void toDevicesNullTest() {
-		devicesDto = null;
-		
-		List<Device> devices = deviceDeliveryParse.toDevices(devicesDto);
-		
-		Assert.assertNotNull(devices);
-		Assert.assertTrue(devices.isEmpty());
-	}
-	
-	@Test
-	public void toDevicesEmptyTest() {
-		devicesDto = new ArrayList<>();;
-		
-		List<Device> devices = deviceDeliveryParse.toDevices(devicesDto);
-		
-		Assert.assertNotNull(devices);
-		Assert.assertTrue(devices.isEmpty());
-	}
-	
-	@Test
 	public void toDeviceTest() {
 		Device device = deviceDeliveryParse.toDevice(deviceDto);
 		

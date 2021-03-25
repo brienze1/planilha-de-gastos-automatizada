@@ -62,10 +62,10 @@ public class TransactionPersistence implements TransactionPersistenceAdapter {
 		throw new TransactionException("Transaction does not exist");
 	}
 
+	@Override
 	public boolean isValidId(String transactionId) {
 		try {
-			Integer id = Integer.valueOf(transactionId);
-			return !transactionRepository.findById(id).isPresent();
+			return !transactionRepository.findById(transactionId).isPresent();
 		} catch (Exception e) {
 			return false;
 		}

@@ -24,7 +24,6 @@ import br.com.planilha.gastos.Application;
 import br.com.planilha.gastos.dto.DataDto;
 import br.com.planilha.gastos.dto.DeviceDto;
 import br.com.planilha.gastos.dto.UserDto;
-import br.com.planilha.gastos.repository.DeviceRepository;
 import br.com.planilha.gastos.repository.TransactionRepository;
 import br.com.planilha.gastos.repository.UserRepository;
 import br.com.planilha.gastos.utils.JwtTokenUtils;
@@ -48,9 +47,6 @@ public class RegistrarNovoUsuarioTestSteps {
 	private JwtTokenUtils jwtTokenUtils;
 	
 	@Autowired
-	private DeviceRepository deviceRepository;
-	
-	@Autowired
 	private TransactionRepository transactionRepository;
 	
 	@Autowired
@@ -66,9 +62,8 @@ public class RegistrarNovoUsuarioTestSteps {
 	
 	@PostConstruct
 	public void init() {
-		userRepository.deleteAll();
-		deviceRepository.deleteAll();
 		transactionRepository.deleteAll();
+		userRepository.deleteAll();
 		
 		typeReference = new TypeReference<Map<String, Object>>() {};
 		

@@ -21,7 +21,6 @@ import br.com.planilha.gastos.dto.DataDto;
 import br.com.planilha.gastos.dto.DeviceDto;
 import br.com.planilha.gastos.dto.LoginDto;
 import br.com.planilha.gastos.dto.UserDto;
-import br.com.planilha.gastos.repository.DeviceRepository;
 import br.com.planilha.gastos.repository.TransactionRepository;
 import br.com.planilha.gastos.repository.UserRepository;
 import br.com.planilha.gastos.utils.JwtTokenUtils;
@@ -44,9 +43,6 @@ public class LoginTestSteps {
 	private JwtTokenUtils jwtTokenUtils;
 	
 	@Autowired
-	private DeviceRepository deviceRepository;
-	
-	@Autowired
 	private TransactionRepository transactionRepository;
 	
 	@Autowired
@@ -63,9 +59,8 @@ public class LoginTestSteps {
 	
 	@PostConstruct
 	public void init() {
-		userRepository.deleteAll();
-		deviceRepository.deleteAll();
 		transactionRepository.deleteAll();
+		userRepository.deleteAll();
 		
 		e = null;
 		

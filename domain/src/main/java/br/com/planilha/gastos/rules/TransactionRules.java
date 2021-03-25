@@ -3,14 +3,23 @@ package br.com.planilha.gastos.rules;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.com.planilha.gastos.entity.Transaction;
 import br.com.planilha.gastos.exception.TransactionException;
+import br.com.planilha.gastos.port.IdGeneratorAdapter;
+import br.com.planilha.gastos.port.TransactionPersistenceAdapter;
 
 @Component
 public class TransactionRules {
 
+	@Autowired
+	private TransactionPersistenceAdapter transactionPersistence;
+	
+	@Autowired
+	private IdGeneratorAdapter idGenerator;
+	
 	public boolean validate(Transaction transaction) {
 		if(transaction == null) {
 			throw new TransactionException("Transaction can't be null");
@@ -32,6 +41,9 @@ public class TransactionRules {
 		}
 		if(transaction.getDescricao() == null || transaction.getDescricao().isBlank()) {
 			transaction.setDescricao("Undefined");
+		}
+		if(transaction.getId() == null || transaction.getId().isBlank() || !transactionPersistence.isValidId(transaction.getId())) {
+			transaction.setId(idGenerator.generateTransactionId());
 		}
 		
 		return true;

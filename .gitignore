@@ -12,3 +12,4 @@
 .factorypath
 /bin
 */bin/*
+/target

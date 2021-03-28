@@ -3,21 +3,21 @@ package br.com.planilha.gastos.service;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import br.com.planilha.gastos.builder.DeviceBuilder;
 import br.com.planilha.gastos.entity.Device;
 import br.com.planilha.gastos.entity.User;
 import br.com.planilha.gastos.exception.DeviceException;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class DeviceServiceTest {
 
 	@InjectMocks
@@ -41,7 +41,7 @@ public class DeviceServiceTest {
 	private Device device;
 	private String token;
 	
-	@Before
+	@BeforeEach
 	public void init() {
 		userId = UUID.randomUUID().toString();
 
@@ -74,12 +74,12 @@ public class DeviceServiceTest {
 		Mockito.verify(userService).update(user);
 		Mockito.verify(emailService).sendDeviceVerificationEmail(user, device);
 		
-		Assert.assertNotNull(returnedDevice);
-		Assert.assertEquals(device.getDeviceId(), returnedDevice.getDeviceId());
-		Assert.assertEquals(device.getId(), returnedDevice.getId());
-		Assert.assertEquals(device.getVerificationCode(), returnedDevice.getVerificationCode());
-		Assert.assertEquals(device.isInUse(), returnedDevice.isInUse());
-		Assert.assertEquals(device.isVerified(), returnedDevice.isVerified());
+		Assertions.assertNotNull(returnedDevice);
+		Assertions.assertEquals(device.getDeviceId(), returnedDevice.getDeviceId());
+		Assertions.assertEquals(device.getId(), returnedDevice.getId());
+		Assertions.assertEquals(device.getVerificationCode(), returnedDevice.getVerificationCode());
+		Assertions.assertEquals(device.isInUse(), returnedDevice.isInUse());
+		Assertions.assertEquals(device.isVerified(), returnedDevice.isVerified());
 	}
 	
 	@Test
@@ -91,12 +91,12 @@ public class DeviceServiceTest {
 		Mockito.verify(userService).findById(userId);
 		Mockito.verify(emailService).sendDeviceVerificationEmail(user, device);
 		
-		Assert.assertNotNull(returnedDevice);
-		Assert.assertEquals(device.getDeviceId(), returnedDevice.getDeviceId());
-		Assert.assertEquals(device.getId(), returnedDevice.getId());
-		Assert.assertEquals(device.getVerificationCode(), returnedDevice.getVerificationCode());
-		Assert.assertEquals(device.isInUse(), returnedDevice.isInUse());
-		Assert.assertEquals(device.isVerified(), returnedDevice.isVerified());
+		Assertions.assertNotNull(returnedDevice);
+		Assertions.assertEquals(device.getDeviceId(), returnedDevice.getDeviceId());
+		Assertions.assertEquals(device.getId(), returnedDevice.getId());
+		Assertions.assertEquals(device.getVerificationCode(), returnedDevice.getVerificationCode());
+		Assertions.assertEquals(device.isInUse(), returnedDevice.isInUse());
+		Assertions.assertEquals(device.isVerified(), returnedDevice.isVerified());
 	}
 	
 	@Test
@@ -109,29 +109,26 @@ public class DeviceServiceTest {
 		
 		Mockito.verify(userService).findById(userId);
 		
-		Assert.assertNotNull(returnedDevice);
-		Assert.assertEquals(device.getDeviceId(), returnedDevice.getDeviceId());
-		Assert.assertEquals(device.getId(), returnedDevice.getId());
-		Assert.assertEquals(device.getVerificationCode(), returnedDevice.getVerificationCode());
-		Assert.assertEquals(device.isInUse(), returnedDevice.isInUse());
-		Assert.assertEquals(device.isVerified(), returnedDevice.isVerified());
+		Assertions.assertNotNull(returnedDevice);
+		Assertions.assertEquals(device.getDeviceId(), returnedDevice.getDeviceId());
+		Assertions.assertEquals(device.getId(), returnedDevice.getId());
+		Assertions.assertEquals(device.getVerificationCode(), returnedDevice.getVerificationCode());
+		Assertions.assertEquals(device.isInUse(), returnedDevice.isInUse());
+		Assertions.assertEquals(device.isVerified(), returnedDevice.isVerified());
 	}
 	
-	@Test(expected = DeviceException.class)
+	@Test
 	public void sendDeviceVerificationEmailDeviceNotRegisteredErrorTest() {
 		user.getDevices().remove(device);
 		
 		Mockito.when(userService.findById(userId)).thenReturn(user);
 		
-		try {
-			deviceService.sendDeviceVerificationEmail(userId, device);
-		} catch (Exception e) {
-			Mockito.verify(userService).findById(userId);
+		Assertions.assertThrows(
+				DeviceException.class, 
+				() -> deviceService.sendDeviceVerificationEmail(userId, device), 
+				"Unkown device");
 
-			Assert.assertEquals("Unkown device" , e.getMessage());
-
-			throw e;
-		}
+		Mockito.verify(userService).findById(userId);
 	}
 	
 	@Test
@@ -145,29 +142,26 @@ public class DeviceServiceTest {
 		Mockito.verify(jwtService).verifyAcessToken(token);
 		Mockito.verify(userService).update(user);
 		
-		Assert.assertNotNull(returnedDevice);
-		Assert.assertTrue(returnedDevice.isVerified());
-		Assert.assertEquals(device.getDeviceId(), returnedDevice.getDeviceId());
-		Assert.assertEquals(device.getId(), returnedDevice.getId());
-		Assert.assertEquals(device.getVerificationCode(), returnedDevice.getVerificationCode());
-		Assert.assertEquals(device.isInUse(), returnedDevice.isInUse());
+		Assertions.assertNotNull(returnedDevice);
+		Assertions.assertTrue(returnedDevice.isVerified());
+		Assertions.assertEquals(device.getDeviceId(), returnedDevice.getDeviceId());
+		Assertions.assertEquals(device.getId(), returnedDevice.getId());
+		Assertions.assertEquals(device.getVerificationCode(), returnedDevice.getVerificationCode());
+		Assertions.assertEquals(device.isInUse(), returnedDevice.isInUse());
 	}
 	
-	@Test(expected = DeviceException.class)
+	@Test
 	public void validateDeviceDeviceNotFoundErrorTest() {
 		user.getDevices().remove(device);
 
 		Mockito.when(jwtService.verifyAcessToken(token)).thenReturn(user);
 		
-		try {
-			deviceService.validateDevice(token, device);
-		} catch (DeviceException e) {
-			Mockito.verify(jwtService).verifyAcessToken(token);
-			
-			Assert.assertEquals("Unkown device", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				DeviceException.class, 
+				() -> deviceService.validateDevice(token, device), 
+				"Unkown device");
+		
+		Mockito.verify(jwtService).verifyAcessToken(token);
 	}
 	
 }

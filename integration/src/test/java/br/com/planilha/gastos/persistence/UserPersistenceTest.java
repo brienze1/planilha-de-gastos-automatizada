@@ -8,14 +8,14 @@ import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import br.com.planilha.gastos.entity.Device;
 import br.com.planilha.gastos.entity.DeviceEntity;
@@ -24,7 +24,7 @@ import br.com.planilha.gastos.entity.UserEntity;
 import br.com.planilha.gastos.parse.UserIntegrationParse;
 import br.com.planilha.gastos.repository.UserRepository;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class UserPersistenceTest {
 
 	@InjectMocks
@@ -45,7 +45,7 @@ public class UserPersistenceTest {
 	private Optional<UserEntity> userEntityOptional;
 	private Iterable<UserEntity> userEntityList;
 	
-	@Before
+	@BeforeEach
 	public void init() {
 		users = new ArrayList<>();
 		userEntityList = new HashSet<>();
@@ -106,17 +106,17 @@ public class UserPersistenceTest {
 		
 		Optional<User> userResponse = userPersistence.findById(id);
 		
-		Assert.assertNotNull(userResponse);
-		Assert.assertTrue(userResponse.isPresent());
-		Assert.assertEquals(id, userResponse.get().getId());
-		Assert.assertEquals(user.getEmail(), userResponse.get().getEmail());
-		Assert.assertEquals(user.getFirstName(), userResponse.get().getFirstName());
-		Assert.assertEquals(user.getId(), userResponse.get().getId());
-		Assert.assertEquals(user.inUseDeviceId(), userResponse.get().inUseDeviceId());
-		Assert.assertEquals(user.getLastName(), userResponse.get().getLastName());
-		Assert.assertEquals(user.getPassword(), userResponse.get().getPassword());
-		Assert.assertEquals(user.getSecret(), userResponse.get().getSecret());
-		Assert.assertEquals(user.inUseDevice(), userResponse.get().inUseDevice());
+		Assertions.assertNotNull(userResponse);
+		Assertions.assertTrue(userResponse.isPresent());
+		Assertions.assertEquals(id, userResponse.get().getId());
+		Assertions.assertEquals(user.getEmail(), userResponse.get().getEmail());
+		Assertions.assertEquals(user.getFirstName(), userResponse.get().getFirstName());
+		Assertions.assertEquals(user.getId(), userResponse.get().getId());
+		Assertions.assertEquals(user.inUseDeviceId(), userResponse.get().inUseDeviceId());
+		Assertions.assertEquals(user.getLastName(), userResponse.get().getLastName());
+		Assertions.assertEquals(user.getPassword(), userResponse.get().getPassword());
+		Assertions.assertEquals(user.getSecret(), userResponse.get().getSecret());
+		Assertions.assertEquals(user.inUseDevice(), userResponse.get().inUseDevice());
 	}
 	
 	@Test
@@ -125,16 +125,16 @@ public class UserPersistenceTest {
 		
 		UserEntity userEntityResponse = userPersistence.findUserEntity(id);
 		
-		Assert.assertNotNull(userEntityResponse);
-		Assert.assertEquals(id, String.valueOf(userEntityResponse.getId()));
-		Assert.assertEquals(userEntity.getEmail(), userEntityResponse.getEmail());
-		Assert.assertEquals(userEntity.getFirstName(), userEntityResponse.getFirstName());
-		Assert.assertEquals(userEntity.getId(), userEntityResponse.getId());
-		Assert.assertEquals(userEntity.getLastName(), userEntityResponse.getLastName());
-		Assert.assertEquals(userEntity.getPassword(), userEntityResponse.getPassword());
-		Assert.assertEquals(userEntity.getSecret(), userEntityResponse.getSecret());
-		Assert.assertEquals(userEntity.isAutoLogin(), userEntityResponse.isAutoLogin());
-		Assert.assertEquals(userEntity.isValidEmail(), userEntityResponse.isValidEmail());
+		Assertions.assertNotNull(userEntityResponse);
+		Assertions.assertEquals(id, String.valueOf(userEntityResponse.getId()));
+		Assertions.assertEquals(userEntity.getEmail(), userEntityResponse.getEmail());
+		Assertions.assertEquals(userEntity.getFirstName(), userEntityResponse.getFirstName());
+		Assertions.assertEquals(userEntity.getId(), userEntityResponse.getId());
+		Assertions.assertEquals(userEntity.getLastName(), userEntityResponse.getLastName());
+		Assertions.assertEquals(userEntity.getPassword(), userEntityResponse.getPassword());
+		Assertions.assertEquals(userEntity.getSecret(), userEntityResponse.getSecret());
+		Assertions.assertEquals(userEntity.isAutoLogin(), userEntityResponse.isAutoLogin());
+		Assertions.assertEquals(userEntity.isValidEmail(), userEntityResponse.isValidEmail());
 	}
 	
 	@Test
@@ -145,15 +145,15 @@ public class UserPersistenceTest {
 		
 		User userResponse = userPersistence.save(user);
 		
-		Assert.assertNotNull(userResponse);
-		Assert.assertEquals(user.getEmail(), userResponse.getEmail());
-		Assert.assertEquals(user.getFirstName(), userResponse.getFirstName());
-		Assert.assertEquals(user.getId(), userResponse.getId());
-		Assert.assertEquals(user.inUseDeviceId(), userResponse.inUseDeviceId());
-		Assert.assertEquals(user.getLastName(), userResponse.getLastName());
-		Assert.assertEquals(user.getPassword(), userResponse.getPassword());
-		Assert.assertEquals(user.getSecret(), userResponse.getSecret());
-		Assert.assertEquals(user.inUseDevice(), userResponse.inUseDevice());
+		Assertions.assertNotNull(userResponse);
+		Assertions.assertEquals(user.getEmail(), userResponse.getEmail());
+		Assertions.assertEquals(user.getFirstName(), userResponse.getFirstName());
+		Assertions.assertEquals(user.getId(), userResponse.getId());
+		Assertions.assertEquals(user.inUseDeviceId(), userResponse.inUseDeviceId());
+		Assertions.assertEquals(user.getLastName(), userResponse.getLastName());
+		Assertions.assertEquals(user.getPassword(), userResponse.getPassword());
+		Assertions.assertEquals(user.getSecret(), userResponse.getSecret());
+		Assertions.assertEquals(user.inUseDevice(), userResponse.inUseDevice());
 	}
 	
 	@Test
@@ -163,17 +163,17 @@ public class UserPersistenceTest {
 		
 		Optional<User> userResponse = userPersistence.findByEmail(email);
 		
-		Assert.assertNotNull(userResponse);
-		Assert.assertTrue(userResponse.isPresent());
-		Assert.assertEquals(id, userResponse.get().getId());
-		Assert.assertEquals(user.getEmail(), userResponse.get().getEmail());
-		Assert.assertEquals(user.getFirstName(), userResponse.get().getFirstName());
-		Assert.assertEquals(user.getId(), userResponse.get().getId());
-		Assert.assertEquals(user.inUseDeviceId(), userResponse.get().inUseDeviceId());
-		Assert.assertEquals(user.getLastName(), userResponse.get().getLastName());
-		Assert.assertEquals(user.getPassword(), userResponse.get().getPassword());
-		Assert.assertEquals(user.getSecret(), userResponse.get().getSecret());
-		Assert.assertEquals(user.inUseDevice(), userResponse.get().inUseDevice());
+		Assertions.assertNotNull(userResponse);
+		Assertions.assertTrue(userResponse.isPresent());
+		Assertions.assertEquals(id, userResponse.get().getId());
+		Assertions.assertEquals(user.getEmail(), userResponse.get().getEmail());
+		Assertions.assertEquals(user.getFirstName(), userResponse.get().getFirstName());
+		Assertions.assertEquals(user.getId(), userResponse.get().getId());
+		Assertions.assertEquals(user.inUseDeviceId(), userResponse.get().inUseDeviceId());
+		Assertions.assertEquals(user.getLastName(), userResponse.get().getLastName());
+		Assertions.assertEquals(user.getPassword(), userResponse.get().getPassword());
+		Assertions.assertEquals(user.getSecret(), userResponse.get().getSecret());
+		Assertions.assertEquals(user.inUseDevice(), userResponse.get().inUseDevice());
 	}
 	
 }

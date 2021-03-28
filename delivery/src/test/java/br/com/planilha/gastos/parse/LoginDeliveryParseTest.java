@@ -2,17 +2,17 @@ package br.com.planilha.gastos.parse;
 
 import java.util.UUID;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import br.com.planilha.gastos.dto.LoginDto;
 import br.com.planilha.gastos.entity.Login;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class LoginDeliveryParseTest {
 
 	@InjectMocks
@@ -20,7 +20,7 @@ public class LoginDeliveryParseTest {
 	
 	private LoginDto loginDto;	
 	
-	@Before
+	@BeforeEach
 	public void init() {
 		loginDto = new LoginDto();
 		loginDto.setDeviceId(UUID.randomUUID().toString());
@@ -28,24 +28,24 @@ public class LoginDeliveryParseTest {
 		loginDto.setPassword(UUID.randomUUID().toString());
 	}
 	
-	@Test()
+	@Test
 	public void toLoginTest() {
 		Login login = loginDeliveryParse.toLogin(loginDto);
 		
-		Assert.assertNotNull(login);
-		Assert.assertEquals(loginDto.getDeviceId(), login.getDeviceId());
-		Assert.assertEquals(loginDto.getEmail(), login.getEmail());
-		Assert.assertEquals(loginDto.getPassword(), login.getPassword());
+		Assertions.assertNotNull(login);
+		Assertions.assertEquals(loginDto.getDeviceId(), login.getDeviceId());
+		Assertions.assertEquals(loginDto.getEmail(), login.getEmail());
+		Assertions.assertEquals(loginDto.getPassword(), login.getPassword());
 	}
 	
-	@Test()
+	@Test
 	public void toLoginNullTest() {
 		Login login = loginDeliveryParse.toLogin(null);
 		
-		Assert.assertNotNull(login);
-		Assert.assertNull(login.getDeviceId());
-		Assert.assertNull(login.getEmail());
-		Assert.assertNull(login.getPassword());
+		Assertions.assertNotNull(login);
+		Assertions.assertNull(login.getDeviceId());
+		Assertions.assertNull(login.getEmail());
+		Assertions.assertNull(login.getPassword());
 	}
 	
 }

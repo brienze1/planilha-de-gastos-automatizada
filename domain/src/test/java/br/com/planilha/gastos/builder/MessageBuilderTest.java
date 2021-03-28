@@ -2,18 +2,18 @@ package br.com.planilha.gastos.builder;
 
 import java.util.UUID;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import br.com.planilha.gastos.entity.Device;
 import br.com.planilha.gastos.entity.User;
 
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class MessageBuilderTest {
 
 	@InjectMocks
@@ -23,7 +23,7 @@ public class MessageBuilderTest {
 	private Device device;
 	private String message;
 	
-	@Before
+	@BeforeEach
 	public void init() {
 		user = new User();
 		user.setFirstName(UUID.randomUUID().toString());
@@ -41,7 +41,7 @@ public class MessageBuilderTest {
 	public void buildDeviceVerificationMessageTest() {
 		String returnedMessage = messageBuilder.buildDeviceVerificationMessage(user, device);
 		
-		Assert.assertEquals(message, returnedMessage);
+		Assertions.assertEquals(message, returnedMessage);
 	}
 	
 }

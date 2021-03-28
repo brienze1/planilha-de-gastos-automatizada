@@ -7,17 +7,17 @@ import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import br.com.planilha.gastos.entity.Device;
 import br.com.planilha.gastos.entity.DeviceEntity;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class DeviceIntegrationParseTest {
 
 	@InjectMocks
@@ -26,7 +26,7 @@ public class DeviceIntegrationParseTest {
 	private List<Device> devices;
 	private Set<DeviceEntity> devicesEntity;
 	
-	@Before
+	@BeforeEach
 	public void init() {
 		devices = new ArrayList<>();
 		for(int i=0; i<5; i++) {
@@ -54,13 +54,13 @@ public class DeviceIntegrationParseTest {
 	}
 	
 	private void assertAll(Device device, DeviceEntity deviceEntity) {
-		Assert.assertNotNull(deviceEntity);
-		Assert.assertNotNull(device);
-		Assert.assertEquals(device.getDeviceId(), deviceEntity.getDeviceId());
-		Assert.assertEquals(device.getId(), String.valueOf(deviceEntity.getId()));
-		Assert.assertEquals(device.getVerificationCode(), deviceEntity.getVerificationCode());
-		Assert.assertEquals(device.isInUse(), deviceEntity.isInUse());
-		Assert.assertEquals(device.isVerified(), deviceEntity.isVerified());
+		Assertions.assertNotNull(deviceEntity);
+		Assertions.assertNotNull(device);
+		Assertions.assertEquals(device.getDeviceId(), deviceEntity.getDeviceId());
+		Assertions.assertEquals(device.getId(), String.valueOf(deviceEntity.getId()));
+		Assertions.assertEquals(device.getVerificationCode(), deviceEntity.getVerificationCode());
+		Assertions.assertEquals(device.isInUse(), deviceEntity.isInUse());
+		Assertions.assertEquals(device.isVerified(), deviceEntity.isVerified());
 	}
 	
 	@Test
@@ -76,15 +76,15 @@ public class DeviceIntegrationParseTest {
 				}
 			}
 		}
-		Assert.assertEquals(devicesEntity.size(), i);
+		Assertions.assertEquals(devicesEntity.size(), i);
 	}
 	
 	@Test
 	public void toDevicesEntityNullTest() {
 		Set<DeviceEntity> devicesEntity = deviceIntegrationParse.toDevicesEntity(null);
 		
-		Assert.assertNotNull(devicesEntity);
-		Assert.assertTrue(devicesEntity.isEmpty());
+		Assertions.assertNotNull(devicesEntity);
+		Assertions.assertTrue(devicesEntity.isEmpty());
 	}
 	
 	@Test
@@ -93,9 +93,9 @@ public class DeviceIntegrationParseTest {
 		
 		Set<DeviceEntity> devicesEntity = deviceIntegrationParse.toDevicesEntity(devices);
 		
-		Assert.assertNotNull(devicesEntity);
-		Assert.assertFalse(devicesEntity.isEmpty());
-		Assert.assertEquals(devices.size(), devicesEntity.size());
+		Assertions.assertNotNull(devicesEntity);
+		Assertions.assertFalse(devicesEntity.isEmpty());
+		Assertions.assertEquals(devices.size(), devicesEntity.size());
 	}
 	
 	@Test
@@ -104,9 +104,9 @@ public class DeviceIntegrationParseTest {
 		
 		Set<DeviceEntity> devicesEntity = deviceIntegrationParse.toDevicesEntity(devices);
 		
-		Assert.assertNotNull(devicesEntity);
-		Assert.assertFalse(devicesEntity.isEmpty());
-		Assert.assertEquals(devices.size(), devicesEntity.size());
+		Assertions.assertNotNull(devicesEntity);
+		Assertions.assertFalse(devicesEntity.isEmpty());
+		Assertions.assertEquals(devices.size(), devicesEntity.size());
 	}
 	
 	@Test
@@ -122,15 +122,15 @@ public class DeviceIntegrationParseTest {
 				}
 			}
 		}
-		Assert.assertEquals(devices.size(), i);
+		Assertions.assertEquals(devices.size(), i);
 	}
 	
 	@Test
 	public void toDevicesNullTest() {
 		List<Device> devices = deviceIntegrationParse.toDevices(null);
 		
-		Assert.assertNotNull(devices);
-		Assert.assertTrue(devices.isEmpty());
+		Assertions.assertNotNull(devices);
+		Assertions.assertTrue(devices.isEmpty());
 	}
 	
 }

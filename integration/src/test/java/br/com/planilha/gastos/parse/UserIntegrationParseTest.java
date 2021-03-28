@@ -8,21 +8,21 @@ import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import br.com.planilha.gastos.entity.Device;
 import br.com.planilha.gastos.entity.DeviceEntity;
 import br.com.planilha.gastos.entity.User;
 import br.com.planilha.gastos.entity.UserEntity;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class UserIntegrationParseTest {
 
 	@InjectMocks
@@ -37,7 +37,7 @@ public class UserIntegrationParseTest {
 	private List<Device> devices;
 	private List<UserEntity> userEntityList;
 	
-	@Before
+	@BeforeEach
 	public void init() {
 		devicesEntity = new HashSet<>();
 		devicesEntity.add(new DeviceEntity());
@@ -80,20 +80,20 @@ public class UserIntegrationParseTest {
 	}
 	
 	private void assertAll(UserEntity userEntity, User user) {
-		Assert.assertEquals(userEntity.getEmail(), user.getEmail());
-		Assert.assertEquals(userEntity.getFirstName(), user.getFirstName());
-		Assert.assertEquals(userEntity.getLastName(), user.getLastName());
-		Assert.assertEquals(userEntity.getPassword(), user.getPassword());
-		Assert.assertEquals(userEntity.getSecret(), user.getSecret());
-		Assert.assertEquals(String.valueOf(userEntity.getId()), user.getId());
-		Assert.assertFalse(userEntity.isValidEmail());
-		Assert.assertFalse(user.isValidEmail());
-		Assert.assertTrue(userEntity.isAutoLogin());
-		Assert.assertTrue(user.isAutoLogin());
-		Assert.assertNotNull(userEntity.getDevices());
-		Assert.assertNotNull(user.getDevices());
-		Assert.assertFalse(userEntity.getDevices().isEmpty());
-		Assert.assertFalse(user.getDevices().isEmpty());
+		Assertions.assertEquals(userEntity.getEmail(), user.getEmail());
+		Assertions.assertEquals(userEntity.getFirstName(), user.getFirstName());
+		Assertions.assertEquals(userEntity.getLastName(), user.getLastName());
+		Assertions.assertEquals(userEntity.getPassword(), user.getPassword());
+		Assertions.assertEquals(userEntity.getSecret(), user.getSecret());
+		Assertions.assertEquals(String.valueOf(userEntity.getId()), user.getId());
+		Assertions.assertFalse(userEntity.isValidEmail());
+		Assertions.assertFalse(user.isValidEmail());
+		Assertions.assertTrue(userEntity.isAutoLogin());
+		Assertions.assertTrue(user.isAutoLogin());
+		Assertions.assertNotNull(userEntity.getDevices());
+		Assertions.assertNotNull(user.getDevices());
+		Assertions.assertFalse(userEntity.getDevices().isEmpty());
+		Assertions.assertFalse(user.getDevices().isEmpty());
 	}
 	
 	private void assertAll(List<UserEntity> userEntityList, List<User> users) {
@@ -116,7 +116,7 @@ public class UserIntegrationParseTest {
 		
 		User user = userIntegrationParse.toUser(userEntity);
 		
-		Assert.assertNotNull(user);
+		Assertions.assertNotNull(user);
 	}
 	
 	@Test
@@ -132,15 +132,15 @@ public class UserIntegrationParseTest {
 		
 		List<User> users = userIntegrationParse.toUsers(userEntityList);
 		
-		Assert.assertNotNull(users);
-		Assert.assertTrue(users.isEmpty());
+		Assertions.assertNotNull(users);
+		Assertions.assertTrue(users.isEmpty());
 	}
 	
 	@Test
 	public void toUserOptionalTest() {
 		Optional<User> user = userIntegrationParse.toUser(Optional.of(userEntity));
 		
-		Assert.assertTrue(user.isPresent());
+		Assertions.assertTrue(user.isPresent());
 		assertAll(userEntity, user.get());
 	}
 	
@@ -148,7 +148,7 @@ public class UserIntegrationParseTest {
 	public void toUserOptionalNullTest() {
 		Optional<User> user = userIntegrationParse.toUser(Optional.ofNullable(null));
 		
-		Assert.assertFalse(user.isPresent());
+		Assertions.assertFalse(user.isPresent());
 	}
 	
 	@Test
@@ -164,7 +164,7 @@ public class UserIntegrationParseTest {
 		
 		UserEntity userEntity = userIntegrationParse.toUserEntity(user);
 		
-		Assert.assertNotNull(userEntity);
+		Assertions.assertNotNull(userEntity);
 	}
 	
 	@Test
@@ -172,7 +172,7 @@ public class UserIntegrationParseTest {
 		user = null;
 		UserEntity userEntity = userIntegrationParse.toUserEntity(user);
 		
-		Assert.assertNotNull(userEntity);
+		Assertions.assertNotNull(userEntity);
 	}
 	
 }

@@ -4,15 +4,15 @@ import java.util.UUID;
 
 import javax.crypto.SecretKeyFactory;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class PasswordUtilsTest {
 
 	@InjectMocks
@@ -24,7 +24,7 @@ public class PasswordUtilsTest {
 	private String password;
 	private String secret;
 	
-	@Before
+	@BeforeEach
 	public void init() {
 		password = UUID.randomUUID().toString();
 		secret = UUID.randomUUID().toString();
@@ -34,34 +34,34 @@ public class PasswordUtilsTest {
 	public void encodeTest() {
 		String encoded = passwordUtils.encode(password, secret);
 		
-		Assert.assertNotNull(encoded);
-		Assert.assertTrue(encoded.length()>0);
+		Assertions.assertNotNull(encoded);
+		Assertions.assertTrue(encoded.length()>0);
 	}
 	
 	@Test
 	public void verifyPasswordTest() {
 		String encoded = passwordUtils.encode(password, secret);
 		
-		Assert.assertNotNull(encoded);
-		Assert.assertTrue(encoded.length()>0);
+		Assertions.assertNotNull(encoded);
+		Assertions.assertTrue(encoded.length()>0);
 		
 		Boolean verify = passwordUtils.verifyPassword(password, encoded, secret);
 		
-		Assert.assertNotNull(verify);
-		Assert.assertTrue(verify);
+		Assertions.assertNotNull(verify);
+		Assertions.assertTrue(verify);
 	}
 	
 	@Test
 	public void verifyWrongPasswordTest() {
 		String encoded = passwordUtils.encode(password, secret);
 		
-		Assert.assertNotNull(encoded);
-		Assert.assertTrue(encoded.length()>0);
+		Assertions.assertNotNull(encoded);
+		Assertions.assertTrue(encoded.length()>0);
 		
 		Boolean verify = passwordUtils.verifyPassword(UUID.randomUUID().toString(), encoded, secret);
 		
-		Assert.assertNotNull(verify);
-		Assert.assertFalse(verify);
+		Assertions.assertNotNull(verify);
+		Assertions.assertFalse(verify);
 	}
 	
 }

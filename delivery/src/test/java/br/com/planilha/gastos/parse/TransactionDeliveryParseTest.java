@@ -6,17 +6,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import br.com.planilha.gastos.dto.TransactionDto;
 import br.com.planilha.gastos.entity.Transaction;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class TransactionDeliveryParseTest {
 
 	@InjectMocks
@@ -26,7 +26,7 @@ public class TransactionDeliveryParseTest {
 	private Transaction transaction;
 	private List<Transaction> transactions;
 	
-	@Before
+	@BeforeEach
 	public void init() {
 		transactionDto = new TransactionDto();
 		transactionDto.setData(LocalDateTime.now());
@@ -56,61 +56,61 @@ public class TransactionDeliveryParseTest {
 	public void toTransactionTest() {
 		Transaction transaction = transactionDeliveryParse.toTransaction(transactionDto);
 		
-		Assert.assertNotNull(transaction);
-		Assert.assertEquals(transactionDto.getDescricao(), transaction.getDescricao());
-		Assert.assertEquals(transactionDto.getId(), transaction.getId());
-		Assert.assertEquals(transactionDto.getLocalizacao(), transaction.getLocalizacao());
-		Assert.assertEquals(transactionDto.getMeioDePagamento(), transaction.getMeioDePagamento());
-		Assert.assertEquals(transactionDto.getTipo(), transaction.getTipo());
-		Assert.assertEquals(transactionDto.getData(), transaction.getData());
-		Assert.assertEquals(transactionDto.getValor(), transaction.getValor());
+		Assertions.assertNotNull(transaction);
+		Assertions.assertEquals(transactionDto.getDescricao(), transaction.getDescricao());
+		Assertions.assertEquals(transactionDto.getId(), transaction.getId());
+		Assertions.assertEquals(transactionDto.getLocalizacao(), transaction.getLocalizacao());
+		Assertions.assertEquals(transactionDto.getMeioDePagamento(), transaction.getMeioDePagamento());
+		Assertions.assertEquals(transactionDto.getTipo(), transaction.getTipo());
+		Assertions.assertEquals(transactionDto.getData(), transaction.getData());
+		Assertions.assertEquals(transactionDto.getValor(), transaction.getValor());
 	}
 	
 	@Test
 	public void toTransactionNullTest() {
 		Transaction transaction = transactionDeliveryParse.toTransaction(null);
 		
-		Assert.assertNotNull(transaction);
+		Assertions.assertNotNull(transaction);
 	}
 	
 	@Test
 	public void toTransactionDtoTest() {
 		TransactionDto transactionDto = transactionDeliveryParse.toTransactionDto(transaction);
 		
-		Assert.assertNotNull(transactionDto);
-		Assert.assertEquals(transaction.getDescricao(), transactionDto.getDescricao());
-		Assert.assertEquals(transaction.getId(), transactionDto.getId());
-		Assert.assertEquals(transaction.getLocalizacao(), transactionDto.getLocalizacao());
-		Assert.assertEquals(transaction.getMeioDePagamento(), transactionDto.getMeioDePagamento());
-		Assert.assertEquals(transaction.getTipo(), transactionDto.getTipo());
-		Assert.assertEquals(transaction.getData(), transactionDto.getData());
-		Assert.assertEquals(transaction.getValor(), transactionDto.getValor());
+		Assertions.assertNotNull(transactionDto);
+		Assertions.assertEquals(transaction.getDescricao(), transactionDto.getDescricao());
+		Assertions.assertEquals(transaction.getId(), transactionDto.getId());
+		Assertions.assertEquals(transaction.getLocalizacao(), transactionDto.getLocalizacao());
+		Assertions.assertEquals(transaction.getMeioDePagamento(), transactionDto.getMeioDePagamento());
+		Assertions.assertEquals(transaction.getTipo(), transactionDto.getTipo());
+		Assertions.assertEquals(transaction.getData(), transactionDto.getData());
+		Assertions.assertEquals(transaction.getValor(), transactionDto.getValor());
 	}
 	
 	@Test
 	public void toTransactionDtoNullTest() {
 		TransactionDto transactionDto = transactionDeliveryParse.toTransactionDto(null);
 		
-		Assert.assertNotNull(transactionDto);
+		Assertions.assertNotNull(transactionDto);
 	}
 	
 	@Test
 	public void toTransactionsDtoTest() {
 		List<TransactionDto> transactionsDto = transactionDeliveryParse.toTransactionsDto(transactions);
 		
-		Assert.assertNotNull(transactionsDto);
-		Assert.assertFalse(transactionsDto.isEmpty());
+		Assertions.assertNotNull(transactionsDto);
+		Assertions.assertFalse(transactionsDto.isEmpty());
 		for (Transaction transaction : transactions) {
 			for (TransactionDto transactionDto : transactionsDto) {
 				if(transaction.getId().equals(transactionDto.getId())) {
-					Assert.assertNotNull(transactionDto);
-					Assert.assertEquals(transaction.getDescricao(), transactionDto.getDescricao());
-					Assert.assertEquals(transaction.getId(), transactionDto.getId());
-					Assert.assertEquals(transaction.getLocalizacao(), transactionDto.getLocalizacao());
-					Assert.assertEquals(transaction.getMeioDePagamento(), transactionDto.getMeioDePagamento());
-					Assert.assertEquals(transaction.getTipo(), transactionDto.getTipo());
-					Assert.assertEquals(transaction.getData(), transactionDto.getData());
-					Assert.assertEquals(transaction.getValor(), transactionDto.getValor());
+					Assertions.assertNotNull(transactionDto);
+					Assertions.assertEquals(transaction.getDescricao(), transactionDto.getDescricao());
+					Assertions.assertEquals(transaction.getId(), transactionDto.getId());
+					Assertions.assertEquals(transaction.getLocalizacao(), transactionDto.getLocalizacao());
+					Assertions.assertEquals(transaction.getMeioDePagamento(), transactionDto.getMeioDePagamento());
+					Assertions.assertEquals(transaction.getTipo(), transactionDto.getTipo());
+					Assertions.assertEquals(transaction.getData(), transactionDto.getData());
+					Assertions.assertEquals(transaction.getValor(), transactionDto.getValor());
 				}
 			}
 		}
@@ -120,8 +120,8 @@ public class TransactionDeliveryParseTest {
 	public void toTransactionsDtoNullTest() {
 		List<TransactionDto> transactionsDto = transactionDeliveryParse.toTransactionsDto(null);
 
-		Assert.assertNotNull(transactionsDto);
-		Assert.assertTrue(transactionsDto.isEmpty());
+		Assertions.assertNotNull(transactionsDto);
+		Assertions.assertTrue(transactionsDto.isEmpty());
 	}
 	
 }

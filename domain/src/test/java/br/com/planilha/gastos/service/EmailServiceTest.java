@@ -2,21 +2,21 @@ package br.com.planilha.gastos.service;
 
 import java.util.UUID;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import br.com.planilha.gastos.builder.MessageBuilder;
 import br.com.planilha.gastos.entity.Device;
 import br.com.planilha.gastos.entity.User;
 import br.com.planilha.gastos.port.EmailWebServiceAdapter;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class EmailServiceTest {
 
 	@InjectMocks
@@ -32,7 +32,7 @@ public class EmailServiceTest {
 	private Device device;
 	private String message;
 	
-	@Before
+	@BeforeEach
 	public void init() {
 		user = new User();
 		
@@ -47,7 +47,7 @@ public class EmailServiceTest {
 		
 		boolean isSent = emailService.sendDeviceVerificationEmail(user, device);
 		
-		Assert.assertTrue(isSent);
+		Assertions.assertTrue(isSent);
 		Mockito.verify(emailWebServiceAdapter).send(user, message);
 	}
 	

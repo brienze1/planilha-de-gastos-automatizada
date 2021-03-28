@@ -10,15 +10,15 @@ import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import br.com.planilha.gastos.entity.Device;
 import br.com.planilha.gastos.entity.DeviceEntity;
@@ -30,7 +30,7 @@ import br.com.planilha.gastos.exception.TransactionException;
 import br.com.planilha.gastos.parse.TransactionIntegrationParse;
 import br.com.planilha.gastos.repository.TransactionRepository;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class TransactionPersistenceTest {
 
 	@InjectMocks
@@ -56,7 +56,7 @@ public class TransactionPersistenceTest {
 	private Integer quantity;
 	private Integer page;
 	
-	@Before
+	@BeforeEach
 	public void init() {
 		transaction = new Transaction();
 		transaction.setData(LocalDateTime.now());
@@ -134,14 +134,14 @@ public class TransactionPersistenceTest {
 		
 		Transaction savedTransaction = transactionPersistence.save(transaction, user);
 		
-		Assert.assertNotNull(savedTransaction);
-		Assert.assertEquals(transaction.getDescricao(), savedTransaction.getDescricao());
-		Assert.assertEquals(transaction.getId(), savedTransaction.getId());
-		Assert.assertEquals(transaction.getLocalizacao(), savedTransaction.getLocalizacao());
-		Assert.assertEquals(transaction.getMeioDePagamento(), savedTransaction.getMeioDePagamento());
-		Assert.assertEquals(transaction.getTipo(), savedTransaction.getTipo());
-		Assert.assertEquals(transaction.getData(), savedTransaction.getData());
-		Assert.assertEquals(transaction.getValor(), savedTransaction.getValor());
+		Assertions.assertNotNull(savedTransaction);
+		Assertions.assertEquals(transaction.getDescricao(), savedTransaction.getDescricao());
+		Assertions.assertEquals(transaction.getId(), savedTransaction.getId());
+		Assertions.assertEquals(transaction.getLocalizacao(), savedTransaction.getLocalizacao());
+		Assertions.assertEquals(transaction.getMeioDePagamento(), savedTransaction.getMeioDePagamento());
+		Assertions.assertEquals(transaction.getTipo(), savedTransaction.getTipo());
+		Assertions.assertEquals(transaction.getData(), savedTransaction.getData());
+		Assertions.assertEquals(transaction.getValor(), savedTransaction.getValor());
 	}
 	
 	@Test
@@ -152,22 +152,22 @@ public class TransactionPersistenceTest {
 		
 		List<Transaction> savedTransactions = transactionPersistence.findAll(user);
 		
-		Assert.assertNotNull(savedTransactions);
-		Assert.assertFalse(savedTransactions.isEmpty());
-		Assert.assertEquals(transaction.getDescricao(), savedTransactions.get(0).getDescricao());
-		Assert.assertEquals(transaction.getId(), savedTransactions.get(0).getId());
-		Assert.assertEquals(transaction.getLocalizacao(), savedTransactions.get(0).getLocalizacao());
-		Assert.assertEquals(transaction.getMeioDePagamento(), savedTransactions.get(0).getMeioDePagamento());
-		Assert.assertEquals(transaction.getTipo(), savedTransactions.get(0).getTipo());
-		Assert.assertEquals(transaction.getData(), savedTransactions.get(0).getData());
-		Assert.assertEquals(transaction.getValor(), savedTransactions.get(0).getValor());
-		Assert.assertEquals(transaction.getDescricao(), savedTransactions.get(1).getDescricao());
-		Assert.assertEquals(transaction.getId(), savedTransactions.get(1).getId());
-		Assert.assertEquals(transaction.getLocalizacao(), savedTransactions.get(1).getLocalizacao());
-		Assert.assertEquals(transaction.getMeioDePagamento(), savedTransactions.get(1).getMeioDePagamento());
-		Assert.assertEquals(transaction.getTipo(), savedTransactions.get(1).getTipo());
-		Assert.assertEquals(transaction.getData(), savedTransactions.get(1).getData());
-		Assert.assertEquals(transaction.getValor(), savedTransactions.get(1).getValor());
+		Assertions.assertNotNull(savedTransactions);
+		Assertions.assertFalse(savedTransactions.isEmpty());
+		Assertions.assertEquals(transaction.getDescricao(), savedTransactions.get(0).getDescricao());
+		Assertions.assertEquals(transaction.getId(), savedTransactions.get(0).getId());
+		Assertions.assertEquals(transaction.getLocalizacao(), savedTransactions.get(0).getLocalizacao());
+		Assertions.assertEquals(transaction.getMeioDePagamento(), savedTransactions.get(0).getMeioDePagamento());
+		Assertions.assertEquals(transaction.getTipo(), savedTransactions.get(0).getTipo());
+		Assertions.assertEquals(transaction.getData(), savedTransactions.get(0).getData());
+		Assertions.assertEquals(transaction.getValor(), savedTransactions.get(0).getValor());
+		Assertions.assertEquals(transaction.getDescricao(), savedTransactions.get(1).getDescricao());
+		Assertions.assertEquals(transaction.getId(), savedTransactions.get(1).getId());
+		Assertions.assertEquals(transaction.getLocalizacao(), savedTransactions.get(1).getLocalizacao());
+		Assertions.assertEquals(transaction.getMeioDePagamento(), savedTransactions.get(1).getMeioDePagamento());
+		Assertions.assertEquals(transaction.getTipo(), savedTransactions.get(1).getTipo());
+		Assertions.assertEquals(transaction.getData(), savedTransactions.get(1).getData());
+		Assertions.assertEquals(transaction.getValor(), savedTransactions.get(1).getValor());
 	}
 	
 	@Test
@@ -178,14 +178,14 @@ public class TransactionPersistenceTest {
 		
 		Transaction savedTransaction = transactionPersistence.find(user, transaction.getId());
 		
-		Assert.assertNotNull(savedTransaction);
-		Assert.assertEquals(transaction.getDescricao(), savedTransaction.getDescricao());
-		Assert.assertEquals(transaction.getId(), savedTransaction.getId());
-		Assert.assertEquals(transaction.getLocalizacao(), savedTransaction.getLocalizacao());
-		Assert.assertEquals(transaction.getMeioDePagamento(), savedTransaction.getMeioDePagamento());
-		Assert.assertEquals(transaction.getTipo(), savedTransaction.getTipo());
-		Assert.assertEquals(transaction.getData(), savedTransaction.getData());
-		Assert.assertEquals(transaction.getValor(), savedTransaction.getValor());
+		Assertions.assertNotNull(savedTransaction);
+		Assertions.assertEquals(transaction.getDescricao(), savedTransaction.getDescricao());
+		Assertions.assertEquals(transaction.getId(), savedTransaction.getId());
+		Assertions.assertEquals(transaction.getLocalizacao(), savedTransaction.getLocalizacao());
+		Assertions.assertEquals(transaction.getMeioDePagamento(), savedTransaction.getMeioDePagamento());
+		Assertions.assertEquals(transaction.getTipo(), savedTransaction.getTipo());
+		Assertions.assertEquals(transaction.getData(), savedTransaction.getData());
+		Assertions.assertEquals(transaction.getValor(), savedTransaction.getValor());
 	}
 	
 	@Test
@@ -196,7 +196,7 @@ public class TransactionPersistenceTest {
 		try {
 			transactionPersistence.find(user, transaction.getId());
 		} catch (TransactionException e) {
-			Assert.assertEquals("Transaction does not exist", e.getMessage());
+			Assertions.assertEquals("Transaction does not exist", e.getMessage());
 		}
 	}
 	
@@ -206,7 +206,7 @@ public class TransactionPersistenceTest {
 		
 		boolean isValidId = transactionPersistence.isValidId(transaction.getId());
 		
-		Assert.assertFalse(isValidId);
+		Assertions.assertFalse(isValidId);
 	}
 	
 	@Test
@@ -215,7 +215,7 @@ public class TransactionPersistenceTest {
 		
 		boolean isValidId = transactionPersistence.isValidId(transaction.getId());
 		
-		Assert.assertTrue(isValidId);
+		Assertions.assertTrue(isValidId);
 	}
 	
 	@Test
@@ -224,7 +224,7 @@ public class TransactionPersistenceTest {
 		
 		boolean isValidId = transactionPersistence.isValidId(transaction.getId());
 		
-		Assert.assertFalse(isValidId);
+		Assertions.assertFalse(isValidId);
 	}
 	
 	@Test
@@ -235,22 +235,22 @@ public class TransactionPersistenceTest {
 	
 		List<Transaction> savedTransactions = transactionPersistence.findSinceDateByQuantity(user, date, quantity, page);
 		
-		Assert.assertNotNull(savedTransactions);
-		Assert.assertFalse(savedTransactions.isEmpty());
-		Assert.assertEquals(transaction.getDescricao(), savedTransactions.get(0).getDescricao());
-		Assert.assertEquals(transaction.getId(), savedTransactions.get(0).getId());
-		Assert.assertEquals(transaction.getLocalizacao(), savedTransactions.get(0).getLocalizacao());
-		Assert.assertEquals(transaction.getMeioDePagamento(), savedTransactions.get(0).getMeioDePagamento());
-		Assert.assertEquals(transaction.getTipo(), savedTransactions.get(0).getTipo());
-		Assert.assertEquals(transaction.getData(), savedTransactions.get(0).getData());
-		Assert.assertEquals(transaction.getValor(), savedTransactions.get(0).getValor());
-		Assert.assertEquals(transaction.getDescricao(), savedTransactions.get(1).getDescricao());
-		Assert.assertEquals(transaction.getId(), savedTransactions.get(1).getId());
-		Assert.assertEquals(transaction.getLocalizacao(), savedTransactions.get(1).getLocalizacao());
-		Assert.assertEquals(transaction.getMeioDePagamento(), savedTransactions.get(1).getMeioDePagamento());
-		Assert.assertEquals(transaction.getTipo(), savedTransactions.get(1).getTipo());
-		Assert.assertEquals(transaction.getData(), savedTransactions.get(1).getData());
-		Assert.assertEquals(transaction.getValor(), savedTransactions.get(1).getValor());
+		Assertions.assertNotNull(savedTransactions);
+		Assertions.assertFalse(savedTransactions.isEmpty());
+		Assertions.assertEquals(transaction.getDescricao(), savedTransactions.get(0).getDescricao());
+		Assertions.assertEquals(transaction.getId(), savedTransactions.get(0).getId());
+		Assertions.assertEquals(transaction.getLocalizacao(), savedTransactions.get(0).getLocalizacao());
+		Assertions.assertEquals(transaction.getMeioDePagamento(), savedTransactions.get(0).getMeioDePagamento());
+		Assertions.assertEquals(transaction.getTipo(), savedTransactions.get(0).getTipo());
+		Assertions.assertEquals(transaction.getData(), savedTransactions.get(0).getData());
+		Assertions.assertEquals(transaction.getValor(), savedTransactions.get(0).getValor());
+		Assertions.assertEquals(transaction.getDescricao(), savedTransactions.get(1).getDescricao());
+		Assertions.assertEquals(transaction.getId(), savedTransactions.get(1).getId());
+		Assertions.assertEquals(transaction.getLocalizacao(), savedTransactions.get(1).getLocalizacao());
+		Assertions.assertEquals(transaction.getMeioDePagamento(), savedTransactions.get(1).getMeioDePagamento());
+		Assertions.assertEquals(transaction.getTipo(), savedTransactions.get(1).getTipo());
+		Assertions.assertEquals(transaction.getData(), savedTransactions.get(1).getData());
+		Assertions.assertEquals(transaction.getValor(), savedTransactions.get(1).getValor());
 	}
 	
 	@Test
@@ -261,22 +261,22 @@ public class TransactionPersistenceTest {
 	
 		List<Transaction> savedTransactions = transactionPersistence.findSinceDate(user, date);
 		
-		Assert.assertNotNull(savedTransactions);
-		Assert.assertFalse(savedTransactions.isEmpty());
-		Assert.assertEquals(transaction.getDescricao(), savedTransactions.get(0).getDescricao());
-		Assert.assertEquals(transaction.getId(), savedTransactions.get(0).getId());
-		Assert.assertEquals(transaction.getLocalizacao(), savedTransactions.get(0).getLocalizacao());
-		Assert.assertEquals(transaction.getMeioDePagamento(), savedTransactions.get(0).getMeioDePagamento());
-		Assert.assertEquals(transaction.getTipo(), savedTransactions.get(0).getTipo());
-		Assert.assertEquals(transaction.getData(), savedTransactions.get(0).getData());
-		Assert.assertEquals(transaction.getValor(), savedTransactions.get(0).getValor());
-		Assert.assertEquals(transaction.getDescricao(), savedTransactions.get(1).getDescricao());
-		Assert.assertEquals(transaction.getId(), savedTransactions.get(1).getId());
-		Assert.assertEquals(transaction.getLocalizacao(), savedTransactions.get(1).getLocalizacao());
-		Assert.assertEquals(transaction.getMeioDePagamento(), savedTransactions.get(1).getMeioDePagamento());
-		Assert.assertEquals(transaction.getTipo(), savedTransactions.get(1).getTipo());
-		Assert.assertEquals(transaction.getData(), savedTransactions.get(1).getData());
-		Assert.assertEquals(transaction.getValor(), savedTransactions.get(1).getValor());
+		Assertions.assertNotNull(savedTransactions);
+		Assertions.assertFalse(savedTransactions.isEmpty());
+		Assertions.assertEquals(transaction.getDescricao(), savedTransactions.get(0).getDescricao());
+		Assertions.assertEquals(transaction.getId(), savedTransactions.get(0).getId());
+		Assertions.assertEquals(transaction.getLocalizacao(), savedTransactions.get(0).getLocalizacao());
+		Assertions.assertEquals(transaction.getMeioDePagamento(), savedTransactions.get(0).getMeioDePagamento());
+		Assertions.assertEquals(transaction.getTipo(), savedTransactions.get(0).getTipo());
+		Assertions.assertEquals(transaction.getData(), savedTransactions.get(0).getData());
+		Assertions.assertEquals(transaction.getValor(), savedTransactions.get(0).getValor());
+		Assertions.assertEquals(transaction.getDescricao(), savedTransactions.get(1).getDescricao());
+		Assertions.assertEquals(transaction.getId(), savedTransactions.get(1).getId());
+		Assertions.assertEquals(transaction.getLocalizacao(), savedTransactions.get(1).getLocalizacao());
+		Assertions.assertEquals(transaction.getMeioDePagamento(), savedTransactions.get(1).getMeioDePagamento());
+		Assertions.assertEquals(transaction.getTipo(), savedTransactions.get(1).getTipo());
+		Assertions.assertEquals(transaction.getData(), savedTransactions.get(1).getData());
+		Assertions.assertEquals(transaction.getValor(), savedTransactions.get(1).getValor());
 	}
 	
 	@Test
@@ -287,22 +287,22 @@ public class TransactionPersistenceTest {
 	
 		List<Transaction> savedTransactions = transactionPersistence.findByQuantity(user, quantity, page);
 		
-		Assert.assertNotNull(savedTransactions);
-		Assert.assertFalse(savedTransactions.isEmpty());
-		Assert.assertEquals(transaction.getDescricao(), savedTransactions.get(0).getDescricao());
-		Assert.assertEquals(transaction.getId(), savedTransactions.get(0).getId());
-		Assert.assertEquals(transaction.getLocalizacao(), savedTransactions.get(0).getLocalizacao());
-		Assert.assertEquals(transaction.getMeioDePagamento(), savedTransactions.get(0).getMeioDePagamento());
-		Assert.assertEquals(transaction.getTipo(), savedTransactions.get(0).getTipo());
-		Assert.assertEquals(transaction.getData(), savedTransactions.get(0).getData());
-		Assert.assertEquals(transaction.getValor(), savedTransactions.get(0).getValor());
-		Assert.assertEquals(transaction.getDescricao(), savedTransactions.get(1).getDescricao());
-		Assert.assertEquals(transaction.getId(), savedTransactions.get(1).getId());
-		Assert.assertEquals(transaction.getLocalizacao(), savedTransactions.get(1).getLocalizacao());
-		Assert.assertEquals(transaction.getMeioDePagamento(), savedTransactions.get(1).getMeioDePagamento());
-		Assert.assertEquals(transaction.getTipo(), savedTransactions.get(1).getTipo());
-		Assert.assertEquals(transaction.getData(), savedTransactions.get(1).getData());
-		Assert.assertEquals(transaction.getValor(), savedTransactions.get(1).getValor());
+		Assertions.assertNotNull(savedTransactions);
+		Assertions.assertFalse(savedTransactions.isEmpty());
+		Assertions.assertEquals(transaction.getDescricao(), savedTransactions.get(0).getDescricao());
+		Assertions.assertEquals(transaction.getId(), savedTransactions.get(0).getId());
+		Assertions.assertEquals(transaction.getLocalizacao(), savedTransactions.get(0).getLocalizacao());
+		Assertions.assertEquals(transaction.getMeioDePagamento(), savedTransactions.get(0).getMeioDePagamento());
+		Assertions.assertEquals(transaction.getTipo(), savedTransactions.get(0).getTipo());
+		Assertions.assertEquals(transaction.getData(), savedTransactions.get(0).getData());
+		Assertions.assertEquals(transaction.getValor(), savedTransactions.get(0).getValor());
+		Assertions.assertEquals(transaction.getDescricao(), savedTransactions.get(1).getDescricao());
+		Assertions.assertEquals(transaction.getId(), savedTransactions.get(1).getId());
+		Assertions.assertEquals(transaction.getLocalizacao(), savedTransactions.get(1).getLocalizacao());
+		Assertions.assertEquals(transaction.getMeioDePagamento(), savedTransactions.get(1).getMeioDePagamento());
+		Assertions.assertEquals(transaction.getTipo(), savedTransactions.get(1).getTipo());
+		Assertions.assertEquals(transaction.getData(), savedTransactions.get(1).getData());
+		Assertions.assertEquals(transaction.getValor(), savedTransactions.get(1).getValor());
 	}
 	
 }

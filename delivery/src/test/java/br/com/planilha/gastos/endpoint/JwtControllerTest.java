@@ -4,19 +4,19 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import br.com.planilha.gastos.dto.DataDto;
 import br.com.planilha.gastos.port.JwtAdapter;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class JwtControllerTest {
 
 	@InjectMocks
@@ -31,7 +31,7 @@ public class JwtControllerTest {
 	private String token;
 	private DataDto dataDto;
 	
-	@Before
+	@BeforeEach
 	public void init() {
 		userId = UUID.randomUUID().toString();
 
@@ -54,10 +54,10 @@ public class JwtControllerTest {
 		
 		Mockito.verify(jwtTokenUtils).generate(userId, secret, mapaDados, 0);
 		
-		Assert.assertNotNull(dataDto);
-		Assert.assertNotNull(dataDto.getJwtDataToken());
-		Assert.assertFalse(dataDto.getJwtDataToken().isBlank());
-		Assert.assertEquals(token, dataDto.getJwtDataToken());
+		Assertions.assertNotNull(dataDto);
+		Assertions.assertNotNull(dataDto.getJwtDataToken());
+		Assertions.assertFalse(dataDto.getJwtDataToken().isBlank());
+		Assertions.assertEquals(token, dataDto.getJwtDataToken());
 	}
 	
 	@Test
@@ -68,8 +68,8 @@ public class JwtControllerTest {
 		
 		Mockito.verify(jwtTokenUtils).decodeJwtNoVerification(dataDto.getJwtDataToken());
 		
-		Assert.assertNotNull(response);
-		Assert.assertEquals(mapaDados.get("teste"), response.get("teste"));
+		Assertions.assertNotNull(response);
+		Assertions.assertEquals(mapaDados.get("teste"), response.get("teste"));
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -81,8 +81,8 @@ public class JwtControllerTest {
 		
 		Mockito.verify(jwtTokenUtils).decode(dataDto.getJwtDataToken(), secret, Object.class);
 		
-		Assert.assertNotNull(response);
-		Assert.assertEquals(mapaDados.get("teste"), response.get("teste"));
+		Assertions.assertNotNull(response);
+		Assertions.assertEquals(mapaDados.get("teste"), response.get("teste"));
 	}
 	
 }

@@ -9,16 +9,16 @@ import java.util.UUID;
 
 import javax.crypto.SecretKey;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -33,7 +33,7 @@ import br.com.planilha.gastos.parse.AccessTokenIntegrationParse;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class JwtTokenUtilsTest {
 
 	@InjectMocks
@@ -59,7 +59,7 @@ public class JwtTokenUtilsTest {
 	private AccessTokenDtoi accessTokenDtoi;
 	private AccessToken accessToken;
 	
-	@Before
+	@BeforeEach
 	public void init() {
 		userId = UUID.randomUUID().toString();
 		secret = UUID.randomUUID().toString();
@@ -111,8 +111,8 @@ public class JwtTokenUtilsTest {
 		
 		String token = jwtTokenUtils.generate(userId, secret, jwtBody, expirationSeconds);
 		
-		Assert.assertNotNull(token);
-		Assert.assertFalse(token.isBlank());
+		Assertions.assertNotNull(token);
+		Assertions.assertFalse(token.isBlank());
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -122,8 +122,8 @@ public class JwtTokenUtilsTest {
 		
 		String token = jwtTokenUtils.generateAccessToken(user, 0);
 		
-		Assert.assertNotNull(token);
-		Assert.assertFalse(token.isBlank());
+		Assertions.assertNotNull(token);
+		Assertions.assertFalse(token.isBlank());
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -133,8 +133,8 @@ public class JwtTokenUtilsTest {
 		
 		String token = jwtTokenUtils.generate(userId, secret, jwtBody, expirationSeconds);
 		
-		Assert.assertNotNull(token);
-		Assert.assertFalse(token.isBlank());
+		Assertions.assertNotNull(token);
+		Assertions.assertFalse(token.isBlank());
 
 		SecretKey key = Keys.hmacShaKeyFor(secret.getBytes());
 		Object jwt = Jwts.parserBuilder().setSigningKey(key).build().parse(token).getBody();
@@ -145,15 +145,15 @@ public class JwtTokenUtilsTest {
 		
 		Map<String, Object> body = jwtTokenUtils.decode(token, secret, HashMap.class);
 		
-		Assert.assertNotNull(body);
-		Assert.assertEquals(jwtBody.get("teste1"), body.get("teste1"));
-		Assert.assertEquals(jwtBody.get("teste2"), body.get("teste2"));
-		Assert.assertEquals(jwtBody.get("teste3"), body.get("teste3"));
-		Assert.assertEquals(jwtBody.get("teste4"), body.get("teste4"));
-		Assert.assertEquals(((Map<String, String>) jwtBody.get("data")).get("dataTeste1"), ((Map<String, String>) body.get("data")).get("dataTeste1"));
-		Assert.assertEquals(((Map<String, String>) jwtBody.get("data")).get("dataTeste2"), ((Map<String, String>) body.get("data")).get("dataTeste2"));
-		Assert.assertEquals(((Map<String, String>) jwtBody.get("data")).get("dataTeste3"), ((Map<String, String>) body.get("data")).get("dataTeste3"));
-		Assert.assertEquals(((Map<String, String>) jwtBody.get("data")).get("dataTeste4"), ((Map<String, String>) body.get("data")).get("dataTeste4"));
+		Assertions.assertNotNull(body);
+		Assertions.assertEquals(jwtBody.get("teste1"), body.get("teste1"));
+		Assertions.assertEquals(jwtBody.get("teste2"), body.get("teste2"));
+		Assertions.assertEquals(jwtBody.get("teste3"), body.get("teste3"));
+		Assertions.assertEquals(jwtBody.get("teste4"), body.get("teste4"));
+		Assertions.assertEquals(((Map<String, String>) jwtBody.get("data")).get("dataTeste1"), ((Map<String, String>) body.get("data")).get("dataTeste1"));
+		Assertions.assertEquals(((Map<String, String>) jwtBody.get("data")).get("dataTeste2"), ((Map<String, String>) body.get("data")).get("dataTeste2"));
+		Assertions.assertEquals(((Map<String, String>) jwtBody.get("data")).get("dataTeste3"), ((Map<String, String>) body.get("data")).get("dataTeste3"));
+		Assertions.assertEquals(((Map<String, String>) jwtBody.get("data")).get("dataTeste4"), ((Map<String, String>) body.get("data")).get("dataTeste4"));
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -163,8 +163,8 @@ public class JwtTokenUtilsTest {
 		
 		String token = jwtTokenUtils.generate(userId, secret, jwtBody, expirationSeconds);
 		
-		Assert.assertNotNull(token);
-		Assert.assertFalse(token.isBlank());
+		Assertions.assertNotNull(token);
+		Assertions.assertFalse(token.isBlank());
 
 		int i = token.lastIndexOf('.');
 		String jwtWithoutSignature = token.substring(0, i + 1);
@@ -175,15 +175,15 @@ public class JwtTokenUtilsTest {
 		
 		Map<String, Object> body = jwtTokenUtils.decodeJwtNoVerification(token);
 		
-		Assert.assertNotNull(body);
-		Assert.assertEquals(jwtBody.get("teste1"), ((Map<String, Object>) body.get("payload")).get("teste1"));
-		Assert.assertEquals(jwtBody.get("teste2"), ((Map<String, Object>) body.get("payload")).get("teste2"));
-		Assert.assertEquals(jwtBody.get("teste3"), ((Map<String, Object>) body.get("payload")).get("teste3"));
-		Assert.assertEquals(jwtBody.get("teste4"), ((Map<String, Object>) body.get("payload")).get("teste4"));
-		Assert.assertEquals(((Map<String, String>) jwtBody.get("data")).get("dataTeste1"), ((Map<String, String>) ((Map<String, Object>) body.get("payload")).get("data")).get("dataTeste1"));
-		Assert.assertEquals(((Map<String, String>) jwtBody.get("data")).get("dataTeste2"), ((Map<String, String>) ((Map<String, Object>) body.get("payload")).get("data")).get("dataTeste2"));
-		Assert.assertEquals(((Map<String, String>) jwtBody.get("data")).get("dataTeste3"), ((Map<String, String>) ((Map<String, Object>) body.get("payload")).get("data")).get("dataTeste3"));
-		Assert.assertEquals(((Map<String, String>) jwtBody.get("data")).get("dataTeste4"), ((Map<String, String>) ((Map<String, Object>) body.get("payload")).get("data")).get("dataTeste4"));
+		Assertions.assertNotNull(body);
+		Assertions.assertEquals(jwtBody.get("teste1"), ((Map<String, Object>) body.get("payload")).get("teste1"));
+		Assertions.assertEquals(jwtBody.get("teste2"), ((Map<String, Object>) body.get("payload")).get("teste2"));
+		Assertions.assertEquals(jwtBody.get("teste3"), ((Map<String, Object>) body.get("payload")).get("teste3"));
+		Assertions.assertEquals(jwtBody.get("teste4"), ((Map<String, Object>) body.get("payload")).get("teste4"));
+		Assertions.assertEquals(((Map<String, String>) jwtBody.get("data")).get("dataTeste1"), ((Map<String, String>) ((Map<String, Object>) body.get("payload")).get("data")).get("dataTeste1"));
+		Assertions.assertEquals(((Map<String, String>) jwtBody.get("data")).get("dataTeste2"), ((Map<String, String>) ((Map<String, Object>) body.get("payload")).get("data")).get("dataTeste2"));
+		Assertions.assertEquals(((Map<String, String>) jwtBody.get("data")).get("dataTeste3"), ((Map<String, String>) ((Map<String, Object>) body.get("payload")).get("data")).get("dataTeste3"));
+		Assertions.assertEquals(((Map<String, String>) jwtBody.get("data")).get("dataTeste4"), ((Map<String, String>) ((Map<String, Object>) body.get("payload")).get("data")).get("dataTeste4"));
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -193,8 +193,8 @@ public class JwtTokenUtilsTest {
 		
 		String token = jwtTokenUtils.generateAccessToken(user, 0);
 		
-		Assert.assertNotNull(token);
-		Assert.assertFalse(token.isBlank());
+		Assertions.assertNotNull(token);
+		Assertions.assertFalse(token.isBlank());
 		
 		int i = token.lastIndexOf('.');
 		String jwtWithoutSignature = token.substring(0, i + 1);
@@ -207,9 +207,9 @@ public class JwtTokenUtilsTest {
 		
 		AccessToken acessTokenResponse = jwtTokenUtils.getAcessToken(token);
 		
-		Assert.assertEquals(user.getId(), acessTokenResponse.getUserId());
-		Assert.assertEquals(user.inUseDeviceId(), acessTokenResponse.getDeviceId());
-		Assert.assertEquals(user.getFirstName() + " " + user.getLastName(), acessTokenResponse.getName());
+		Assertions.assertEquals(user.getId(), acessTokenResponse.getUserId());
+		Assertions.assertEquals(user.inUseDeviceId(), acessTokenResponse.getDeviceId());
+		Assertions.assertEquals(user.getFirstName() + " " + user.getLastName(), acessTokenResponse.getName());
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -219,12 +219,12 @@ public class JwtTokenUtilsTest {
 		
 		String token = jwtTokenUtils.generateAccessToken(user, 0);
 		
-		Assert.assertNotNull(token);
-		Assert.assertFalse(token.isBlank());
+		Assertions.assertNotNull(token);
+		Assertions.assertFalse(token.isBlank());
 
 		boolean isValidToken = jwtTokenUtils.isValidToken(token, user.getSecret());
 		
-		Assert.assertTrue(isValidToken);
+		Assertions.assertTrue(isValidToken);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -234,12 +234,12 @@ public class JwtTokenUtilsTest {
 		
 		String token = jwtTokenUtils.generateAccessToken(user, 0);
 		
-		Assert.assertNotNull(token);
-		Assert.assertFalse(token.isBlank());
+		Assertions.assertNotNull(token);
+		Assertions.assertFalse(token.isBlank());
 		
 		boolean isValidToken = jwtTokenUtils.isValidToken(token, UUID.randomUUID().toString());
 				
-		Assert.assertFalse(isValidToken);
+		Assertions.assertFalse(isValidToken);
 	}
 	
 }

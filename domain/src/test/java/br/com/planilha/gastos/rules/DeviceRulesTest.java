@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import br.com.planilha.gastos.entity.Device;
 import br.com.planilha.gastos.exception.DeviceException;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class DeviceRulesTest {
 
 	@InjectMocks
@@ -22,7 +22,7 @@ public class DeviceRulesTest {
 	
 	private List<Device> devices;
 	
-	@Before
+	@BeforeEach
 	public void init() {
 		devices = new ArrayList<>();
 
@@ -43,69 +43,54 @@ public class DeviceRulesTest {
 	public void validateTest() {
 		boolean isValid = deviceRules.validate(devices);
 		
-		Assert.assertTrue(isValid);
+		Assertions.assertTrue(isValid);
 	}
 	
-	@Test(expected = DeviceException.class)
+	@Test
 	public void validateDevicesNullTest() {
-		try {
-			deviceRules.validate(null);
-		} catch (DeviceException e) {
-			Assert.assertEquals("List of devices can't be null or empty", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				DeviceException.class, 
+				() -> deviceRules.validate(null), 
+				"List of devices can't be null or empty");
 	}
 	
-	@Test(expected = DeviceException.class)
+	@Test
 	public void validateDevicesEmptyTest() {
-		try {
-			deviceRules.validate(new ArrayList<>());
-		} catch (DeviceException e) {
-			Assert.assertEquals("List of devices can't be null or empty", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				DeviceException.class, 
+				() -> deviceRules.validate(new ArrayList<>()), 
+				"List of devices can't be null or empty");
 	}
 	
-	@Test(expected = DeviceException.class)
+	@Test
 	public void validateDeviceNullTest() {
 		Device device = null;
 		devices.set(0, device);
 		
-		try {
-			deviceRules.validate(devices);
-		} catch (DeviceException e) {
-			Assert.assertEquals("Device can't be null", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				DeviceException.class, 
+				() -> deviceRules.validate(devices), 
+				"Device can't be null");
 	}
 	
-	@Test(expected = DeviceException.class)
+	@Test
 	public void validateDeviceIdNullTest() {
 		devices.get(0).setDeviceId(null);
 		
-		try {
-			deviceRules.validate(devices);
-		} catch (DeviceException e) {
-			Assert.assertEquals("Device Id can't be null or empty", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				DeviceException.class, 
+				() -> deviceRules.validate(devices), 
+				"Device Id can't be null or empty");
 	}
 	
-	@Test(expected = DeviceException.class)
+	@Test
 	public void validateDeviceIdBlankTest() {
 		devices.get(0).setDeviceId("");
 		
-		try {
-			deviceRules.validate(devices);
-		} catch (DeviceException e) {
-			Assert.assertEquals("Device Id can't be null or empty", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				DeviceException.class, 
+				() -> deviceRules.validate(devices), 
+				"Device Id can't be null or empty");
 	}
 	
 	@Test
@@ -115,18 +100,15 @@ public class DeviceRulesTest {
 		
 		boolean isValid = deviceRules.validateDeviceRegistration(validDevice);
 		
-		Assert.assertTrue(isValid);
+		Assertions.assertTrue(isValid);
 	}
 	
-	@Test(expected = DeviceException.class)
+	@Test
 	public void validateDeviceRegistrationSizeErrorTest() {
-		try {
-			deviceRules.validateDeviceRegistration(devices);
-		} catch (DeviceException e) {
-			Assert.assertEquals("Can't register more than one device at a time", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				DeviceException.class, 
+				() -> deviceRules.validateDeviceRegistration(devices), 
+				"Can't register more than one device at a time");
 	}
 	
 }

@@ -5,15 +5,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.modelmapper.ModelMapper;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -25,7 +25,8 @@ import br.com.planilha.gastos.entity.Device;
 import br.com.planilha.gastos.entity.User;
 import br.com.planilha.gastos.exception.MapperUtilsException;
 
-@RunWith(SpringRunner.class)
+@SuppressWarnings({"deprecation", "unchecked"})
+@ExtendWith(SpringExtension.class)
 public class MapperUtilsTest {
 
 	@InjectMocks
@@ -40,7 +41,7 @@ public class MapperUtilsTest {
 	private User user;
 	private TypeReference<Map<String, Object>> typeReference;
 	
-	@Before
+	@BeforeEach
 	public void init() {
 		Device device = new Device();
 		device.setDeviceId(UUID.randomUUID().toString());
@@ -65,124 +66,105 @@ public class MapperUtilsTest {
 		typeReference = new TypeReference<Map<String, Object>>() {};
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Test
 	public void mapTest() {
 		String userJson = mapperUtils.writeValueAsString(user);
 		
 		Map<String, Object> userMapped = mapperUtils.map(userJson, typeReference);
 		
-		Assert.assertEquals(user.getEmail(), userMapped.get("email"));
-		Assert.assertEquals(user.getFirstName(), userMapped.get("firstName"));
-		Assert.assertEquals(user.getId(), userMapped.get("id"));
-		Assert.assertEquals(user.getLastName(), userMapped.get("lastName"));
-		Assert.assertEquals(user.getPassword(), userMapped.get("password"));
-		Assert.assertEquals(user.getSecret(), userMapped.get("secret"));
-		Assert.assertEquals(user.isAutoLogin(), userMapped.get("autoLogin"));
-		Assert.assertEquals(user.isValidEmail(), userMapped.get("validEmail"));
-		Assert.assertEquals(user.getDevices().get(0).getDeviceId(), ((List<Map<String, String>>) userMapped.get("devices")).get(0).get("deviceId"));
-		Assert.assertEquals(user.getDevices().get(0).getId(), ((List<Map<String, String>>) userMapped.get("devices")).get(0).get("id"));
-		Assert.assertEquals(user.getDevices().get(0).getVerificationCode(), ((List<Map<String, String>>) userMapped.get("devices")).get(0).get("verificationCode"));
+		Assertions.assertEquals(user.getEmail(), userMapped.get("email"));
+		Assertions.assertEquals(user.getFirstName(), userMapped.get("firstName"));
+		Assertions.assertEquals(user.getId(), userMapped.get("id"));
+		Assertions.assertEquals(user.getLastName(), userMapped.get("lastName"));
+		Assertions.assertEquals(user.getPassword(), userMapped.get("password"));
+		Assertions.assertEquals(user.getSecret(), userMapped.get("secret"));
+		Assertions.assertEquals(user.isAutoLogin(), userMapped.get("autoLogin"));
+		Assertions.assertEquals(user.isValidEmail(), userMapped.get("validEmail"));
+		Assertions.assertEquals(user.getDevices().get(0).getDeviceId(), ((List<Map<String, String>>) userMapped.get("devices")).get(0).get("deviceId"));
+		Assertions.assertEquals(user.getDevices().get(0).getId(), ((List<Map<String, String>>) userMapped.get("devices")).get(0).get("id"));
+		Assertions.assertEquals(user.getDevices().get(0).getVerificationCode(), ((List<Map<String, String>>) userMapped.get("devices")).get(0).get("verificationCode"));
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Test
 	public void mapObjectTest() {
 		Map<String, Object> userMapped = mapperUtils.map(user, typeReference);
 		
-		Assert.assertEquals(user.getEmail(), userMapped.get("email"));
-		Assert.assertEquals(user.getFirstName(), userMapped.get("firstName"));
-		Assert.assertEquals(user.getId(), userMapped.get("id"));
-		Assert.assertEquals(user.getLastName(), userMapped.get("lastName"));
-		Assert.assertEquals(user.getPassword(), userMapped.get("password"));
-		Assert.assertEquals(user.getSecret(), userMapped.get("secret"));
-		Assert.assertEquals(user.isAutoLogin(), userMapped.get("autoLogin"));
-		Assert.assertEquals(user.isValidEmail(), userMapped.get("validEmail"));
-		Assert.assertEquals(user.getDevices().get(0).getDeviceId(), ((List<Map<String, String>>) userMapped.get("devices")).get(0).get("deviceId"));
-		Assert.assertEquals(user.getDevices().get(0).getId(), ((List<Map<String, String>>) userMapped.get("devices")).get(0).get("id"));
-		Assert.assertEquals(user.getDevices().get(0).getVerificationCode(), ((List<Map<String, String>>) userMapped.get("devices")).get(0).get("verificationCode"));
+		Assertions.assertEquals(user.getEmail(), userMapped.get("email"));
+		Assertions.assertEquals(user.getFirstName(), userMapped.get("firstName"));
+		Assertions.assertEquals(user.getId(), userMapped.get("id"));
+		Assertions.assertEquals(user.getLastName(), userMapped.get("lastName"));
+		Assertions.assertEquals(user.getPassword(), userMapped.get("password"));
+		Assertions.assertEquals(user.getSecret(), userMapped.get("secret"));
+		Assertions.assertEquals(user.isAutoLogin(), userMapped.get("autoLogin"));
+		Assertions.assertEquals(user.isValidEmail(), userMapped.get("validEmail"));
+		Assertions.assertEquals(user.getDevices().get(0).getDeviceId(), ((List<Map<String, String>>) userMapped.get("devices")).get(0).get("deviceId"));
+		Assertions.assertEquals(user.getDevices().get(0).getId(), ((List<Map<String, String>>) userMapped.get("devices")).get(0).get("id"));
+		Assertions.assertEquals(user.getDevices().get(0).getVerificationCode(), ((List<Map<String, String>>) userMapped.get("devices")).get(0).get("verificationCode"));
 	}
 	
-	@Test(expected = MapperUtilsException.class)
+	@Test
 	public void mapObjectNullTest() {
-		try {
-			mapperUtils.map(null, typeReference);
-		} catch (MapperUtilsException e) {
-			Assert.assertEquals(e.getMessage(), "Input object is null");
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				MapperUtilsException.class, 
+				() -> mapperUtils.map(null, typeReference), 
+				"Input object is null");
 	}
 	
-	@Test(expected = MapperUtilsException.class)
+	@Test
 	public void mapClassNullTest() {
-		try {
-			mapperUtils.map(user, null);
-		} catch (MapperUtilsException e) {
-			Assert.assertEquals(e.getMessage(), "Input typeReference is null");
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				MapperUtilsException.class, 
+				() -> mapperUtils.map(user, null), 
+				"Input typeReference is null");
 	}
 	
-	@SuppressWarnings("deprecation")
-	@Test(expected = MapperUtilsException.class)
+	@Test
 	public void mapErrorTest() throws JsonMappingException, JsonProcessingException {
 		String userJson = mapperUtils.writeValueAsString(user);
 		
 		Mockito.when(objectMapper.readValue(userJson, typeReference)).thenThrow(new JsonGenerationException("error"));
 		
-		try {
-			mapperUtils.map(userJson, typeReference);
-		} catch (MapperUtilsException e) {
-			Assert.assertEquals(e.getMessage(), "Error while mapping object with TypeReference");
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				MapperUtilsException.class, 
+				() -> mapperUtils.map(userJson, typeReference), 
+				"Error while mapping object with TypeReference");
 	}
 	
 	@Test
 	public void writeValueAsStringTest() {
 		String userJson = mapperUtils.writeValueAsString(user);
 		
-		Assert.assertNotNull(userJson);
-		Assert.assertFalse(userJson.isBlank());
-		Assert.assertTrue(userJson.contains(user.getEmail()));
-		Assert.assertTrue(userJson.contains(user.getFirstName()));
-		Assert.assertTrue(userJson.contains(user.getId()));
-		Assert.assertTrue(userJson.contains(user.getLastName()));
-		Assert.assertTrue(userJson.contains(user.getPassword()));
-		Assert.assertTrue(userJson.contains(user.getSecret()));
-		Assert.assertTrue(userJson.contains(String.valueOf(user.isAutoLogin())));
-		Assert.assertTrue(userJson.contains(String.valueOf(user.isValidEmail())));
-		Assert.assertTrue(userJson.contains(user.getDevices().get(0).getDeviceId()));
-		Assert.assertTrue(userJson.contains(user.getDevices().get(0).getId()));
-		Assert.assertTrue(userJson.contains(user.getDevices().get(0).getVerificationCode()));
+		Assertions.assertNotNull(userJson);
+		Assertions.assertFalse(userJson.isBlank());
+		Assertions.assertTrue(userJson.contains(user.getEmail()));
+		Assertions.assertTrue(userJson.contains(user.getFirstName()));
+		Assertions.assertTrue(userJson.contains(user.getId()));
+		Assertions.assertTrue(userJson.contains(user.getLastName()));
+		Assertions.assertTrue(userJson.contains(user.getPassword()));
+		Assertions.assertTrue(userJson.contains(user.getSecret()));
+		Assertions.assertTrue(userJson.contains(String.valueOf(user.isAutoLogin())));
+		Assertions.assertTrue(userJson.contains(String.valueOf(user.isValidEmail())));
+		Assertions.assertTrue(userJson.contains(user.getDevices().get(0).getDeviceId()));
+		Assertions.assertTrue(userJson.contains(user.getDevices().get(0).getId()));
+		Assertions.assertTrue(userJson.contains(user.getDevices().get(0).getVerificationCode()));
 	}
 	
-	@Test(expected = MapperUtilsException.class)
+	@Test
 	public void writeValueAsStringNullTest() {
-		try {
-			mapperUtils.writeValueAsString(null);
-		} catch (MapperUtilsException e) {
-			Assert.assertEquals(e.getMessage(), "Input object is null");
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				MapperUtilsException.class, 
+				() -> mapperUtils.writeValueAsString(null), 
+				"Input object is null");
 	}
 	
-	@SuppressWarnings("deprecation")
-	@Test(expected = MapperUtilsException.class)
+	@Test
 	public void writeValueAsStringErrorTest() throws JsonProcessingException {
 		Mockito.when(objectMapper.writeValueAsString(user)).thenThrow(new JsonGenerationException("error"));
 		
-		try {
-			mapperUtils.writeValueAsString(user);
-		} catch (MapperUtilsException e) {
-			Assert.assertEquals(e.getMessage(), "Error while writing object");
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				MapperUtilsException.class, 
+				() -> mapperUtils.writeValueAsString(user), 
+				"Error while writing object");
 	}
 	
 	@Test
@@ -191,72 +173,62 @@ public class MapperUtilsTest {
 		
 		User userMapped = mapperUtils.readValue(userJson, User.class);
 		
-		Assert.assertEquals(user.getEmail(), userMapped.getEmail());
-		Assert.assertEquals(user.getFirstName(), userMapped.getFirstName());
-		Assert.assertEquals(user.getId(), userMapped.getId());
-		Assert.assertEquals(user.getLastName(), userMapped.getLastName());
-		Assert.assertEquals(user.getPassword(), userMapped.getPassword());
-		Assert.assertEquals(user.getSecret(), userMapped.getSecret());
-		Assert.assertEquals(user.isAutoLogin(), userMapped.isAutoLogin());
-		Assert.assertEquals(user.isValidEmail(), userMapped.isValidEmail());
-		Assert.assertEquals(user.getDevices().get(0).getDeviceId(), userMapped.getDevices().get(0).getDeviceId());
-		Assert.assertEquals(user.getDevices().get(0).getId(), userMapped.getDevices().get(0).getId());
-		Assert.assertEquals(user.getDevices().get(0).getVerificationCode(), userMapped.getDevices().get(0).getVerificationCode());
+		Assertions.assertEquals(user.getEmail(), userMapped.getEmail());
+		Assertions.assertEquals(user.getFirstName(), userMapped.getFirstName());
+		Assertions.assertEquals(user.getId(), userMapped.getId());
+		Assertions.assertEquals(user.getLastName(), userMapped.getLastName());
+		Assertions.assertEquals(user.getPassword(), userMapped.getPassword());
+		Assertions.assertEquals(user.getSecret(), userMapped.getSecret());
+		Assertions.assertEquals(user.isAutoLogin(), userMapped.isAutoLogin());
+		Assertions.assertEquals(user.isValidEmail(), userMapped.isValidEmail());
+		Assertions.assertEquals(user.getDevices().get(0).getDeviceId(), userMapped.getDevices().get(0).getDeviceId());
+		Assertions.assertEquals(user.getDevices().get(0).getId(), userMapped.getDevices().get(0).getId());
+		Assertions.assertEquals(user.getDevices().get(0).getVerificationCode(), userMapped.getDevices().get(0).getVerificationCode());
 	}
 	
 	@Test
 	public void readValueObjectTest() {
 		User userMapped = mapperUtils.readValue(user, User.class);
 		
-		Assert.assertEquals(user.getEmail(), userMapped.getEmail());
-		Assert.assertEquals(user.getFirstName(), userMapped.getFirstName());
-		Assert.assertEquals(user.getId(), userMapped.getId());
-		Assert.assertEquals(user.getLastName(), userMapped.getLastName());
-		Assert.assertEquals(user.getPassword(), userMapped.getPassword());
-		Assert.assertEquals(user.getSecret(), userMapped.getSecret());
-		Assert.assertEquals(user.isAutoLogin(), userMapped.isAutoLogin());
-		Assert.assertEquals(user.isValidEmail(), userMapped.isValidEmail());
-		Assert.assertEquals(user.getDevices().get(0).getDeviceId(), userMapped.getDevices().get(0).getDeviceId());
-		Assert.assertEquals(user.getDevices().get(0).getId(), userMapped.getDevices().get(0).getId());
-		Assert.assertEquals(user.getDevices().get(0).getVerificationCode(), userMapped.getDevices().get(0).getVerificationCode());
+		Assertions.assertEquals(user.getEmail(), userMapped.getEmail());
+		Assertions.assertEquals(user.getFirstName(), userMapped.getFirstName());
+		Assertions.assertEquals(user.getId(), userMapped.getId());
+		Assertions.assertEquals(user.getLastName(), userMapped.getLastName());
+		Assertions.assertEquals(user.getPassword(), userMapped.getPassword());
+		Assertions.assertEquals(user.getSecret(), userMapped.getSecret());
+		Assertions.assertEquals(user.isAutoLogin(), userMapped.isAutoLogin());
+		Assertions.assertEquals(user.isValidEmail(), userMapped.isValidEmail());
+		Assertions.assertEquals(user.getDevices().get(0).getDeviceId(), userMapped.getDevices().get(0).getDeviceId());
+		Assertions.assertEquals(user.getDevices().get(0).getId(), userMapped.getDevices().get(0).getId());
+		Assertions.assertEquals(user.getDevices().get(0).getVerificationCode(), userMapped.getDevices().get(0).getVerificationCode());
 	}
 	
-	@Test(expected = MapperUtilsException.class)
+	@Test
 	public void readValueObjectNullTest() {
-		try {
-			mapperUtils.readValue(null, User.class);
-		} catch (MapperUtilsException e) {
-			Assert.assertEquals(e.getMessage(), "Input object is null");
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				MapperUtilsException.class, 
+				() -> mapperUtils.readValue(null, User.class), 
+				"Input object is null");
 	}
 	
-	@Test(expected = MapperUtilsException.class)
+	@Test
 	public void readValueClassNullTest() {
-		try {
-			mapperUtils.readValue(user, null);
-		} catch (MapperUtilsException e) {
-			Assert.assertEquals(e.getMessage(), "Input class is null");
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				MapperUtilsException.class, 
+				() -> mapperUtils.readValue(user, null), 
+				"Input class is null");
 	}
 	
-	@SuppressWarnings("deprecation")
-	@Test(expected = MapperUtilsException.class)
+	@Test
 	public void readValueErrorTest() throws JsonProcessingException {
 		String userJson = mapperUtils.writeValueAsString(user);
 		
 		Mockito.when(objectMapper.readValue(userJson, User.class)).thenThrow(new JsonGenerationException("error"));
 		
-		try {
-			mapperUtils.readValue(userJson, User.class);
-		} catch (MapperUtilsException e) {
-			Assert.assertEquals(e.getMessage(), "Error while reading value");
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				MapperUtilsException.class, 
+				() -> mapperUtils.readValue(userJson, User.class), 
+				"Error while reading value");
 	}
 
 }

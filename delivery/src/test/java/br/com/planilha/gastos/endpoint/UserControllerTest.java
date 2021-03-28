@@ -3,16 +3,16 @@ package br.com.planilha.gastos.endpoint;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import br.com.planilha.gastos.dto.DataDto;
 import br.com.planilha.gastos.dto.DeviceDto;
@@ -27,7 +27,7 @@ import br.com.planilha.gastos.parse.UserDeliveryParse;
 import br.com.planilha.gastos.service.DeviceService;
 import br.com.planilha.gastos.service.UserService;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class UserControllerTest {
 
 	@InjectMocks
@@ -56,7 +56,7 @@ public class UserControllerTest {
 	private Device device;
 	private DeviceDto deviceDto;
 	
-	@Before
+	@BeforeEach
 	public void init() {
 		user = new User();
 		user.setAutoLogin(false);
@@ -115,9 +115,9 @@ public class UserControllerTest {
 		Mockito.verify(userParse).toUser(userDto);
 		Mockito.verify(userService).register(user);
 		
-		Assert.assertNotNull(response);
-		Assert.assertNotNull(response.getJwtDataToken());
-		Assert.assertFalse(response.getJwtDataToken().isBlank());
+		Assertions.assertNotNull(response);
+		Assertions.assertNotNull(response.getJwtDataToken());
+		Assertions.assertFalse(response.getJwtDataToken().isBlank());
 	}
 	
 	@Test
@@ -130,9 +130,9 @@ public class UserControllerTest {
 		Mockito.verify(loginParse).toLogin(loginDto);
 		Mockito.verify(userService).login(login);
 		
-		Assert.assertNotNull(response);
-		Assert.assertNotNull(response.getJwtAcessToken());
-		Assert.assertFalse(response.getJwtAcessToken().isBlank());
+		Assertions.assertNotNull(response);
+		Assertions.assertNotNull(response.getJwtAcessToken());
+		Assertions.assertFalse(response.getJwtAcessToken().isBlank());
 	}
 	
 	@Test
@@ -145,9 +145,9 @@ public class UserControllerTest {
 		Mockito.verify(loginParse).toLogin(loginDto);
 		Mockito.verify(userService).autoLogin(login);
 		
-		Assert.assertNotNull(response);
-		Assert.assertNotNull(response.getJwtAcessToken());
-		Assert.assertFalse(response.getJwtAcessToken().isBlank());
+		Assertions.assertNotNull(response);
+		Assertions.assertNotNull(response.getJwtAcessToken());
+		Assertions.assertFalse(response.getJwtAcessToken().isBlank());
 	}
 	
 	@Test
@@ -159,8 +159,8 @@ public class UserControllerTest {
 		Mockito.verify(userParse).toUser(userDto);
 		Mockito.verify(userService).configureUser(token, user);
 		
-		Assert.assertNotNull(response);
-		Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
+		Assertions.assertNotNull(response);
+		Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
 	}
 	
 	@Test
@@ -172,23 +172,8 @@ public class UserControllerTest {
 		Mockito.verify(deviceParse).toDevice(deviceDto);
 		Mockito.verify(deviceService).validateDevice(token, device);
 		
-		Assert.assertNotNull(response);
-		Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
+		Assertions.assertNotNull(response);
+		Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
 	}
-	
-//	@Test
-//	public void registerDeviceTest() {
-//		Mockito.when(userParse.toUser(userDto)).thenReturn(user);
-//		Mockito.when(userService.registerDevice(user)).thenReturn(token);
-//		
-//		DataDto response = userController.registerDevice(userDto);
-//		
-//		Mockito.verify(userParse).toUser(userDto);
-//		Mockito.verify(userService).registerDevice(user);
-//		
-//		Assert.assertNotNull(response);
-//		Assert.assertNotNull(response.getJwtDataToken());
-//		Assert.assertFalse(response.getJwtDataToken().isBlank());
-//	}
 	
 }

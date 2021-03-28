@@ -5,14 +5,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import br.com.planilha.gastos.builder.JwtBuilder;
 import br.com.planilha.gastos.entity.AccessToken;
@@ -21,7 +21,7 @@ import br.com.planilha.gastos.entity.User;
 import br.com.planilha.gastos.exception.UserValidationException;
 import br.com.planilha.gastos.port.JwtAdapter;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class JwtServiceTest {
 
 	@InjectMocks
@@ -41,7 +41,7 @@ public class JwtServiceTest {
 	private User user;
 	private AccessToken accessToken;
 	
-	@Before
+	@BeforeEach
 	public void init() {
 		jwt = UUID.randomUUID().toString();
 		payload = new HashMap<>();
@@ -66,9 +66,9 @@ public class JwtServiceTest {
 		
 		String token = jwtService.generate(user);
 		
-		Assert.assertNotNull(token);
-		Assert.assertFalse(token.isBlank());
-		Assert.assertEquals(jwt, token);
+		Assertions.assertNotNull(token);
+		Assertions.assertFalse(token.isBlank());
+		Assertions.assertEquals(jwt, token);
 	}
 	
 	@Test
@@ -77,9 +77,9 @@ public class JwtServiceTest {
 		
 		String token = jwtService.generateAcessToken(user, user.inUseDeviceId());
 		
-		Assert.assertNotNull(token);
-		Assert.assertFalse(token.isBlank());
-		Assert.assertEquals(jwt, token);
+		Assertions.assertNotNull(token);
+		Assertions.assertFalse(token.isBlank());
+		Assertions.assertEquals(jwt, token);
 	}
 	
 	@Test
@@ -94,29 +94,26 @@ public class JwtServiceTest {
 		Mockito.verify(userService).findById(accessToken.getUserId());
 		Mockito.verify(jwtAdapter).isValidToken(jwt, user.getSecret());
 		
-		Assert.assertEquals(verified.getId(), user.getId());
+		Assertions.assertEquals(verified.getId(), user.getId());
 	}
 	
-	@Test(expected = UserValidationException.class)
+	@Test
 	public void verifyAcessTokenTokenInvalidoErrorTest() {
 		Mockito.when(jwtAdapter.getAcessToken(jwt)).thenReturn(accessToken);
 		Mockito.when(userService.findById(accessToken.getUserId())).thenReturn(user);
 		Mockito.when(jwtAdapter.isValidToken(jwt, user.getSecret())).thenReturn(false);
 		
-		try {
-			jwtService.verifyAcessToken(jwt);
-		} catch (UserValidationException e) {
-			Assert.assertEquals("Token Invalido.", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				UserValidationException.class, 
+				() -> jwtService.verifyAcessToken(jwt), 
+				"Token Invalido.");
 		
 		Mockito.verify(jwtAdapter).getAcessToken(jwt);
 		Mockito.verify(userService).findById(accessToken.getUserId());
 		Mockito.verify(jwtAdapter).isValidToken(jwt, user.getSecret());
 	}
 	
-	@Test(expected = UserValidationException.class)
+	@Test
 	public void verifyAcessTokenDispositivoNaoLogadoErrorTest() {
 		String newDeviceId = UUID.randomUUID().toString();
 		user.getDevices().add(new Device(newDeviceId));
@@ -126,13 +123,10 @@ public class JwtServiceTest {
 		Mockito.when(userService.findById(accessToken.getUserId())).thenReturn(user);
 		Mockito.when(jwtAdapter.isValidToken(jwt, user.getSecret())).thenReturn(true);
 		
-		try {
-			jwtService.verifyAcessToken(jwt);
-		} catch (UserValidationException e) {
-			Assert.assertEquals("Dispositivo que fez a requisicao nao esta logado.", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				UserValidationException.class, 
+				() -> jwtService.verifyAcessToken(jwt), 
+				"Dispositivo que fez a requisicao nao esta logado.");
 		
 		Mockito.verify(jwtAdapter).getAcessToken(jwt);
 		Mockito.verify(userService).findById(accessToken.getUserId());

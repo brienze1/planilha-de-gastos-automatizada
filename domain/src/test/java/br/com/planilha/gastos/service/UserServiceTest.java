@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import br.com.planilha.gastos.builder.UserBuilder;
 import br.com.planilha.gastos.entity.Device;
@@ -22,7 +22,7 @@ import br.com.planilha.gastos.port.UserRepositoryAdapter;
 import br.com.planilha.gastos.rules.LoginRules;
 import br.com.planilha.gastos.rules.UserRules;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class UserServiceTest {
 
 	@InjectMocks
@@ -57,7 +57,7 @@ public class UserServiceTest {
 	private String email;
 	private Login login;
 	
-	@Before
+	@BeforeEach
 	public void init() {
 		id = UUID.randomUUID().toString();
 		email = UUID.randomUUID().toString();
@@ -113,8 +113,8 @@ public class UserServiceTest {
 		Mockito.verify(deviceService).sendDeviceVerificationEmail(savedUser.getId(), savedUser.getDevices().get(0));
 		Mockito.verify(jwtService).generate(savedUser);
 		
-		Assert.assertNotNull(token);
-		Assert.assertFalse(token.isBlank());
+		Assertions.assertNotNull(token);
+		Assertions.assertFalse(token.isBlank());
 	}
 	
 	@Test
@@ -126,8 +126,8 @@ public class UserServiceTest {
 		Mockito.verify(userRules).validate(user);
 		Mockito.verify(userRepository).save(user);
 		
-		Assert.assertNotNull(returnedUser);
-		Assert.assertEquals(savedUser.getId(), returnedUser.getId());
+		Assertions.assertNotNull(returnedUser);
+		Assertions.assertEquals(savedUser.getId(), returnedUser.getId());
 	}
 	
 	@Test
@@ -139,8 +139,8 @@ public class UserServiceTest {
 		Mockito.verify(userRepository).findById(id);
 		Mockito.verify(userRules).validate(Optional.of(savedUser));
 		
-		Assert.assertNotNull(returnedUser);
-		Assert.assertEquals(savedUser.getId(), returnedUser.getId());
+		Assertions.assertNotNull(returnedUser);
+		Assertions.assertEquals(savedUser.getId(), returnedUser.getId());
 	}
 	
 	@Test
@@ -152,8 +152,8 @@ public class UserServiceTest {
 		Mockito.verify(userRepository).findByEmail(email);
 		Mockito.verify(userRules).validate(Optional.of(savedUser));
 		
-		Assert.assertNotNull(returnedUser);
-		Assert.assertEquals(savedUser.getEmail(), returnedUser.getEmail());
+		Assertions.assertNotNull(returnedUser);
+		Assertions.assertEquals(savedUser.getEmail(), returnedUser.getEmail());
 	}
 	
 	@Test
@@ -168,9 +168,9 @@ public class UserServiceTest {
 		Mockito.verify(loginRules).validateAutoLogin(login, savedUser);
 		Mockito.verify(jwtService).generateAcessToken(savedUser, login.getDeviceId());
 		
-		Assert.assertNotNull(returnedtoken);
-		Assert.assertFalse(returnedtoken.isBlank());
-		Assert.assertEquals(token, returnedtoken);
+		Assertions.assertNotNull(returnedtoken);
+		Assertions.assertFalse(returnedtoken.isBlank());
+		Assertions.assertEquals(token, returnedtoken);
 	}
 	
 	@Test
@@ -186,9 +186,9 @@ public class UserServiceTest {
 		Mockito.verify(loginRules).validate(login);
 		Mockito.verify(jwtService).generateAcessToken(savedUser, login.getDeviceId());
 		
-		Assert.assertNotNull(returnedtoken);
-		Assert.assertFalse(returnedtoken.isBlank());
-		Assert.assertEquals(token, returnedtoken);
+		Assertions.assertNotNull(returnedtoken);
+		Assertions.assertFalse(returnedtoken.isBlank());
+		Assertions.assertEquals(token, returnedtoken);
 	}
 	
 	@Test
@@ -203,48 +203,8 @@ public class UserServiceTest {
 		Mockito.verify(userBuilder).buildChanges(user, savedUser);
 		Mockito.verify(userRepository).save(newUser);
 		
-		Assert.assertNotNull(returnedUser);
-		Assert.assertEquals(user.getId(), returnedUser.getId());
+		Assertions.assertNotNull(returnedUser);
+		Assertions.assertEquals(user.getId(), returnedUser.getId());
 	}
-	
-//	@Test
-//	public void registerDeviceTest() {
-//		Mockito.when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(savedUser));
-//		Mockito.when(passwordUtils.verifyPassword(user.getPassword(), savedUser.getPassword(), savedUser.getSecret())).thenReturn(true);
-//		Mockito.when(deviceService.registerNewDevice(savedUser.getId(), user.getDevices().get(0).getDeviceId())).thenReturn(new Device(UUID.randomUUID().toString()));
-//		Mockito.when(jwtService.generate(savedUser)).thenReturn(token);
-//		
-//		String returnedtoken = userService.registerDevice(user);
-//		
-//		Mockito.verify(userRules).validateDeviceRegistration(user);
-//		Mockito.verify(userRepository).findByEmail(email);
-//		Mockito.verify(userRules).validate(Optional.of(savedUser));
-//		Mockito.verify(passwordUtils).verifyPassword(user.getPassword(), savedUser.getPassword(), savedUser.getSecret());
-//		Mockito.verify(deviceService).registerNewDevice(savedUser.getId(), user.getDevices().get(0).getDeviceId());
-//		Mockito.verify(jwtService).generate(savedUser);
-//		
-//		Assert.assertNotNull(returnedtoken);
-//		Assert.assertFalse(returnedtoken.isBlank());
-//		Assert.assertEquals(token, returnedtoken);
-//	}
-//	
-//	@Test(expected = LoginException.class)
-//	public void registerDeviceWrongPasswordTest() {
-//		Mockito.when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(savedUser));
-//		Mockito.when(passwordUtils.verifyPassword(user.getPassword(), savedUser.getPassword(), savedUser.getSecret())).thenReturn(false);
-//		
-//		try {
-//			userService.registerDevice(user);
-//		} catch (LoginException e) {
-//			Mockito.verify(userRules).validateDeviceRegistration(user);
-//			Mockito.verify(userRepository).findByEmail(email);
-//			Mockito.verify(userRules).validate(Optional.of(savedUser));
-//			Mockito.verify(passwordUtils).verifyPassword(user.getPassword(), savedUser.getPassword(), savedUser.getSecret());
-//
-//			Assert.assertEquals("Password does not match", e.getMessage());
-//			
-//			throw e;
-//		}
-//	}
 	
 }

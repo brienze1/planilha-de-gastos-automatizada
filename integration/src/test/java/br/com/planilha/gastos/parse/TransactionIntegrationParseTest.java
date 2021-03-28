@@ -7,17 +7,17 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import br.com.planilha.gastos.entity.Transaction;
 import br.com.planilha.gastos.entity.TransactionEntity;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class TransactionIntegrationParseTest {
 
 	@InjectMocks
@@ -27,7 +27,7 @@ public class TransactionIntegrationParseTest {
 	private TransactionEntity transactionEntity;
 	private List<TransactionEntity> transactionsEntity;
 	
-	@Before
+	@BeforeEach
 	public void init() {
 		transaction = new Transaction();
 		transaction.setData(LocalDateTime.now());
@@ -55,15 +55,15 @@ public class TransactionIntegrationParseTest {
 	}
 	
 	private void assertAll(Transaction transaction, TransactionEntity transactionEntity) {
-		Assert.assertNotNull(transaction);
-		Assert.assertNotNull(transactionEntity);
-		Assert.assertEquals(transaction.getDescricao(), transactionEntity.getDescricao());
-		Assert.assertEquals(transaction.getId(), String.valueOf(transactionEntity.getId()));
-		Assert.assertEquals(transaction.getLocalizacao(), transactionEntity.getLocalizacao());
-		Assert.assertEquals(transaction.getMeioDePagamento(), transactionEntity.getMeioDePagamento());
-		Assert.assertEquals(transaction.getTipo(), transactionEntity.getTipo());
-		Assert.assertEquals(transaction.getData(), transactionEntity.getData());
-		Assert.assertEquals(transaction.getValor(), transactionEntity.getValor());
+		Assertions.assertNotNull(transaction);
+		Assertions.assertNotNull(transactionEntity);
+		Assertions.assertEquals(transaction.getDescricao(), transactionEntity.getDescricao());
+		Assertions.assertEquals(transaction.getId(), String.valueOf(transactionEntity.getId()));
+		Assertions.assertEquals(transaction.getLocalizacao(), transactionEntity.getLocalizacao());
+		Assertions.assertEquals(transaction.getMeioDePagamento(), transactionEntity.getMeioDePagamento());
+		Assertions.assertEquals(transaction.getTipo(), transactionEntity.getTipo());
+		Assertions.assertEquals(transaction.getData(), transactionEntity.getData());
+		Assertions.assertEquals(transaction.getValor(), transactionEntity.getValor());
 	}
 	
 	@Test
@@ -77,7 +77,7 @@ public class TransactionIntegrationParseTest {
 	public void toTransactionEntityNullTest() {
 		TransactionEntity transactionEntity = transactionIntegrationParse.toTransactionEntity(null);
 		
-		Assert.assertNotNull(transactionEntity);
+		Assertions.assertNotNull(transactionEntity);
 	}
 	
 	@Test
@@ -86,7 +86,7 @@ public class TransactionIntegrationParseTest {
 		
 		TransactionEntity transactionEntity = transactionIntegrationParse.toTransactionEntity(transaction);
 		
-		Assert.assertNotNull(transactionEntity);
+		Assertions.assertNotNull(transactionEntity);
 	}
 	
 	@Test
@@ -100,7 +100,7 @@ public class TransactionIntegrationParseTest {
 	public void toTransactionNullTest() {
 		Transaction transaction = transactionIntegrationParse.toTransaction(null);
 		
-		Assert.assertNotNull(transaction);
+		Assertions.assertNotNull(transaction);
 	}
 	
 	@Test
@@ -116,8 +116,8 @@ public class TransactionIntegrationParseTest {
 	public void toTransactionsNullTest() {
 		List<Transaction> transactions = transactionIntegrationParse.toTransactions(null);
 		
-		Assert.assertNotNull(transactions);
-		Assert.assertTrue(transactions.isEmpty());
+		Assertions.assertNotNull(transactions);
+		Assertions.assertTrue(transactions.isEmpty());
 	}
 	
 }

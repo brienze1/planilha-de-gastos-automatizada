@@ -2,19 +2,19 @@ package br.com.planilha.gastos.builder;
 
 import java.util.UUID;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import br.com.planilha.gastos.entity.Device;
 import br.com.planilha.gastos.port.IdGeneratorAdapter;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class DeviceBuilderTest {
 
 	@InjectMocks
@@ -26,7 +26,7 @@ public class DeviceBuilderTest {
 	private String id;
 	private String code;
 	
-	@Before
+	@BeforeEach
 	public void init() {
 		id = UUID.randomUUID().toString();
 		code = UUID.randomUUID().toString();
@@ -38,9 +38,9 @@ public class DeviceBuilderTest {
 		
 		Device device = deviceBuilder.build(id);
 		
-		Assert.assertNotNull(device);
-		Assert.assertEquals(id, device.getDeviceId());
-		Assert.assertEquals(code, device.getVerificationCode());
+		Assertions.assertNotNull(device);
+		Assertions.assertEquals(id, device.getDeviceId());
+		Assertions.assertEquals(code, device.getVerificationCode());
 	}
 	
 }

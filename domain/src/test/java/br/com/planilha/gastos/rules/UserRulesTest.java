@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import br.com.planilha.gastos.entity.Device;
 import br.com.planilha.gastos.entity.User;
@@ -20,7 +20,7 @@ import br.com.planilha.gastos.exception.UserNotFoundException;
 import br.com.planilha.gastos.exception.UserValidationException;
 import br.com.planilha.gastos.port.UserRepositoryAdapter;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class UserRulesTest {
 
 	@InjectMocks
@@ -34,7 +34,7 @@ public class UserRulesTest {
 
 	private User user;
 
-	@Before
+	@BeforeEach
 	public void init() {
 		user = new User();
 		user.setPassword(UUID.randomUUID().toString());
@@ -53,384 +53,299 @@ public class UserRulesTest {
 	public void validateUserRegistrationDataTest() {
 		boolean isValid = userRules.validateUserRegistrationData(user);
 
-		Assert.assertTrue(isValid);
+		Assertions.assertTrue(isValid);
 	}
 	
-	@Test(expected = UserValidationException.class)
+	@Test
 	public void validateUserRegistrationDataUserNullErrorTest() {
 		user = null;
 		
-		try {
-			userRules.validateUserRegistrationData(user);
-		} catch (UserValidationException e) {
-			Assert.assertEquals("User can't be null", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				UserValidationException.class, 
+				() -> userRules.validateUserRegistrationData(user), 
+				"User can't be null");
 	}
 	
-	@Test(expected = UserValidationException.class)
+	@Test
 	public void validateUserRegistrationDataPasswordNullErrorTest() {
 		user.setPassword(null);
 		
-		try {
-			userRules.validateUserRegistrationData(user);
-		} catch (UserValidationException e) {
-			Assert.assertEquals("Password can't be null or empty", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				UserValidationException.class, 
+				() -> userRules.validateUserRegistrationData(user), 
+				"Password can't be null or empty");
 	}
 	
-	@Test(expected = UserValidationException.class)
+	@Test
 	public void validateUserRegistrationDataPasswordBlankErrorTest() {
 		user.setPassword(" ");
 		
-		try {
-			userRules.validateUserRegistrationData(user);
-		} catch (UserValidationException e) {
-			Assert.assertEquals("Password can't be null or empty", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				UserValidationException.class, 
+				() -> userRules.validateUserRegistrationData(user), 
+				"Password can't be null or empty");
 	}
 	
-	@Test(expected = UserValidationException.class)
+	@Test
 	public void validateUserRegistrationDataEmailNullErrorTest() {
 		user.setEmail(null);
 		
-		try {
-			userRules.validateUserRegistrationData(user);
-		} catch (UserValidationException e) {
-			Assert.assertEquals("Email can't be null or empty", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				UserValidationException.class, 
+				() -> userRules.validateUserRegistrationData(user), 
+				"Email can't be null or empty");
 	}
 	
-	@Test(expected = UserValidationException.class)
+	@Test
 	public void validateUserRegistrationDataEmailBlankErrorTest() {
 		user.setEmail(" ");
 	
-		try {
-			userRules.validateUserRegistrationData(user);
-		} catch (UserValidationException e) {
-			Assert.assertEquals("Email can't be null or empty", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				UserValidationException.class, 
+				() -> userRules.validateUserRegistrationData(user), 
+				"Email can't be null or empty");
 	}
 	
-	@Test(expected = UserValidationException.class)
+	@Test
 	public void validateUserRegistrationDataFirstNameNullErrorTest() {
 		user.setFirstName(null);
 		
-		try {
-			userRules.validateUserRegistrationData(user);
-		} catch (UserValidationException e) {
-			Assert.assertEquals("First name can't be null or empty", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				UserValidationException.class, 
+				() -> userRules.validateUserRegistrationData(user), 
+				"First name can't be null or empty");
 	}
 	
-	@Test(expected = UserValidationException.class)
+	@Test
 	public void validateUserRegistrationDataFirstNameBlankErrorTest() {
 		user.setFirstName(" ");
 		
-		try {
-			userRules.validateUserRegistrationData(user);
-		} catch (UserValidationException e) {
-			Assert.assertEquals("First name can't be null or empty", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				UserValidationException.class, 
+				() -> userRules.validateUserRegistrationData(user), 
+				"First name can't be null or empty");
 	}
 	
-	@Test(expected = UserValidationException.class)
+	@Test
 	public void validateUserRegistrationDataLastNameNullErrorTest() {
 		user.setLastName(null);
 		
-		try {
-			userRules.validateUserRegistrationData(user);
-		} catch (UserValidationException e) {
-			Assert.assertEquals("Last name can't be null or empty", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				UserValidationException.class, 
+				() -> userRules.validateUserRegistrationData(user), 
+				"Last name can't be null or empty");
 	}
 	
-	@Test(expected = UserValidationException.class)
+	@Test
 	public void validateUserRegistrationDataLastNameBlankErrorTest() {
 		user.setLastName(" ");
 		
-		try {
-			userRules.validateUserRegistrationData(user);
-		} catch (UserValidationException e) {
-			Assert.assertEquals("Last name can't be null or empty", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				UserValidationException.class, 
+				() -> userRules.validateUserRegistrationData(user), 
+				"Last name can't be null or empty");
 	}
 	
-	@Test(expected = DeviceException.class)
+	@Test
 	public void validateUserRegistrationDataDeviceExceptionErrorTest() {
 		Mockito.when(deviceRules.validateDeviceRegistration(user.getDevices())).thenThrow(new DeviceException("Can't register more than one device at a time"));
 		
-		try {
-			userRules.validateUserRegistrationData(user);
-		} catch (DeviceException e) {
-			Assert.assertEquals("Can't register more than one device at a time", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				DeviceException.class, 
+				() -> userRules.validateUserRegistrationData(user), 
+				"Can't register more than one device at a time");
 	}
 	
-	@Test(expected = UserValidationException.class)
+	@Test
 	public void validateUserRegistrationDataUserEmailAlreadyExistsErrorTest() {
 		Mockito.when(repository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
 		
-		try {
-			userRules.validateUserRegistrationData(user);
-		} catch (UserValidationException e) {
-			Assert.assertEquals("User " + user.getEmail() + " already exists", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				UserValidationException.class, 
+				() -> userRules.validateUserRegistrationData(user), 
+				"User " + user.getEmail() + " already exists");
 	}
 	
 	@Test
 	public void validateTest() {
 		boolean isValid = userRules.validate(user);
 
-		Assert.assertTrue(isValid);
+		Assertions.assertTrue(isValid);
 	}
 	
 	@Test
 	public void validateOptionalTest() {
 		boolean isValid = userRules.validate(Optional.of(user));
 		
-		Assert.assertTrue(isValid);
+		Assertions.assertTrue(isValid);
 	}
 
-	@Test(expected = UserNotFoundException.class)
+	@Test
 	public void validateUserNotPresentErrorTest() {
-		try {
-			userRules.validate(Optional.ofNullable(null));
-		} catch (UserNotFoundException e) {
-			Assert.assertEquals("User not found", e.getMessage());
-
-			throw e;
-		}
-
+		Assertions.assertThrows(
+				UserNotFoundException.class, 
+				() -> userRules.validate(Optional.ofNullable(null)), 
+				"User not found");
 	}
 
-	@Test(expected = UserValidationException.class)
+	@Test
 	public void validateUserNullErrorTest() {
 		user = null;
 
-		try {
-			userRules.validate(user);
-		} catch (UserValidationException e) {
-			Assert.assertEquals("User can't be null", e.getMessage());
-
-			throw e;
-		}
+		Assertions.assertThrows(
+				UserValidationException.class, 
+				() -> userRules.validate(user), 
+				"User can't be null");
 	}
 
-	@Test(expected = UserValidationException.class)
+	@Test
 	public void validatePasswordNullErrorTest() {
 		user.setPassword(null);
 
-		try {
-			userRules.validate(user);
-		} catch (UserValidationException e) {
-			Assert.assertEquals("Password can't be null or empty", e.getMessage());
-
-			throw e;
-		}
+		Assertions.assertThrows(
+				UserValidationException.class, 
+				() -> userRules.validate(user), 
+				"Password can't be null or empty");
 	}
 
-	@Test(expected = UserValidationException.class)
+	@Test
 	public void validatePasswordBlankErrorTest() {
 		user.setPassword(" ");
 
-		try {
-			userRules.validate(user);
-		} catch (UserValidationException e) {
-			Assert.assertEquals("Password can't be null or empty", e.getMessage());
-
-			throw e;
-		}
+		Assertions.assertThrows(
+				UserValidationException.class, 
+				() -> userRules.validate(user), 
+				"Password can't be null or empty");
 	}
 
-	@Test(expected = UserValidationException.class)
+	@Test
 	public void validateEmailNullErrorTest() {
 		user.setEmail(null);
 
-		try {
-			userRules.validate(user);
-		} catch (UserValidationException e) {
-			Assert.assertEquals("Email can't be null or empty", e.getMessage());
-
-			throw e;
-		}
+		Assertions.assertThrows(
+				UserValidationException.class, 
+				() -> userRules.validate(user), 
+				"Email can't be null or empty");
 	}
 
-	@Test(expected = UserValidationException.class)
+	@Test
 	public void validateEmailBlankErrorTest() {
 		user.setEmail(" ");
 
-		try {
-			userRules.validate(user);
-		} catch (UserValidationException e) {
-			Assert.assertEquals("Email can't be null or empty", e.getMessage());
-
-			throw e;
-		}
+		Assertions.assertThrows(
+				UserValidationException.class, 
+				() -> userRules.validate(user), 
+				"Email can't be null or empty");
 	}
 
-	@Test(expected = UserValidationException.class)
+	@Test
 	public void validateFirstNameNullErrorTest() {
 		user.setFirstName(null);
 
-		try {
-			userRules.validate(user);
-		} catch (UserValidationException e) {
-			Assert.assertEquals("First name can't be null or empty", e.getMessage());
-
-			throw e;
-		}
+		Assertions.assertThrows(
+				UserValidationException.class, 
+				() -> userRules.validate(user), 
+				"First name can't be null or empty");
 	}
 
-	@Test(expected = UserValidationException.class)
+	@Test
 	public void validateFirstNameBlankErrorTest() {
 		user.setFirstName(" ");
 
-		try {
-			userRules.validate(user);
-		} catch (UserValidationException e) {
-			Assert.assertEquals("First name can't be null or empty", e.getMessage());
-
-			throw e;
-		}
+		Assertions.assertThrows(
+				UserValidationException.class, 
+				() -> userRules.validate(user), 
+				"First name can't be null or empty");
 	}
 
-	@Test(expected = UserValidationException.class)
+	@Test
 	public void validateLastNameNullErrorTest() {
 		user.setLastName(null);
 
-		try {
-			userRules.validate(user);
-		} catch (UserValidationException e) {
-			Assert.assertEquals("Last name can't be null or empty", e.getMessage());
-
-			throw e;
-		}
+		Assertions.assertThrows(
+				UserValidationException.class, 
+				() -> userRules.validate(user), 
+				"Last name can't be null or empty");
 	}
 
-	@Test(expected = UserValidationException.class)
+	@Test
 	public void validateLastNameBlankErrorTest() {
 		user.setLastName(" ");
 
-		try {
-			userRules.validate(user);
-		} catch (UserValidationException e) {
-			Assert.assertEquals("Last name can't be null or empty", e.getMessage());
-
-			throw e;
-		}
+		Assertions.assertThrows(
+				UserValidationException.class, 
+				() -> userRules.validate(user), 
+				"Last name can't be null or empty");
 	}
 
-	@Test(expected = UserValidationException.class)
+	@Test
 	public void validateDevicesNullErrorTest() {
 		user.setDevices(null);
 
-		try {
-			userRules.validate(user);
-		} catch (UserValidationException e) {
-			Assert.assertEquals("Devices can't be null or empty", e.getMessage());
-
-			throw e;
-		}
+		Assertions.assertThrows(
+				UserValidationException.class, 
+				() -> userRules.validate(user), 
+				"Devices can't be null or empty");
 	}
 
-	@Test(expected = UserValidationException.class)
+	@Test
 	public void validateDevicesEmptyErrorTest() {
 		user.setDevices(new ArrayList<>());
 
-		try {
-			userRules.validate(user);
-		} catch (UserValidationException e) {
-			Assert.assertEquals("Devices can't be null or empty", e.getMessage());
-
-			throw e;
-		}
+		Assertions.assertThrows(
+				UserValidationException.class, 
+				() -> userRules.validate(user), 
+				"Devices can't be null or empty");
 	}
 
-	@Test(expected = DeviceException.class)
+	@Test
 	public void validateDeviceExceptionErrorTest() {
 		Mockito.when(deviceRules.validate(user.getDevices())).thenThrow(new DeviceException("Device Id can't be null or empty"));
 
-		try {
-			userRules.validate(user);
-		} catch (DeviceException e) {
-			Assert.assertEquals("Device Id can't be null or empty", e.getMessage());
-
-			throw e;
-		}
+		Assertions.assertThrows(
+				DeviceException.class, 
+				() -> userRules.validate(user), 
+				"Device Id can't be null or empty");
 	}
 
-	@Test(expected = UserValidationException.class)
+	@Test
 	public void validateIdNullErrorTest() {
 		user.setId(null);
 
-		try {
-			userRules.validate(user);
-		} catch (UserValidationException e) {
-			Assert.assertEquals("ID can't be null or empty", e.getMessage());
-
-			throw e;
-		}
+		Assertions.assertThrows(
+				UserValidationException.class, 
+				() -> userRules.validate(user), 
+				"ID can't be null or empty");
 	}
 
-	@Test(expected = UserValidationException.class)
+	@Test
 	public void validateIdBlankErrorTest() {
 		user.setId(" ");
 
-		try {
-			userRules.validate(user);
-		} catch (UserValidationException e) {
-			Assert.assertEquals("ID can't be null or empty", e.getMessage());
-
-			throw e;
-		}
+		Assertions.assertThrows(
+				UserValidationException.class, 
+				() -> userRules.validate(user), 
+				"ID can't be null or empty");
 	}
 
-	@Test(expected = UserValidationException.class)
+	@Test
 	public void validateSecretNullErrorTest() {
 		user.setSecret(null);
 
-		try {
-			userRules.validate(user);
-		} catch (UserValidationException e) {
-			Assert.assertEquals("Secret can't be null or empty", e.getMessage());
-
-			throw e;
-		}
+		Assertions.assertThrows(
+				UserValidationException.class, 
+				() -> userRules.validate(user), 
+				"Secret can't be null or empty");
 	}
 
-	@Test(expected = UserValidationException.class)
+	@Test
 	public void validateSecretBlankErrorTest() {
 		user.setSecret(" ");
 
-		try {
-			userRules.validate(user);
-		} catch (UserValidationException e) {
-			Assert.assertEquals("Secret can't be null or empty", e.getMessage());
-
-			throw e;
-		}
+		Assertions.assertThrows(
+				UserValidationException.class, 
+				() -> userRules.validate(user), 
+				"Secret can't be null or empty");
 	}
 
 }

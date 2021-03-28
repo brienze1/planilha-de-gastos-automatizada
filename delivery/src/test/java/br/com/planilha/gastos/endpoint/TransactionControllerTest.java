@@ -6,21 +6,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import br.com.planilha.gastos.dto.TransactionDto;
 import br.com.planilha.gastos.entity.Transaction;
 import br.com.planilha.gastos.parse.TransactionDeliveryParse;
 import br.com.planilha.gastos.service.TransactionService;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class TransactionControllerTest {
 
 	@InjectMocks
@@ -44,8 +44,7 @@ public class TransactionControllerTest {
 	private Integer quantity;
 	private Integer page;
 	
-	
-	@Before
+	@BeforeEach
 	public void init() {
 		token = UUID.randomUUID().toString();
 		
@@ -115,14 +114,14 @@ public class TransactionControllerTest {
 		Mockito.verify(transactionService).register(token, transaction);
 		Mockito.verify(transactionParse).toTransactionDto(registeredTransaction);
 		
-		Assert.assertNotNull(response);
-		Assert.assertEquals(transactionDto.getDescricao(), response.getDescricao());
-		Assert.assertEquals(transactionDto.getId(), response.getId());
-		Assert.assertEquals(transactionDto.getLocalizacao(), response.getLocalizacao());
-		Assert.assertEquals(transactionDto.getMeioDePagamento(), response.getMeioDePagamento());
-		Assert.assertEquals(transactionDto.getTipo(), response.getTipo());
-		Assert.assertEquals(transactionDto.getData(), response.getData());
-		Assert.assertEquals(transactionDto.getValor(), response.getValor());
+		Assertions.assertNotNull(response);
+		Assertions.assertEquals(transactionDto.getDescricao(), response.getDescricao());
+		Assertions.assertEquals(transactionDto.getId(), response.getId());
+		Assertions.assertEquals(transactionDto.getLocalizacao(), response.getLocalizacao());
+		Assertions.assertEquals(transactionDto.getMeioDePagamento(), response.getMeioDePagamento());
+		Assertions.assertEquals(transactionDto.getTipo(), response.getTipo());
+		Assertions.assertEquals(transactionDto.getData(), response.getData());
+		Assertions.assertEquals(transactionDto.getValor(), response.getValor());
 	}
 	
 	@Test
@@ -137,19 +136,19 @@ public class TransactionControllerTest {
 		Mockito.verify(transactionService).findSinceDateByQuantity(token, date, quantity, 0);
 		Mockito.verify(transactionParse).toTransactionsDto(transactions);
 		
-		Assert.assertNotNull(response);
-		Assert.assertFalse(response.isEmpty());
+		Assertions.assertNotNull(response);
+		Assertions.assertFalse(response.isEmpty());
 		
 		for (TransactionDto transactionDto : response) {
 			for (Transaction transaction : transactions) {
 				if(transactionDto.getId().equals(transaction.getId())) {
-					Assert.assertEquals(transaction.getDescricao(), transactionDto.getDescricao());
-					Assert.assertEquals(transaction.getId(), transactionDto.getId());
-					Assert.assertEquals(transaction.getLocalizacao(), transactionDto.getLocalizacao());
-					Assert.assertEquals(transaction.getMeioDePagamento(), transactionDto.getMeioDePagamento());
-					Assert.assertEquals(transaction.getTipo(), transactionDto.getTipo());
-					Assert.assertEquals(transaction.getData(), transactionDto.getData());
-					Assert.assertEquals(transaction.getValor(), transactionDto.getValor());
+					Assertions.assertEquals(transaction.getDescricao(), transactionDto.getDescricao());
+					Assertions.assertEquals(transaction.getId(), transactionDto.getId());
+					Assertions.assertEquals(transaction.getLocalizacao(), transactionDto.getLocalizacao());
+					Assertions.assertEquals(transaction.getMeioDePagamento(), transactionDto.getMeioDePagamento());
+					Assertions.assertEquals(transaction.getTipo(), transactionDto.getTipo());
+					Assertions.assertEquals(transaction.getData(), transactionDto.getData());
+					Assertions.assertEquals(transaction.getValor(), transactionDto.getValor());
 				}
 			}
 		}
@@ -167,19 +166,19 @@ public class TransactionControllerTest {
 		Mockito.verify(transactionService).findSinceDateByQuantity(token, date, quantity, 0);
 		Mockito.verify(transactionParse).toTransactionsDto(transactions);
 		
-		Assert.assertNotNull(response);
-		Assert.assertFalse(response.isEmpty());
+		Assertions.assertNotNull(response);
+		Assertions.assertFalse(response.isEmpty());
 		
 		for (TransactionDto transactionDto : response) {
 			for (Transaction transaction : transactions) {
 				if(transactionDto.getId().equals(transaction.getId())) {
-					Assert.assertEquals(transaction.getDescricao(), transactionDto.getDescricao());
-					Assert.assertEquals(transaction.getId(), transactionDto.getId());
-					Assert.assertEquals(transaction.getLocalizacao(), transactionDto.getLocalizacao());
-					Assert.assertEquals(transaction.getMeioDePagamento(), transactionDto.getMeioDePagamento());
-					Assert.assertEquals(transaction.getTipo(), transactionDto.getTipo());
-					Assert.assertEquals(transaction.getData(), transactionDto.getData());
-					Assert.assertEquals(transaction.getValor(), transactionDto.getValor());
+					Assertions.assertEquals(transaction.getDescricao(), transactionDto.getDescricao());
+					Assertions.assertEquals(transaction.getId(), transactionDto.getId());
+					Assertions.assertEquals(transaction.getLocalizacao(), transactionDto.getLocalizacao());
+					Assertions.assertEquals(transaction.getMeioDePagamento(), transactionDto.getMeioDePagamento());
+					Assertions.assertEquals(transaction.getTipo(), transactionDto.getTipo());
+					Assertions.assertEquals(transaction.getData(), transactionDto.getData());
+					Assertions.assertEquals(transaction.getValor(), transactionDto.getValor());
 				}
 			}
 		}
@@ -197,19 +196,19 @@ public class TransactionControllerTest {
 		Mockito.verify(transactionService).findByQuantity(token, quantity, page);
 		Mockito.verify(transactionParse).toTransactionsDto(transactions);
 		
-		Assert.assertNotNull(response);
-		Assert.assertFalse(response.isEmpty());
+		Assertions.assertNotNull(response);
+		Assertions.assertFalse(response.isEmpty());
 		
 		for (TransactionDto transactionDto : response) {
 			for (Transaction transaction : transactions) {
 				if(transactionDto.getId().equals(transaction.getId())) {
-					Assert.assertEquals(transaction.getDescricao(), transactionDto.getDescricao());
-					Assert.assertEquals(transaction.getId(), transactionDto.getId());
-					Assert.assertEquals(transaction.getLocalizacao(), transactionDto.getLocalizacao());
-					Assert.assertEquals(transaction.getMeioDePagamento(), transactionDto.getMeioDePagamento());
-					Assert.assertEquals(transaction.getTipo(), transactionDto.getTipo());
-					Assert.assertEquals(transaction.getData(), transactionDto.getData());
-					Assert.assertEquals(transaction.getValor(), transactionDto.getValor());
+					Assertions.assertEquals(transaction.getDescricao(), transactionDto.getDescricao());
+					Assertions.assertEquals(transaction.getId(), transactionDto.getId());
+					Assertions.assertEquals(transaction.getLocalizacao(), transactionDto.getLocalizacao());
+					Assertions.assertEquals(transaction.getMeioDePagamento(), transactionDto.getMeioDePagamento());
+					Assertions.assertEquals(transaction.getTipo(), transactionDto.getTipo());
+					Assertions.assertEquals(transaction.getData(), transactionDto.getData());
+					Assertions.assertEquals(transaction.getValor(), transactionDto.getValor());
 				}
 			}
 		}
@@ -227,19 +226,19 @@ public class TransactionControllerTest {
 		Mockito.verify(transactionService).findByQuantity(token, quantity, page);
 		Mockito.verify(transactionParse).toTransactionsDto(transactions);
 		
-		Assert.assertNotNull(response);
-		Assert.assertFalse(response.isEmpty());
+		Assertions.assertNotNull(response);
+		Assertions.assertFalse(response.isEmpty());
 		
 		for (TransactionDto transactionDto : response) {
 			for (Transaction transaction : transactions) {
 				if(transactionDto.getId().equals(transaction.getId())) {
-					Assert.assertEquals(transaction.getDescricao(), transactionDto.getDescricao());
-					Assert.assertEquals(transaction.getId(), transactionDto.getId());
-					Assert.assertEquals(transaction.getLocalizacao(), transactionDto.getLocalizacao());
-					Assert.assertEquals(transaction.getMeioDePagamento(), transactionDto.getMeioDePagamento());
-					Assert.assertEquals(transaction.getTipo(), transactionDto.getTipo());
-					Assert.assertEquals(transaction.getData(), transactionDto.getData());
-					Assert.assertEquals(transaction.getValor(), transactionDto.getValor());
+					Assertions.assertEquals(transaction.getDescricao(), transactionDto.getDescricao());
+					Assertions.assertEquals(transaction.getId(), transactionDto.getId());
+					Assertions.assertEquals(transaction.getLocalizacao(), transactionDto.getLocalizacao());
+					Assertions.assertEquals(transaction.getMeioDePagamento(), transactionDto.getMeioDePagamento());
+					Assertions.assertEquals(transaction.getTipo(), transactionDto.getTipo());
+					Assertions.assertEquals(transaction.getData(), transactionDto.getData());
+					Assertions.assertEquals(transaction.getValor(), transactionDto.getValor());
 				}
 			}
 		}
@@ -257,19 +256,19 @@ public class TransactionControllerTest {
 		Mockito.verify(transactionService).findSinceDate(token, date);
 		Mockito.verify(transactionParse).toTransactionsDto(transactions);
 		
-		Assert.assertNotNull(response);
-		Assert.assertFalse(response.isEmpty());
+		Assertions.assertNotNull(response);
+		Assertions.assertFalse(response.isEmpty());
 		
 		for (TransactionDto transactionDto : response) {
 			for (Transaction transaction : transactions) {
 				if(transactionDto.getId().equals(transaction.getId())) {
-					Assert.assertEquals(transaction.getDescricao(), transactionDto.getDescricao());
-					Assert.assertEquals(transaction.getId(), transactionDto.getId());
-					Assert.assertEquals(transaction.getLocalizacao(), transactionDto.getLocalizacao());
-					Assert.assertEquals(transaction.getMeioDePagamento(), transactionDto.getMeioDePagamento());
-					Assert.assertEquals(transaction.getTipo(), transactionDto.getTipo());
-					Assert.assertEquals(transaction.getData(), transactionDto.getData());
-					Assert.assertEquals(transaction.getValor(), transactionDto.getValor());
+					Assertions.assertEquals(transaction.getDescricao(), transactionDto.getDescricao());
+					Assertions.assertEquals(transaction.getId(), transactionDto.getId());
+					Assertions.assertEquals(transaction.getLocalizacao(), transactionDto.getLocalizacao());
+					Assertions.assertEquals(transaction.getMeioDePagamento(), transactionDto.getMeioDePagamento());
+					Assertions.assertEquals(transaction.getTipo(), transactionDto.getTipo());
+					Assertions.assertEquals(transaction.getData(), transactionDto.getData());
+					Assertions.assertEquals(transaction.getValor(), transactionDto.getValor());
 				}
 			}
 		}
@@ -287,19 +286,19 @@ public class TransactionControllerTest {
 		Mockito.verify(transactionService).findSinceDate(token, date);
 		Mockito.verify(transactionParse).toTransactionsDto(transactions);
 		
-		Assert.assertNotNull(response);
-		Assert.assertFalse(response.isEmpty());
+		Assertions.assertNotNull(response);
+		Assertions.assertFalse(response.isEmpty());
 		
 		for (TransactionDto transactionDto : response) {
 			for (Transaction transaction : transactions) {
 				if(transactionDto.getId().equals(transaction.getId())) {
-					Assert.assertEquals(transaction.getDescricao(), transactionDto.getDescricao());
-					Assert.assertEquals(transaction.getId(), transactionDto.getId());
-					Assert.assertEquals(transaction.getLocalizacao(), transactionDto.getLocalizacao());
-					Assert.assertEquals(transaction.getMeioDePagamento(), transactionDto.getMeioDePagamento());
-					Assert.assertEquals(transaction.getTipo(), transactionDto.getTipo());
-					Assert.assertEquals(transaction.getData(), transactionDto.getData());
-					Assert.assertEquals(transaction.getValor(), transactionDto.getValor());
+					Assertions.assertEquals(transaction.getDescricao(), transactionDto.getDescricao());
+					Assertions.assertEquals(transaction.getId(), transactionDto.getId());
+					Assertions.assertEquals(transaction.getLocalizacao(), transactionDto.getLocalizacao());
+					Assertions.assertEquals(transaction.getMeioDePagamento(), transactionDto.getMeioDePagamento());
+					Assertions.assertEquals(transaction.getTipo(), transactionDto.getTipo());
+					Assertions.assertEquals(transaction.getData(), transactionDto.getData());
+					Assertions.assertEquals(transaction.getValor(), transactionDto.getValor());
 				}
 			}
 		}
@@ -315,19 +314,19 @@ public class TransactionControllerTest {
 		Mockito.verify(transactionService).findSinceDateByQuantity(token, date, quantity, page);
 		Mockito.verify(transactionParse).toTransactionsDto(transactions);
 		
-		Assert.assertNotNull(response);
-		Assert.assertFalse(response.isEmpty());
+		Assertions.assertNotNull(response);
+		Assertions.assertFalse(response.isEmpty());
 		
 		for (TransactionDto transactionDto : response) {
 			for (Transaction transaction : transactions) {
 				if(transactionDto.getId().equals(transaction.getId())) {
-					Assert.assertEquals(transaction.getDescricao(), transactionDto.getDescricao());
-					Assert.assertEquals(transaction.getId(), transactionDto.getId());
-					Assert.assertEquals(transaction.getLocalizacao(), transactionDto.getLocalizacao());
-					Assert.assertEquals(transaction.getMeioDePagamento(), transactionDto.getMeioDePagamento());
-					Assert.assertEquals(transaction.getTipo(), transactionDto.getTipo());
-					Assert.assertEquals(transaction.getData(), transactionDto.getData());
-					Assert.assertEquals(transaction.getValor(), transactionDto.getValor());
+					Assertions.assertEquals(transaction.getDescricao(), transactionDto.getDescricao());
+					Assertions.assertEquals(transaction.getId(), transactionDto.getId());
+					Assertions.assertEquals(transaction.getLocalizacao(), transactionDto.getLocalizacao());
+					Assertions.assertEquals(transaction.getMeioDePagamento(), transactionDto.getMeioDePagamento());
+					Assertions.assertEquals(transaction.getTipo(), transactionDto.getTipo());
+					Assertions.assertEquals(transaction.getData(), transactionDto.getData());
+					Assertions.assertEquals(transaction.getValor(), transactionDto.getValor());
 				}
 			}
 		}
@@ -346,19 +345,19 @@ public class TransactionControllerTest {
 		Mockito.verify(transactionService).findAll(token);
 		Mockito.verify(transactionParse).toTransactionsDto(transactions);
 		
-		Assert.assertNotNull(response);
-		Assert.assertFalse(response.isEmpty());
+		Assertions.assertNotNull(response);
+		Assertions.assertFalse(response.isEmpty());
 		
 		for (TransactionDto transactionDto : response) {
 			for (Transaction transaction : transactions) {
 				if(transactionDto.getId().equals(transaction.getId())) {
-					Assert.assertEquals(transaction.getDescricao(), transactionDto.getDescricao());
-					Assert.assertEquals(transaction.getId(), transactionDto.getId());
-					Assert.assertEquals(transaction.getLocalizacao(), transactionDto.getLocalizacao());
-					Assert.assertEquals(transaction.getMeioDePagamento(), transactionDto.getMeioDePagamento());
-					Assert.assertEquals(transaction.getTipo(), transactionDto.getTipo());
-					Assert.assertEquals(transaction.getData(), transactionDto.getData());
-					Assert.assertEquals(transaction.getValor(), transactionDto.getValor());
+					Assertions.assertEquals(transaction.getDescricao(), transactionDto.getDescricao());
+					Assertions.assertEquals(transaction.getId(), transactionDto.getId());
+					Assertions.assertEquals(transaction.getLocalizacao(), transactionDto.getLocalizacao());
+					Assertions.assertEquals(transaction.getMeioDePagamento(), transactionDto.getMeioDePagamento());
+					Assertions.assertEquals(transaction.getTipo(), transactionDto.getTipo());
+					Assertions.assertEquals(transaction.getData(), transactionDto.getData());
+					Assertions.assertEquals(transaction.getValor(), transactionDto.getValor());
 				}
 			}
 		}
@@ -377,19 +376,19 @@ public class TransactionControllerTest {
 		Mockito.verify(transactionService).findAll(token);
 		Mockito.verify(transactionParse).toTransactionsDto(transactions);
 		
-		Assert.assertNotNull(response);
-		Assert.assertFalse(response.isEmpty());
+		Assertions.assertNotNull(response);
+		Assertions.assertFalse(response.isEmpty());
 		
 		for (TransactionDto transactionDto : response) {
 			for (Transaction transaction : transactions) {
 				if(transactionDto.getId().equals(transaction.getId())) {
-					Assert.assertEquals(transaction.getDescricao(), transactionDto.getDescricao());
-					Assert.assertEquals(transaction.getId(), transactionDto.getId());
-					Assert.assertEquals(transaction.getLocalizacao(), transactionDto.getLocalizacao());
-					Assert.assertEquals(transaction.getMeioDePagamento(), transactionDto.getMeioDePagamento());
-					Assert.assertEquals(transaction.getTipo(), transactionDto.getTipo());
-					Assert.assertEquals(transaction.getData(), transactionDto.getData());
-					Assert.assertEquals(transaction.getValor(), transactionDto.getValor());
+					Assertions.assertEquals(transaction.getDescricao(), transactionDto.getDescricao());
+					Assertions.assertEquals(transaction.getId(), transactionDto.getId());
+					Assertions.assertEquals(transaction.getLocalizacao(), transactionDto.getLocalizacao());
+					Assertions.assertEquals(transaction.getMeioDePagamento(), transactionDto.getMeioDePagamento());
+					Assertions.assertEquals(transaction.getTipo(), transactionDto.getTipo());
+					Assertions.assertEquals(transaction.getData(), transactionDto.getData());
+					Assertions.assertEquals(transaction.getValor(), transactionDto.getValor());
 				}
 			}
 		}
@@ -405,14 +404,14 @@ public class TransactionControllerTest {
 		Mockito.verify(transactionService).find(token, idTransacao);
 		Mockito.verify(transactionParse).toTransactionDto(transaction);
 		
-		Assert.assertNotNull(response);
-		Assert.assertEquals(transactionDto.getDescricao(), response.getDescricao());
-		Assert.assertEquals(transactionDto.getId(), response.getId());
-		Assert.assertEquals(transactionDto.getLocalizacao(), response.getLocalizacao());
-		Assert.assertEquals(transactionDto.getMeioDePagamento(), response.getMeioDePagamento());
-		Assert.assertEquals(transactionDto.getTipo(), response.getTipo());
-		Assert.assertEquals(transactionDto.getData(), response.getData());
-		Assert.assertEquals(transactionDto.getValor(), response.getValor());
+		Assertions.assertNotNull(response);
+		Assertions.assertEquals(transactionDto.getDescricao(), response.getDescricao());
+		Assertions.assertEquals(transactionDto.getId(), response.getId());
+		Assertions.assertEquals(transactionDto.getLocalizacao(), response.getLocalizacao());
+		Assertions.assertEquals(transactionDto.getMeioDePagamento(), response.getMeioDePagamento());
+		Assertions.assertEquals(transactionDto.getTipo(), response.getTipo());
+		Assertions.assertEquals(transactionDto.getData(), response.getData());
+		Assertions.assertEquals(transactionDto.getValor(), response.getValor());
 	}
 	
 }

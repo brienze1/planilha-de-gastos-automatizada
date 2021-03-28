@@ -93,14 +93,4 @@ public class UserController implements UserControllerAdapter {
 		return ResponseEntity.ok().build();
 	}
 	
-//	@PostMapping("/register-device")
-//	public DataDto registerDevice(@RequestBody UserDto userDto) {
-//		User user = userParse.toUser(userDto);
-//		
-//		DataDto dataDto = new DataDto();
-//		dataDto.setJwtDataToken(userService.registerDevice(user));
-//		
-//		return dataDto;
-//	}
-	
 }

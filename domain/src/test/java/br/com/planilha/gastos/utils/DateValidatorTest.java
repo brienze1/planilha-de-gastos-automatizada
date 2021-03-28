@@ -4,14 +4,14 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.UUID;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class DateValidatorTest {
 
 	@InjectMocks
@@ -23,7 +23,7 @@ public class DateValidatorTest {
 	private String ano;
 	private String invalidDate;
 	
-	@Before
+	@BeforeEach
 	public void init() {
 		dia = "30";
 		mes = "10";
@@ -37,21 +37,17 @@ public class DateValidatorTest {
 	public void isValidTest() {
 		LocalDateTime date = dateValidator.isValid(validDate);
 		
-		Assert.assertEquals(dia, String.valueOf(date.getDayOfMonth()));
-		Assert.assertEquals(mes, String.valueOf(date.getMonth().getValue()));
-		Assert.assertEquals(ano, String.valueOf(date.getYear()));
+		Assertions.assertEquals(dia, String.valueOf(date.getDayOfMonth()));
+		Assertions.assertEquals(mes, String.valueOf(date.getMonth().getValue()));
+		Assertions.assertEquals(ano, String.valueOf(date.getYear()));
 	}
 	
-	@Test(expected = DateTimeParseException.class)
+	@Test
 	public void isInValidTest() {
-		try {
-			dateValidator.isValid(invalidDate);
-		} catch (DateTimeParseException e) {
-			Assert.assertEquals("Not a valid date (try using dd/MM/yyyy)", e.getMessage());
-			Assert.assertEquals(invalidDate, e.getParsedString());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				DateTimeParseException.class, 
+				() -> dateValidator.isValid(invalidDate), 
+				"Not a valid date (try using dd/MM/yyyy)");
 	}
 	
 }

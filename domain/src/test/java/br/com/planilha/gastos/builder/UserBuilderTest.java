@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import br.com.planilha.gastos.entity.Device;
 import br.com.planilha.gastos.entity.User;
@@ -19,7 +19,7 @@ import br.com.planilha.gastos.exception.UserValidationException;
 import br.com.planilha.gastos.port.IdGeneratorAdapter;
 import br.com.planilha.gastos.port.PasswordUtilsAdapter;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class UserBuilderTest {
 
 	@InjectMocks
@@ -46,7 +46,7 @@ public class UserBuilderTest {
 	private String lastName1;
 	private String lastName2;
 	
-	@Before
+	@BeforeEach
 	public void init() {
 		secret = UUID.randomUUID().toString();
 		password1 = UUID.randomUUID().toString();
@@ -85,31 +85,25 @@ public class UserBuilderTest {
 		
 		User newUser = userBuilder.build(user);
 		
-		Assert.assertNotNull(newUser);
-		Assert.assertEquals(devices.get(0).getDeviceId(), newUser.inUseDeviceId());
-		Assert.assertEquals(user.getPassword(), newUser.getPassword());
+		Assertions.assertNotNull(newUser);
+		Assertions.assertEquals(devices.get(0).getDeviceId(), newUser.inUseDeviceId());
+		Assertions.assertEquals(user.getPassword(), newUser.getPassword());
 	}
 	
-	@Test(expected = UserValidationException.class)
+	@Test
 	public void buildChangesErrorUserNullTest() {
-		try {
-			userBuilder.buildChanges(null, userSalvo);
-		} catch (UserValidationException e) {
-			Assert.assertEquals("Usuario nao pode ser nulo", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				UserValidationException.class, 
+				() -> userBuilder.buildChanges(null, userSalvo), 
+				"Usuario nao pode ser nulo");
 	}
 	
-	@Test(expected = UserValidationException.class)
+	@Test
 	public void buildChangesErroUserSalvoNullTest() {
-		try {
-			userBuilder.buildChanges(user, null);
-		} catch (UserValidationException e) {
-			Assert.assertEquals("Usuario nao pode ser nulo", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				UserValidationException.class, 
+				() -> userBuilder.buildChanges(user, null), 
+				"Usuario nao pode ser nulo");
 	}
 	
 	@Test
@@ -120,11 +114,11 @@ public class UserBuilderTest {
 		
 		User userResponse = userBuilder.buildChanges(user, userSalvo);
 		
-		Assert.assertEquals(firstName2, userResponse.getFirstName());
-		Assert.assertEquals(lastName1, userResponse.getLastName());
-		Assert.assertEquals(password1, userResponse.getPassword());
-		Assert.assertEquals(secret, userResponse.getSecret());
-		Assert.assertEquals(false, userResponse.isAutoLogin());
+		Assertions.assertEquals(firstName2, userResponse.getFirstName());
+		Assertions.assertEquals(lastName1, userResponse.getLastName());
+		Assertions.assertEquals(password1, userResponse.getPassword());
+		Assertions.assertEquals(secret, userResponse.getSecret());
+		Assertions.assertEquals(false, userResponse.isAutoLogin());
 	}
 	
 	@Test
@@ -135,11 +129,11 @@ public class UserBuilderTest {
 		
 		User userResponse = userBuilder.buildChanges(user, userSalvo);
 		
-		Assert.assertEquals(firstName1, userResponse.getFirstName());
-		Assert.assertEquals(lastName1, userResponse.getLastName());
-		Assert.assertEquals(password1, userResponse.getPassword());
-		Assert.assertEquals(secret, userResponse.getSecret());
-		Assert.assertEquals(false, userResponse.isAutoLogin());
+		Assertions.assertEquals(firstName1, userResponse.getFirstName());
+		Assertions.assertEquals(lastName1, userResponse.getLastName());
+		Assertions.assertEquals(password1, userResponse.getPassword());
+		Assertions.assertEquals(secret, userResponse.getSecret());
+		Assertions.assertEquals(false, userResponse.isAutoLogin());
 	}
 	
 	@Test
@@ -150,11 +144,11 @@ public class UserBuilderTest {
 		
 		User userResponse = userBuilder.buildChanges(user, userSalvo);
 		
-		Assert.assertEquals(firstName1, userResponse.getFirstName());
-		Assert.assertEquals(lastName1, userResponse.getLastName());
-		Assert.assertEquals(password1, userResponse.getPassword());
-		Assert.assertEquals(secret, userResponse.getSecret());
-		Assert.assertEquals(false, userResponse.isAutoLogin());
+		Assertions.assertEquals(firstName1, userResponse.getFirstName());
+		Assertions.assertEquals(lastName1, userResponse.getLastName());
+		Assertions.assertEquals(password1, userResponse.getPassword());
+		Assertions.assertEquals(secret, userResponse.getSecret());
+		Assertions.assertEquals(false, userResponse.isAutoLogin());
 	}
 	
 	@Test
@@ -165,11 +159,11 @@ public class UserBuilderTest {
 		
 		User userResponse = userBuilder.buildChanges(user, userSalvo);
 		
-		Assert.assertEquals(firstName1, userResponse.getFirstName());
-		Assert.assertEquals(lastName2, userResponse.getLastName());
-		Assert.assertEquals(password1, userResponse.getPassword());
-		Assert.assertEquals(secret, userResponse.getSecret());
-		Assert.assertEquals(false, userResponse.isAutoLogin());
+		Assertions.assertEquals(firstName1, userResponse.getFirstName());
+		Assertions.assertEquals(lastName2, userResponse.getLastName());
+		Assertions.assertEquals(password1, userResponse.getPassword());
+		Assertions.assertEquals(secret, userResponse.getSecret());
+		Assertions.assertEquals(false, userResponse.isAutoLogin());
 	}
 	
 	@Test
@@ -180,11 +174,11 @@ public class UserBuilderTest {
 		
 		User userResponse = userBuilder.buildChanges(user, userSalvo);
 		
-		Assert.assertEquals(firstName1, userResponse.getFirstName());
-		Assert.assertEquals(lastName1, userResponse.getLastName());
-		Assert.assertEquals(password1, userResponse.getPassword());
-		Assert.assertEquals(secret, userResponse.getSecret());
-		Assert.assertEquals(false, userResponse.isAutoLogin());
+		Assertions.assertEquals(firstName1, userResponse.getFirstName());
+		Assertions.assertEquals(lastName1, userResponse.getLastName());
+		Assertions.assertEquals(password1, userResponse.getPassword());
+		Assertions.assertEquals(secret, userResponse.getSecret());
+		Assertions.assertEquals(false, userResponse.isAutoLogin());
 	}
 	
 	@Test
@@ -195,11 +189,11 @@ public class UserBuilderTest {
 		
 		User userResponse = userBuilder.buildChanges(user, userSalvo);
 		
-		Assert.assertEquals(firstName1, userResponse.getFirstName());
-		Assert.assertEquals(lastName1, userResponse.getLastName());
-		Assert.assertEquals(password1, userResponse.getPassword());
-		Assert.assertEquals(secret, userResponse.getSecret());
-		Assert.assertEquals(false, userResponse.isAutoLogin());
+		Assertions.assertEquals(firstName1, userResponse.getFirstName());
+		Assertions.assertEquals(lastName1, userResponse.getLastName());
+		Assertions.assertEquals(password1, userResponse.getPassword());
+		Assertions.assertEquals(secret, userResponse.getSecret());
+		Assertions.assertEquals(false, userResponse.isAutoLogin());
 	}
 	
 	@Test
@@ -210,11 +204,11 @@ public class UserBuilderTest {
 		
 		User userResponse = userBuilder.buildChanges(user, userSalvo);
 		
-		Assert.assertEquals(firstName1, userResponse.getFirstName());
-		Assert.assertEquals(lastName1, userResponse.getLastName());
-		Assert.assertEquals(password2, userResponse.getPassword());
-		Assert.assertEquals(secret, userResponse.getSecret());
-		Assert.assertEquals(false, userResponse.isAutoLogin());
+		Assertions.assertEquals(firstName1, userResponse.getFirstName());
+		Assertions.assertEquals(lastName1, userResponse.getLastName());
+		Assertions.assertEquals(password2, userResponse.getPassword());
+		Assertions.assertEquals(secret, userResponse.getSecret());
+		Assertions.assertEquals(false, userResponse.isAutoLogin());
 	}
 	
 	@Test
@@ -223,11 +217,11 @@ public class UserBuilderTest {
 		
 		User userResponse = userBuilder.buildChanges(user, userSalvo);
 		
-		Assert.assertEquals(firstName1, userResponse.getFirstName());
-		Assert.assertEquals(lastName1, userResponse.getLastName());
-		Assert.assertEquals(password1, userResponse.getPassword());
-		Assert.assertEquals(secret, userResponse.getSecret());
-		Assert.assertEquals(false, userResponse.isAutoLogin());
+		Assertions.assertEquals(firstName1, userResponse.getFirstName());
+		Assertions.assertEquals(lastName1, userResponse.getLastName());
+		Assertions.assertEquals(password1, userResponse.getPassword());
+		Assertions.assertEquals(secret, userResponse.getSecret());
+		Assertions.assertEquals(false, userResponse.isAutoLogin());
 	}
 	
 	@Test
@@ -236,11 +230,11 @@ public class UserBuilderTest {
 		
 		User userResponse = userBuilder.buildChanges(user, userSalvo);
 		
-		Assert.assertEquals(firstName1, userResponse.getFirstName());
-		Assert.assertEquals(lastName1, userResponse.getLastName());
-		Assert.assertEquals(password1, userResponse.getPassword());
-		Assert.assertEquals(secret, userResponse.getSecret());
-		Assert.assertEquals(false, userResponse.isAutoLogin());
+		Assertions.assertEquals(firstName1, userResponse.getFirstName());
+		Assertions.assertEquals(lastName1, userResponse.getLastName());
+		Assertions.assertEquals(password1, userResponse.getPassword());
+		Assertions.assertEquals(secret, userResponse.getSecret());
+		Assertions.assertEquals(false, userResponse.isAutoLogin());
 	}
 	
 	@Test
@@ -251,11 +245,11 @@ public class UserBuilderTest {
 		
 		User userResponse = userBuilder.buildChanges(user, userSalvo);
 		
-		Assert.assertEquals(firstName1, userResponse.getFirstName());
-		Assert.assertEquals(lastName1, userResponse.getLastName());
-		Assert.assertEquals(password1, userResponse.getPassword());
-		Assert.assertEquals(secret, userResponse.getSecret());
-		Assert.assertEquals(true, userResponse.isAutoLogin());
+		Assertions.assertEquals(firstName1, userResponse.getFirstName());
+		Assertions.assertEquals(lastName1, userResponse.getLastName());
+		Assertions.assertEquals(password1, userResponse.getPassword());
+		Assertions.assertEquals(secret, userResponse.getSecret());
+		Assertions.assertEquals(true, userResponse.isAutoLogin());
 	}
 	
 }

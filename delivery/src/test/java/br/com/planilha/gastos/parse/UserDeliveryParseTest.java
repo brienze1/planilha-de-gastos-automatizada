@@ -4,21 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import br.com.planilha.gastos.dto.DeviceDto;
 import br.com.planilha.gastos.dto.UserDto;
 import br.com.planilha.gastos.entity.Device;
 import br.com.planilha.gastos.entity.User;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class UserDeliveryParseTest {
 
 	@InjectMocks
@@ -30,7 +30,7 @@ public class UserDeliveryParseTest {
 	private UserDto userDto;
 	private List<Device> devices;
 	
-	@Before
+	@BeforeEach
 	public void init() {
 		userDto = new UserDto();
 		userDto.setAutoLogin(true);
@@ -62,18 +62,18 @@ public class UserDeliveryParseTest {
 		
 		Mockito.verify(deviceParce).toDevices(userDto.getDevice());
 		
-		Assert.assertNotNull(user);
-		Assert.assertEquals(userDto.getEmail(), user.getEmail());
-		Assert.assertEquals(userDto.getFirstName().substring(0,1).toUpperCase() + userDto.getFirstName().substring(1).toLowerCase(), user.getFirstName());
-		Assert.assertEquals(userDto.getLastName().substring(0,1).toUpperCase() + userDto.getLastName().substring(1).toLowerCase(), user.getLastName());
-		Assert.assertEquals(userDto.getPassword(), user.getPassword());
-		Assert.assertEquals(userDto.getSecret(), user.getSecret());
-		Assert.assertEquals(userDto.isAutoLogin(), user.isAutoLogin());
-		Assert.assertEquals(userDto.isValidEmail(), user.isValidEmail());
-		Assert.assertEquals(userDto.getDevice().getDeviceId(), user.getDevices().get(0).getDeviceId());
-		Assert.assertEquals(userDto.getDevice().getVerificationCode(), user.getDevices().get(0).getVerificationCode());
-		Assert.assertEquals(userDto.getDevice().isInUse(), user.getDevices().get(0).isInUse());
-		Assert.assertEquals(userDto.getDevice().isVerified(), user.getDevices().get(0).isVerified());
+		Assertions.assertNotNull(user);
+		Assertions.assertEquals(userDto.getEmail(), user.getEmail());
+		Assertions.assertEquals(userDto.getFirstName().substring(0,1).toUpperCase() + userDto.getFirstName().substring(1).toLowerCase(), user.getFirstName());
+		Assertions.assertEquals(userDto.getLastName().substring(0,1).toUpperCase() + userDto.getLastName().substring(1).toLowerCase(), user.getLastName());
+		Assertions.assertEquals(userDto.getPassword(), user.getPassword());
+		Assertions.assertEquals(userDto.getSecret(), user.getSecret());
+		Assertions.assertEquals(userDto.isAutoLogin(), user.isAutoLogin());
+		Assertions.assertEquals(userDto.isValidEmail(), user.isValidEmail());
+		Assertions.assertEquals(userDto.getDevice().getDeviceId(), user.getDevices().get(0).getDeviceId());
+		Assertions.assertEquals(userDto.getDevice().getVerificationCode(), user.getDevices().get(0).getVerificationCode());
+		Assertions.assertEquals(userDto.getDevice().isInUse(), user.getDevices().get(0).isInUse());
+		Assertions.assertEquals(userDto.getDevice().isVerified(), user.getDevices().get(0).isVerified());
 	}
 	
 	@Test
@@ -86,18 +86,18 @@ public class UserDeliveryParseTest {
 		
 		Mockito.verify(deviceParce).toDevices(userDto.getDevice());
 		
-		Assert.assertNotNull(user);
-		Assert.assertNull(user.getEmail());
-		Assert.assertEquals(userDto.getFirstName().substring(0,1).toUpperCase() + userDto.getFirstName().substring(1).toLowerCase(), user.getFirstName());
-		Assert.assertEquals(userDto.getLastName().substring(0,1).toUpperCase() + userDto.getLastName().substring(1).toLowerCase(), user.getLastName());
-		Assert.assertEquals(userDto.getPassword(), user.getPassword());
-		Assert.assertEquals(userDto.getSecret(), user.getSecret());
-		Assert.assertEquals(userDto.isAutoLogin(), user.isAutoLogin());
-		Assert.assertEquals(userDto.isValidEmail(), user.isValidEmail());
-		Assert.assertEquals(userDto.getDevice().getDeviceId(), user.getDevices().get(0).getDeviceId());
-		Assert.assertEquals(userDto.getDevice().getVerificationCode(), user.getDevices().get(0).getVerificationCode());
-		Assert.assertEquals(userDto.getDevice().isInUse(), user.getDevices().get(0).isInUse());
-		Assert.assertEquals(userDto.getDevice().isVerified(), user.getDevices().get(0).isVerified());
+		Assertions.assertNotNull(user);
+		Assertions.assertNull(user.getEmail());
+		Assertions.assertEquals(userDto.getFirstName().substring(0,1).toUpperCase() + userDto.getFirstName().substring(1).toLowerCase(), user.getFirstName());
+		Assertions.assertEquals(userDto.getLastName().substring(0,1).toUpperCase() + userDto.getLastName().substring(1).toLowerCase(), user.getLastName());
+		Assertions.assertEquals(userDto.getPassword(), user.getPassword());
+		Assertions.assertEquals(userDto.getSecret(), user.getSecret());
+		Assertions.assertEquals(userDto.isAutoLogin(), user.isAutoLogin());
+		Assertions.assertEquals(userDto.isValidEmail(), user.isValidEmail());
+		Assertions.assertEquals(userDto.getDevice().getDeviceId(), user.getDevices().get(0).getDeviceId());
+		Assertions.assertEquals(userDto.getDevice().getVerificationCode(), user.getDevices().get(0).getVerificationCode());
+		Assertions.assertEquals(userDto.getDevice().isInUse(), user.getDevices().get(0).isInUse());
+		Assertions.assertEquals(userDto.getDevice().isVerified(), user.getDevices().get(0).isVerified());
 	}
 	
 	@Test
@@ -110,18 +110,18 @@ public class UserDeliveryParseTest {
 		
 		Mockito.verify(deviceParce).toDevices(userDto.getDevice());
 		
-		Assert.assertNotNull(user);
-		Assert.assertNull(user.getFirstName());
-		Assert.assertEquals(userDto.getEmail(), user.getEmail());
-		Assert.assertEquals(userDto.getLastName().substring(0,1).toUpperCase() + userDto.getLastName().substring(1).toLowerCase(), user.getLastName());
-		Assert.assertEquals(userDto.getPassword(), user.getPassword());
-		Assert.assertEquals(userDto.getSecret(), user.getSecret());
-		Assert.assertEquals(userDto.isAutoLogin(), user.isAutoLogin());
-		Assert.assertEquals(userDto.isValidEmail(), user.isValidEmail());
-		Assert.assertEquals(userDto.getDevice().getDeviceId(), user.getDevices().get(0).getDeviceId());
-		Assert.assertEquals(userDto.getDevice().getVerificationCode(), user.getDevices().get(0).getVerificationCode());
-		Assert.assertEquals(userDto.getDevice().isInUse(), user.getDevices().get(0).isInUse());
-		Assert.assertEquals(userDto.getDevice().isVerified(), user.getDevices().get(0).isVerified());
+		Assertions.assertNotNull(user);
+		Assertions.assertNull(user.getFirstName());
+		Assertions.assertEquals(userDto.getEmail(), user.getEmail());
+		Assertions.assertEquals(userDto.getLastName().substring(0,1).toUpperCase() + userDto.getLastName().substring(1).toLowerCase(), user.getLastName());
+		Assertions.assertEquals(userDto.getPassword(), user.getPassword());
+		Assertions.assertEquals(userDto.getSecret(), user.getSecret());
+		Assertions.assertEquals(userDto.isAutoLogin(), user.isAutoLogin());
+		Assertions.assertEquals(userDto.isValidEmail(), user.isValidEmail());
+		Assertions.assertEquals(userDto.getDevice().getDeviceId(), user.getDevices().get(0).getDeviceId());
+		Assertions.assertEquals(userDto.getDevice().getVerificationCode(), user.getDevices().get(0).getVerificationCode());
+		Assertions.assertEquals(userDto.getDevice().isInUse(), user.getDevices().get(0).isInUse());
+		Assertions.assertEquals(userDto.getDevice().isVerified(), user.getDevices().get(0).isVerified());
 	}
 	
 	@Test
@@ -134,18 +134,18 @@ public class UserDeliveryParseTest {
 		
 		Mockito.verify(deviceParce).toDevices(userDto.getDevice());
 		
-		Assert.assertNotNull(user);
-		Assert.assertNull(user.getLastName());
-		Assert.assertEquals(userDto.getEmail(), user.getEmail());
-		Assert.assertEquals(userDto.getFirstName().substring(0,1).toUpperCase() + userDto.getFirstName().substring(1).toLowerCase(), user.getFirstName());
-		Assert.assertEquals(userDto.getPassword(), user.getPassword());
-		Assert.assertEquals(userDto.getSecret(), user.getSecret());
-		Assert.assertEquals(userDto.isAutoLogin(), user.isAutoLogin());
-		Assert.assertEquals(userDto.isValidEmail(), user.isValidEmail());
-		Assert.assertEquals(userDto.getDevice().getDeviceId(), user.getDevices().get(0).getDeviceId());
-		Assert.assertEquals(userDto.getDevice().getVerificationCode(), user.getDevices().get(0).getVerificationCode());
-		Assert.assertEquals(userDto.getDevice().isInUse(), user.getDevices().get(0).isInUse());
-		Assert.assertEquals(userDto.getDevice().isVerified(), user.getDevices().get(0).isVerified());
+		Assertions.assertNotNull(user);
+		Assertions.assertNull(user.getLastName());
+		Assertions.assertEquals(userDto.getEmail(), user.getEmail());
+		Assertions.assertEquals(userDto.getFirstName().substring(0,1).toUpperCase() + userDto.getFirstName().substring(1).toLowerCase(), user.getFirstName());
+		Assertions.assertEquals(userDto.getPassword(), user.getPassword());
+		Assertions.assertEquals(userDto.getSecret(), user.getSecret());
+		Assertions.assertEquals(userDto.isAutoLogin(), user.isAutoLogin());
+		Assertions.assertEquals(userDto.isValidEmail(), user.isValidEmail());
+		Assertions.assertEquals(userDto.getDevice().getDeviceId(), user.getDevices().get(0).getDeviceId());
+		Assertions.assertEquals(userDto.getDevice().getVerificationCode(), user.getDevices().get(0).getVerificationCode());
+		Assertions.assertEquals(userDto.getDevice().isInUse(), user.getDevices().get(0).isInUse());
+		Assertions.assertEquals(userDto.getDevice().isVerified(), user.getDevices().get(0).isVerified());
 	}
 	
 	@Test
@@ -158,22 +158,22 @@ public class UserDeliveryParseTest {
 		
 		Mockito.verify(deviceParce).toDevices(userDto.getDevice());
 		
-		Assert.assertNotNull(user);
-		Assert.assertTrue(user.getDevices().isEmpty());
-		Assert.assertEquals(userDto.getEmail(), user.getEmail());
-		Assert.assertEquals(userDto.getFirstName().substring(0,1).toUpperCase() + userDto.getFirstName().substring(1).toLowerCase(), user.getFirstName());
-		Assert.assertEquals(userDto.getLastName().substring(0,1).toUpperCase() + userDto.getLastName().substring(1).toLowerCase(), user.getLastName());
-		Assert.assertEquals(userDto.getPassword(), user.getPassword());
-		Assert.assertEquals(userDto.getSecret(), user.getSecret());
-		Assert.assertEquals(userDto.isAutoLogin(), user.isAutoLogin());
-		Assert.assertEquals(userDto.isValidEmail(), user.isValidEmail());
+		Assertions.assertNotNull(user);
+		Assertions.assertTrue(user.getDevices().isEmpty());
+		Assertions.assertEquals(userDto.getEmail(), user.getEmail());
+		Assertions.assertEquals(userDto.getFirstName().substring(0,1).toUpperCase() + userDto.getFirstName().substring(1).toLowerCase(), user.getFirstName());
+		Assertions.assertEquals(userDto.getLastName().substring(0,1).toUpperCase() + userDto.getLastName().substring(1).toLowerCase(), user.getLastName());
+		Assertions.assertEquals(userDto.getPassword(), user.getPassword());
+		Assertions.assertEquals(userDto.getSecret(), user.getSecret());
+		Assertions.assertEquals(userDto.isAutoLogin(), user.isAutoLogin());
+		Assertions.assertEquals(userDto.isValidEmail(), user.isValidEmail());
 	}	
 	
 	@Test
 	public void toUserUserDtoNullTest() {
 		User user = userDeliveryParse.toUser(null);
 		
-		Assert.assertNotNull(user);
+		Assertions.assertNotNull(user);
 	}
 	
 	

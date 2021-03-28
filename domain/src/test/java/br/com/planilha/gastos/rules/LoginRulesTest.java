@@ -3,24 +3,25 @@ package br.com.planilha.gastos.rules;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import br.com.planilha.gastos.entity.Device;
 import br.com.planilha.gastos.entity.Login;
 import br.com.planilha.gastos.entity.User;
+import br.com.planilha.gastos.exception.AutoLoginException;
 import br.com.planilha.gastos.exception.DeviceNotVerifiedException;
 import br.com.planilha.gastos.exception.LoginException;
 import br.com.planilha.gastos.port.PasswordUtilsAdapter;
 import br.com.planilha.gastos.service.DeviceService;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class LoginRulesTest {
 
 	@InjectMocks
@@ -37,7 +38,7 @@ public class LoginRulesTest {
 	private String deviceId;
 	private String password;
 	
-	@Before
+	@BeforeEach
 	public void init() {
 		deviceId = UUID.randomUUID().toString();
 		password = UUID.randomUUID().toString();
@@ -70,7 +71,7 @@ public class LoginRulesTest {
 		
 		boolean isValid = loginRules.validate(login, user);
 		
-		Assert.assertTrue(isValid);
+		Assertions.assertTrue(isValid);
 	}
 	
 	@Test
@@ -83,234 +84,183 @@ public class LoginRulesTest {
 		boolean isValid = loginRules.validate(login, user);
 
 		Mockito.verify(deviceService).registerNewDevice(user.getId(), login.getDeviceId());
-		Assert.assertTrue(isValid);
+		Assertions.assertTrue(isValid);
 	}
 	
-	@Test(expected = LoginException.class)
+	@Test
 	public void validateLoginNullTest() {
-		try {
-			loginRules.validate(null, user);
-		} catch (LoginException e) {
-			Assert.assertEquals("Login can't be null", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				LoginException.class, 
+				() -> loginRules.validate(null, user), 
+				"Login can't be null");
 	}
 	
-	@Test(expected = LoginException.class)
+	@Test
 	public void validateUserNullTest() {
-		try {
-			loginRules.validate(login, null);
-		} catch (LoginException e) {
-			Assert.assertEquals("User can't be null", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				LoginException.class, 
+				() -> loginRules.validate(login, null), 
+				"User can't be null");
 	}
 	
-	@Test(expected = LoginException.class)
+	@Test
 	public void validateEmailNullTest() {
 		login.setEmail(null);
 		
-		try {
-			loginRules.validate(login, user);
-		} catch (LoginException e) {
-			Assert.assertEquals("Email can't be null or blank", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				LoginException.class, 
+				() -> loginRules.validate(login, user), 
+				"Email can't be null or blank");
 	}
 	
-	@Test(expected = LoginException.class)
+	@Test
 	public void validateEmailBlankTest() {
 		login.setEmail(" ");
 		
-		try {
-			loginRules.validate(login, user);
-		} catch (LoginException e) {
-			Assert.assertEquals("Email can't be null or blank", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				LoginException.class, 
+				() -> loginRules.validate(login, user), 
+				"Email can't be null or blank");
 	}
 	
-	@Test(expected = LoginException.class)
+	@Test
 	public void validatePasswordNullTest() {
 		login.setPassword(null);
 		
-		try {
-			loginRules.validate(login, user);
-		} catch (LoginException e) {
-			Assert.assertEquals("Password can't be null or blank", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				LoginException.class, 
+				() -> loginRules.validate(login, user), 
+				"Password can't be null or blank");
 	}
 	
-	@Test(expected = LoginException.class)
+	@Test
 	public void validatePasswordBlankTest() {
 		login.setPassword(" ");
 		
-		try {
-			loginRules.validate(login, user);
-		} catch (LoginException e) {
-			Assert.assertEquals("Password can't be null or blank", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				LoginException.class, 
+				() -> loginRules.validate(login, user), 
+				"Password can't be null or blank");
 	}
 	
-	@Test(expected = LoginException.class)
+	@Test
 	public void validatePasswordWrongTest() {
 		login.setPassword(UUID.randomUUID().toString());
 		
 		Mockito.when(passwordUtils.verifyPassword(login.getPassword(), user.getPassword(), user.getSecret())).thenReturn(false);
 		
-		try {
-			loginRules.validate(login, user);
-		} catch (LoginException e) {
-			Assert.assertEquals("Password does not match", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				LoginException.class, 
+				() -> loginRules.validate(login, user), 
+				"Password does not match");
 	}
 	
-	@Test(expected = LoginException.class)
+	@Test
 	public void validateDeviceIdNullTest() {
 		login.setDeviceId(null);
 		
-		try {
-			loginRules.validate(login, user);
-		} catch (LoginException e) {
-			Assert.assertEquals("DeviceId can't be null or blank", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				LoginException.class, 
+				() -> loginRules.validate(login, user), 
+				"DeviceId can't be null or blank");
 	}
 	
-	@Test(expected = LoginException.class)
+	@Test
 	public void validateDeviceIdBlankTest() {
 		login.setDeviceId(" ");
 		
-		try {
-			loginRules.validate(login, user);
-		} catch (LoginException e) {
-			Assert.assertEquals("DeviceId can't be null or blank", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				LoginException.class, 
+				() -> loginRules.validate(login, user), 
+				"DeviceId can't be null or blank");
 	}
 	
 	@Test
 	public void validateAutoLoginTest() {
 		boolean isValid = loginRules.validateAutoLogin(login, user);
 		
-		Assert.assertTrue(isValid);
+		Assertions.assertTrue(isValid);
 	}
 	
-	@Test(expected = LoginException.class)
+	@Test
 	public void validateAutoLoginLoginNullTest() {
-		try {
-			loginRules.validateAutoLogin(null, user);
-		} catch (LoginException e) {
-			Assert.assertEquals("Login can't be null", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				LoginException.class, 
+				() -> loginRules.validateAutoLogin(null, user), 
+				"Login can't be null");
 	}
 	
-	@Test(expected = LoginException.class)
+	@Test
 	public void validateAutoLoginUserNullTest() {
-		try {
-			loginRules.validateAutoLogin(login, null);
-		} catch (LoginException e) {
-			Assert.assertEquals("User can't be null", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				LoginException.class, 
+				() -> loginRules.validateAutoLogin(login, null), 
+				"User can't be null");
 	}
 	
-	@Test(expected = LoginException.class)
+	@Test
 	public void validateAutoLoginEmailNullTest() {
 		login.setEmail(null);
 		
-		try {
-			loginRules.validateAutoLogin(login, user);
-		} catch (LoginException e) {
-			Assert.assertEquals("Email can't be null or blank", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				LoginException.class, 
+				() -> loginRules.validateAutoLogin(login, user), 
+				"Email can't be null or blank");
 	}
 	
-	@Test(expected = LoginException.class)
+	@Test
 	public void validateAutoLoginEmailBlankTest() {
 		login.setEmail(" ");
 		
-		try {
-			loginRules.validateAutoLogin(login, user);
-		} catch (LoginException e) {
-			Assert.assertEquals("Email can't be null or blank", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				LoginException.class, 
+				() -> loginRules.validateAutoLogin(login, user), 
+				"Email can't be null or blank");
 	}
 	
-	@Test(expected = LoginException.class)
+	@Test
 	public void validateAutoLoginDeviceIdNullTest() {
 		login.setDeviceId(null);
-		
-		try {
-			loginRules.validateAutoLogin(login, user);
-		} catch (LoginException e) {
-			Assert.assertEquals("DeviceId can't be null or blank", e.getMessage());
-			
-			throw e;
-		}
+
+		Assertions.assertThrows(
+				LoginException.class, 
+				() -> loginRules.validateAutoLogin(login, user), 
+				"DeviceId can't be null or blank");
 	}
 	
-	@Test(expected = LoginException.class)
+	@Test
 	public void validateAutoLoginDeviceIdBlankTest() {
 		login.setDeviceId(" ");
 		
-		try {
-			loginRules.validateAutoLogin(login, user);
-		} catch (LoginException e) {
-			Assert.assertEquals("DeviceId can't be null or blank", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				LoginException.class, 
+				() -> loginRules.validateAutoLogin(login, user), 
+				"DeviceId can't be null or blank");
 	}
 	
-	@Test(expected = LoginException.class)
+	@Test
 	public void validateAutoLoginNotAllowedTest() {
 		user.setAutoLogin(false);
-		
-		try {
-			loginRules.validateAutoLogin(login, user);
-		} catch (LoginException e) {
-			Assert.assertEquals("User configuration doesn't allow auto-login", e.getMessage());
-			
-			throw e;
-		}
+
+		Assertions.assertThrows(
+				AutoLoginException.class, 
+				() -> loginRules.validateAutoLogin(login, user), 
+				"User configuration doesn't allow auto-login");
 	}
 	
-	@Test(expected = DeviceNotVerifiedException.class)
+	@Test
 	public void validateAutoLoginDeviceNotVerifiedTest() {
 		user.getDevices().get(1).setVerified(false);
 		
-		try {
-			loginRules.validateAutoLogin(login, user);
-		} catch (DeviceNotVerifiedException e) {
-			Mockito.verify(deviceService).sendDeviceVerificationEmail(user.getId(), user.getDevices().get(1));
-			
-			Assert.assertEquals("Device not verified", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				DeviceNotVerifiedException.class, 
+				() -> loginRules.validateAutoLogin(login, user), 
+				"Device not verified");
+
+		Mockito.verify(deviceService).sendDeviceVerificationEmail(user.getId(), user.getDevices().get(1));
 	}
 	
-	@Test(expected = DeviceNotVerifiedException.class)
+	@Test
 	public void validateAutoLoginDeviceNewDeviceTest() {
 		Device newDevice = new Device(login.getDeviceId());
 		
@@ -318,13 +268,10 @@ public class LoginRulesTest {
 		
 		user.getDevices().get(1).setDeviceId(UUID.randomUUID().toString());
 		
-		try {
-			loginRules.validateAutoLogin(login, user);
-		} catch (DeviceNotVerifiedException e) {
-			Assert.assertEquals("Unknown device", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				DeviceNotVerifiedException.class, 
+				() -> loginRules.validateAutoLogin(login, user), 
+				"Unknown device");
 	}
 
 }

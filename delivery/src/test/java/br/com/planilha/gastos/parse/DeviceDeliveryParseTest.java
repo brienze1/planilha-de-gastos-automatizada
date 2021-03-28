@@ -5,17 +5,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import br.com.planilha.gastos.dto.DeviceDto;
 import br.com.planilha.gastos.entity.Device;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class DeviceDeliveryParseTest {
 
 	@InjectMocks
@@ -25,7 +25,7 @@ public class DeviceDeliveryParseTest {
 	private Device device;
 	private DeviceDto deviceDto;
 	
-	@Before
+	@BeforeEach
 	public void init() {
 		devicesDto = new ArrayList<>();
 		
@@ -52,12 +52,12 @@ public class DeviceDeliveryParseTest {
 	public void toDeviceTest() {
 		Device device = deviceDeliveryParse.toDevice(deviceDto);
 		
-		Assert.assertNotNull(device);
-		Assert.assertNull(device.getId());
-		Assert.assertEquals(deviceDto.getVerificationCode(), device.getVerificationCode());
-		Assert.assertEquals(deviceDto.getDeviceId(), device.getDeviceId());
-		Assert.assertEquals(deviceDto.isInUse(), device.isInUse());
-		Assert.assertEquals(deviceDto.isVerified(), device.isVerified());
+		Assertions.assertNotNull(device);
+		Assertions.assertNull(device.getId());
+		Assertions.assertEquals(deviceDto.getVerificationCode(), device.getVerificationCode());
+		Assertions.assertEquals(deviceDto.getDeviceId(), device.getDeviceId());
+		Assertions.assertEquals(deviceDto.isInUse(), device.isInUse());
+		Assertions.assertEquals(deviceDto.isVerified(), device.isVerified());
 	}
 	
 	@Test
@@ -66,28 +66,28 @@ public class DeviceDeliveryParseTest {
 		
 		Device device = deviceDeliveryParse.toDevice(deviceDto);
 		
-		Assert.assertNotNull(device);
-		Assert.assertNull(device.getDeviceId());
-		Assert.assertNull(device.getId());
-		Assert.assertNull(device.getVerificationCode());
-		Assert.assertFalse(device.isInUse());
-		Assert.assertFalse(device.isVerified());
+		Assertions.assertNotNull(device);
+		Assertions.assertNull(device.getDeviceId());
+		Assertions.assertNull(device.getId());
+		Assertions.assertNull(device.getVerificationCode());
+		Assertions.assertFalse(device.isInUse());
+		Assertions.assertFalse(device.isVerified());
 	}
 	
 	@Test
 	public void toDevicesFromDeviceTest() {
 		List<Device> devices = deviceDeliveryParse.toDevices(deviceDto);
 		
-		Assert.assertNotNull(devices);
-		Assert.assertFalse(devices.isEmpty());
+		Assertions.assertNotNull(devices);
+		Assertions.assertFalse(devices.isEmpty());
 		for (Device device : devices) {
 			for (DeviceDto deviceDto : devicesDto) {
 				if(device.getDeviceId().equals(deviceDto.getDeviceId())) {
-					Assert.assertNull(device.getId());
-					Assert.assertEquals(deviceDto.getVerificationCode(), device.getVerificationCode());
-					Assert.assertEquals(deviceDto.getDeviceId(), device.getDeviceId());
-					Assert.assertEquals(deviceDto.isInUse(), device.isInUse());
-					Assert.assertEquals(deviceDto.isVerified(), device.isVerified());
+					Assertions.assertNull(device.getId());
+					Assertions.assertEquals(deviceDto.getVerificationCode(), device.getVerificationCode());
+					Assertions.assertEquals(deviceDto.getDeviceId(), device.getDeviceId());
+					Assertions.assertEquals(deviceDto.isInUse(), device.isInUse());
+					Assertions.assertEquals(deviceDto.isVerified(), device.isVerified());
 				}
 			}
 		}
@@ -99,8 +99,8 @@ public class DeviceDeliveryParseTest {
 		
 		List<Device> devices = deviceDeliveryParse.toDevices(deviceDto);
 		
-		Assert.assertNotNull(devices);
-		Assert.assertTrue(devices.isEmpty());
+		Assertions.assertNotNull(devices);
+		Assertions.assertTrue(devices.isEmpty());
 	}
 	
 }

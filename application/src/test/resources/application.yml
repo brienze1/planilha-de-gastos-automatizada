@@ -1,7 +1,8 @@
 #Config
 server.port: 0
 spring.profiles.active: test
- 
+server.error.include-message: always
+
 #datasource
 spring:
   h2.console.enabled: true

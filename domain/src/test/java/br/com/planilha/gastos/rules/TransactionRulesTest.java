@@ -4,21 +4,21 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import br.com.planilha.gastos.entity.Transaction;
 import br.com.planilha.gastos.exception.TransactionException;
 import br.com.planilha.gastos.port.IdGeneratorAdapter;
 import br.com.planilha.gastos.port.TransactionPersistenceAdapter;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class TransactionRulesTest {
 
 	@InjectMocks
@@ -32,7 +32,7 @@ public class TransactionRulesTest {
 	
 	private Transaction transaction;
 	
-	@Before
+	@BeforeEach
 	public void init() {
 		transaction = new Transaction();
 		transaction.setId(UUID.randomUUID().toString());
@@ -50,7 +50,7 @@ public class TransactionRulesTest {
 	public void validateTest() {
 		Boolean isValid = transactionRules.validate(transaction);
 		
-		Assert.assertTrue(isValid);
+		Assertions.assertTrue(isValid);
 	}
 	
 	@Test
@@ -59,7 +59,7 @@ public class TransactionRulesTest {
 		
 		Boolean isValid = transactionRules.validate(transaction);
 		
-		Assert.assertTrue(isValid);
+		Assertions.assertTrue(isValid);
 	}
 	
 	@Test
@@ -77,12 +77,12 @@ public class TransactionRulesTest {
 		
 		Boolean isValid = transactionRules.validate(transaction);
 		
-		Assert.assertTrue(isValid);
-		Assert.assertEquals("Undefined", transaction.getDescricao());
-		Assert.assertEquals("Unknown", transaction.getLocalizacao());
-		Assert.assertEquals("Unknown", transaction.getMeioDePagamento());
-		Assert.assertEquals("Sent", transaction.getTipo());
-		Assert.assertEquals(id, transaction.getId());
+		Assertions.assertTrue(isValid);
+		Assertions.assertEquals("Undefined", transaction.getDescricao());
+		Assertions.assertEquals("Unknown", transaction.getLocalizacao());
+		Assertions.assertEquals("Unknown", transaction.getMeioDePagamento());
+		Assertions.assertEquals("Sent", transaction.getTipo());
+		Assertions.assertEquals(id, transaction.getId());
 	}
 	
 	@Test
@@ -100,49 +100,40 @@ public class TransactionRulesTest {
 		
 		Boolean isValid = transactionRules.validate(transaction);
 		
-		Assert.assertTrue(isValid);
-		Assert.assertEquals("Undefined", transaction.getDescricao());
-		Assert.assertEquals("Unknown", transaction.getLocalizacao());
-		Assert.assertEquals("Unknown", transaction.getMeioDePagamento());
-		Assert.assertEquals("Sent", transaction.getTipo());
-		Assert.assertEquals(id, transaction.getId());
+		Assertions.assertTrue(isValid);
+		Assertions.assertEquals("Undefined", transaction.getDescricao());
+		Assertions.assertEquals("Unknown", transaction.getLocalizacao());
+		Assertions.assertEquals("Unknown", transaction.getMeioDePagamento());
+		Assertions.assertEquals("Sent", transaction.getTipo());
+		Assertions.assertEquals(id, transaction.getId());
 	}
 	
-	@Test(expected = TransactionException.class)
+	@Test
 	public void validateTransactionNullTest() {
-		try {
-			transactionRules.validate(null);
-		} catch (TransactionException e) {
-			Assert.assertEquals("Transaction can't be null", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				TransactionException.class, 
+				() -> transactionRules.validate(null), 
+				"Transaction can't be null");
 	}
 	
-	@Test(expected = TransactionException.class)
+	@Test
 	public void validateValorNullTest() {
 		transaction.setValor(null);
 		
-		try {
-			transactionRules.validate(transaction);
-		} catch (TransactionException e) {
-			Assert.assertEquals("Value can't be null, zero or less than zero", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				TransactionException.class, 
+				() -> transactionRules.validate(transaction), 
+				"Value can't be null, zero or less than zero");
 	}
 	
-	@Test(expected = TransactionException.class)
+	@Test
 	public void validateValorLessThenZeroTest() {
 		transaction.setValor(new BigDecimal(-1));
 		
-		try {
-			transactionRules.validate(transaction);
-		} catch (TransactionException e) {
-			Assert.assertEquals("Value can't be null, zero or less than zero", e.getMessage());
-			
-			throw e;
-		}
+		Assertions.assertThrows(
+				TransactionException.class, 
+				() -> transactionRules.validate(transaction), 
+				"Value can't be null, zero or less than zero");
 	}
 	
 }

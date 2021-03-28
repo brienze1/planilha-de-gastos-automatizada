@@ -15,7 +15,7 @@ COPY wrapper.sh /wrapper.sh
 RUN chmod 555 /wrapper.sh
 
 USER root
-COPY maven/app.jar $BOOTAPP_PATH
+COPY target/*.jar $BOOTAPP_PATH
 RUN chmod 555 $BOOTAPP_PATH && \
             touch $BOOTAPP_PATH
 RUN mkdir $LOG_PATH            

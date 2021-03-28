@@ -10,6 +10,8 @@ ENV SERVER_PORT 0
 
 EXPOSE $SERVER_PORT
 
+RUN apk update && apk add bash
+
 COPY wrapper.sh /wrapper.sh
 
 RUN chmod 555 /wrapper.sh

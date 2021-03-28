@@ -5,7 +5,7 @@ MAINTAINER Luis Brienze <lfbrienze@gmail.com>
 ENV ENV_NAME local
 ENV BOOTAPP_JAVA_OPTS -Xms256m -Xmx512m
 ENV LOG_PATH "/var/log/casa"
-ENV BOOTAPP_USR="root" BOOTAPP_GROUP="root" BOOTAPP_PATH="app.jar"
+ENV BOOTAPP_USR="root" BOOTAPP_GROUP="root" BOOTAPP_PATH="/app.jar"
 ENV SERVER_PORT 0
 
 EXPOSE $SERVER_PORT

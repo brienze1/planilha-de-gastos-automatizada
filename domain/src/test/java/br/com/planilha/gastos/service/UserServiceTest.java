@@ -1,112 +1,210 @@
 package br.com.planilha.gastos.service;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import br.com.planilha.gastos.entity.UserExample;
-import br.com.planilha.gastos.port.IdGeneratorAdapter;
-import br.com.planilha.gastos.port.PasswordEncoderAdapter;
+import br.com.planilha.gastos.builder.UserBuilder;
+import br.com.planilha.gastos.entity.Device;
+import br.com.planilha.gastos.entity.Login;
+import br.com.planilha.gastos.entity.User;
+import br.com.planilha.gastos.port.PasswordUtilsAdapter;
 import br.com.planilha.gastos.port.UserRepositoryAdapter;
-import br.com.planilha.gastos.rules.UserValidatorExample;
+import br.com.planilha.gastos.rules.LoginRules;
+import br.com.planilha.gastos.rules.UserRules;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class UserServiceTest {
 
 	@InjectMocks
 	private UserService userService;
+	
+	@Mock
+	private UserRules userRules;
+	
+	@Mock
+	private UserRepositoryAdapter userRepository;
+	
+	@Mock
+	private UserBuilder userBuilder;
 
 	@Mock
-	private UserValidatorExample userValidatorExample;
-
+	private JwtService jwtService;
+	
 	@Mock
-	private UserRepositoryAdapter repository;
-
+	private LoginRules loginRules;
+	
 	@Mock
-	private PasswordEncoderAdapter passwordEncoder;
-
+	private DeviceService deviceService;
+	
 	@Mock
-	private IdGeneratorAdapter idGenerator;
-
+	private PasswordUtilsAdapter passwordUtils;
+	
+	private User newUser;
+	private User user;
+	private User savedUser;
+	private String token;
 	private String id;
-	private String password;
-	private UserExample userExample;
-	private List<UserExample> userExampleList;
-
-	@Before
+	private String email;
+	private Login login;
+	
+	@BeforeEach
 	public void init() {
 		id = UUID.randomUUID().toString();
-		password = UUID.randomUUID().toString();
-
-		userExample = new UserExample();
-		userExample.setEmail("jhonmarston@email.com");
-		userExample.setFirstName("Jhon");
-		userExample.setLastName("Marston");
-		userExample.setId(UUID.randomUUID().toString());
-		userExample.setPassword(UUID.randomUUID().toString());
-
-		userExampleList = new ArrayList<>();
-		userExampleList.add(userExample);
+		email = UUID.randomUUID().toString();
+		
+		newUser = new User();
+		newUser.setId(id);
+		newUser.setPassword(UUID.randomUUID().toString());
+		newUser.setEmail(email);
+		newUser.setFirstName(UUID.randomUUID().toString());
+		newUser.setLastName(UUID.randomUUID().toString());
+		newUser.setDevices(new ArrayList<>());
+		newUser.getDevices().add(new Device(UUID.randomUUID().toString()));
+		
+		user = new User();
+		user.setId(id);
+		user.setEmail(email);
+		user.setValidEmail(false);
+		user.setAutoLogin(false);
+		user.setSecret(UUID.randomUUID().toString());
+		user.setPassword(passwordUtils.encode(user.getPassword(), user.getSecret()));
+		user.setDevices(new ArrayList<>());
+		user.getDevices().add(new Device(newUser.getDevices().get(0).getDeviceId()));
+		
+		savedUser = new User();
+		savedUser.setId(id);
+		savedUser.setEmail(email);
+		savedUser.setValidEmail(false);
+		savedUser.setAutoLogin(false);
+		savedUser.setSecret(UUID.randomUUID().toString());
+		savedUser.setPassword(passwordUtils.encode(user.getPassword(), user.getSecret()));
+		savedUser.setDevices(new ArrayList<>());
+		savedUser.getDevices().add(new Device(newUser.getDevices().get(0).getDeviceId()));
+		
+		token = UUID.randomUUID().toString();
+		
+		login = new Login();
+		login.setDeviceId(user.getDevices().get(0).getDeviceId());
+		login.setEmail(email);
+		login.setPassword(user.getPassword());
 	}
-
+	
 	@Test
-	public void test() {
-		Mockito.when(idGenerator.generate()).thenReturn(id);
-		Mockito.when(passwordEncoder.encode(userExample.getEmail() + userExample.getPassword())).thenReturn(password);
-
-		String response = userService.create(userExample);
-
-		Assert.assertNotNull(response);
+	public void registerTest() {
+		Mockito.when(userBuilder.build(newUser)).thenReturn(user);
+		Mockito.when(userRepository.save(user)).thenReturn(savedUser);
+		Mockito.when(jwtService.generate(savedUser)).thenReturn(token);
+		
+		String token = userService.register(newUser);
+		
+		Mockito.verify(userRules).validateUserRegistrationData(newUser);
+		Mockito.verify(userBuilder).build(newUser);
+		Mockito.verify(userRepository).save(user);
+		Mockito.verify(deviceService).sendDeviceVerificationEmail(savedUser.getId(), savedUser.getDevices().get(0));
+		Mockito.verify(jwtService).generate(savedUser);
+		
+		Assertions.assertNotNull(token);
+		Assertions.assertFalse(token.isBlank());
 	}
-
+	
 	@Test
-	public void testFindById() {
-		Mockito.when(repository.findById(id)).thenReturn(Optional.of(userExample));
-
-		Optional<UserExample> response = userService.findById(id);
-
-		Assert.assertTrue(response.isPresent());
-		Assert.assertEquals(userExample.getEmail(), response.get().getEmail());
-		Assert.assertEquals(userExample.getFirstName(), response.get().getFirstName());
-		Assert.assertEquals(userExample.getLastName(), response.get().getLastName());
-		Assert.assertEquals(userExample.getId(), response.get().getId());
-		Assert.assertEquals(userExample.getPassword(), response.get().getPassword());
+	public void updateTest() {
+		Mockito.when(userRepository.save(user)).thenReturn(savedUser);
+		
+		User returnedUser = userService.update(user);
+		
+		Mockito.verify(userRules).validate(user);
+		Mockito.verify(userRepository).save(user);
+		
+		Assertions.assertNotNull(returnedUser);
+		Assertions.assertEquals(savedUser.getId(), returnedUser.getId());
 	}
-
+	
 	@Test
-	public void testFindAllUsers() {
-		Mockito.when(repository.findAllUsers()).thenReturn(userExampleList);
-
-		List<UserExample> response = userService.findAllUsers();
-
-		Assert.assertEquals(userExample.getEmail(), response.get(0).getEmail());
-		Assert.assertEquals(userExample.getFirstName(), response.get(0).getFirstName());
-		Assert.assertEquals(userExample.getLastName(), response.get(0).getLastName());
-		Assert.assertEquals(userExample.getId(), response.get(0).getId());
-		Assert.assertEquals(userExample.getPassword(), response.get(0).getPassword());
+	public void findByIdTest() {
+		Mockito.when(userRepository.findById(id)).thenReturn(Optional.of(savedUser));
+		
+		User returnedUser = userService.findById(id);
+		
+		Mockito.verify(userRepository).findById(id);
+		Mockito.verify(userRules).validate(Optional.of(savedUser));
+		
+		Assertions.assertNotNull(returnedUser);
+		Assertions.assertEquals(savedUser.getId(), returnedUser.getId());
 	}
-
+	
 	@Test
-	public void testFindByEmail() {
-		Mockito.when(repository.findByEmail(userExample.getEmail())).thenReturn(Optional.of(userExample));
-
-		Optional<UserExample> response = userService.findByEmail(userExample.getEmail());
-
-		Assert.assertEquals(userExample.getEmail(), response.get().getEmail());
-		Assert.assertEquals(userExample.getFirstName(), response.get().getFirstName());
-		Assert.assertEquals(userExample.getLastName(), response.get().getLastName());
-		Assert.assertEquals(userExample.getId(), response.get().getId());
-		Assert.assertEquals(userExample.getPassword(), response.get().getPassword());
+	public void findByEmailTest() {
+		Mockito.when(userRepository.findByEmail(email)).thenReturn(Optional.of(savedUser));
+		
+		User returnedUser = userService.findByEmail(email);
+		
+		Mockito.verify(userRepository).findByEmail(email);
+		Mockito.verify(userRules).validate(Optional.of(savedUser));
+		
+		Assertions.assertNotNull(returnedUser);
+		Assertions.assertEquals(savedUser.getEmail(), returnedUser.getEmail());
 	}
-
+	
+	@Test
+	public void autoLoginTest() {
+		Mockito.when(userRepository.findByEmail(email)).thenReturn(Optional.of(savedUser));
+		Mockito.when(jwtService.generateAcessToken(savedUser, login.getDeviceId())).thenReturn(token);
+		
+		String returnedtoken = userService.autoLogin(login);
+		
+		Mockito.verify(userRepository).findByEmail(email);
+		Mockito.verify(userRules).validate(Optional.of(savedUser));
+		Mockito.verify(loginRules).validateAutoLogin(login, savedUser);
+		Mockito.verify(jwtService).generateAcessToken(savedUser, login.getDeviceId());
+		
+		Assertions.assertNotNull(returnedtoken);
+		Assertions.assertFalse(returnedtoken.isBlank());
+		Assertions.assertEquals(token, returnedtoken);
+	}
+	
+	@Test
+	public void loginTest() {
+		Mockito.when(userRepository.findByEmail(email)).thenReturn(Optional.of(savedUser));
+		Mockito.when(jwtService.generateAcessToken(savedUser, login.getDeviceId())).thenReturn(token);
+		
+		String returnedtoken = userService.login(login);
+		
+		Mockito.verify(userRepository, Mockito.times(2)).findByEmail(email);
+		Mockito.verify(userRules, Mockito.times(2)).validate(Optional.of(savedUser));
+		Mockito.verify(loginRules).validate(login, savedUser);
+		Mockito.verify(loginRules).validate(login);
+		Mockito.verify(jwtService).generateAcessToken(savedUser, login.getDeviceId());
+		
+		Assertions.assertNotNull(returnedtoken);
+		Assertions.assertFalse(returnedtoken.isBlank());
+		Assertions.assertEquals(token, returnedtoken);
+	}
+	
+	@Test
+	public void configureUserTest() {
+		Mockito.when(jwtService.verifyAcessToken(token)).thenReturn(savedUser);
+		Mockito.when(userBuilder.buildChanges(user, savedUser)).thenReturn(newUser);
+		Mockito.when(userRepository.save(newUser)).thenReturn(newUser);
+		
+		User returnedUser = userService.configureUser(token, user);
+		
+		Mockito.verify(jwtService).verifyAcessToken(token);
+		Mockito.verify(userBuilder).buildChanges(user, savedUser);
+		Mockito.verify(userRepository).save(newUser);
+		
+		Assertions.assertNotNull(returnedUser);
+		Assertions.assertEquals(user.getId(), returnedUser.getId());
+	}
+	
 }

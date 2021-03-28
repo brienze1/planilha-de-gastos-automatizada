@@ -1,5 +1,6 @@
 */.settings
 .settings
+.metadata
 .prefs
 .project
 .factorypath
@@ -11,3 +12,4 @@
 .factorypath
 /bin
 */bin/*
+/target

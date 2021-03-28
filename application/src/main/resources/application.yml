@@ -1,6 +1,7 @@
 #Config
 server.port: 8080
 spring.profiles.active: local
+server.error.include-message: always
  
 #datasource
 spring:
@@ -11,3 +12,4 @@ spring:
     username: sa
     password: 
   jpa.database-platform: org.hibernate.dialect.H2Dialect
+

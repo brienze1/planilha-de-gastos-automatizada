@@ -1,0 +1,15 @@
+#Config
+server.port: 0
+spring.profiles.active: test
+server.error.include-message: always
+
+#datasource
+spring:
+  h2.console.enabled: true
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: 
+  jpa.database-platform: org.hibernate.dialect.H2Dialect
+

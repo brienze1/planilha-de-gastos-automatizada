@@ -6,11 +6,11 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.2.4.RELEASE</version>
+		<version>2.4.4</version>
 		<relativePath />
 	</parent>
 
-	<groupId>br.com.planilha.gastos</groupId>
+	<groupId>br.com.planilha.gastos</groupId>              
 	<artifactId>parent</artifactId>
 	<packaging>pom</packaging>
 	<version>0.0.1-SNAPSHOT</version>
@@ -24,7 +24,8 @@
 	</modules>
 
 	<properties>
-		<java.version>12</java.version>
+		<java.version>14</java.version>
+		<java.home>C:\Program Files\Java\jdk-14.0.2\bin\javac</java.home>
 		<cucumber.version>1.2.0</cucumber.version>
 	</properties>
 
@@ -46,20 +47,14 @@
 	<build>
 		<pluginManagement>
 			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.1</version>
-					<configuration>
-						<source>12</source>
-						<target>12</target>
-						<executable>C:\Program Files\Java\jdk-12.0.2\bin\javac</executable>
-					</configuration>
-				</plugin>
 
 				<plugin>
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-maven-plugin</artifactId>
+					<configuration>
+						<finalName>planilha-gastos-automatizada</finalName>
+						<outputDirectory>../target/</outputDirectory>
+					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>
